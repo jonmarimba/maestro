@@ -2,7 +2,7 @@
 <!--********** Copyright 2019 Roku Corp. All Rights Reserved. **********-->
 
 <component name="RALETrackerTask" extends="Task">
-  <script type="text/brightscript" uri="pkg:/source/Framework/lib/ThreadUtils.brs"/>
+  <script type="text/brightscript" uri="pkg:/source/maestro/lib/ThreadUtils.brs"/>
 
   <interface>
       <field id="event" type="assocarray"/>

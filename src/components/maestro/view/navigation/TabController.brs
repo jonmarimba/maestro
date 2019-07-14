@@ -74,7 +74,13 @@ function createView(menuItemContent)
   logMethod("createView menuItemContent.screenType", menuItemContent.screenType)
   if menuItemContent.screenType <> "none"
     view = createObject("roSGNode", menuItemContent.screenType)
+    containerView = createObject("roSGNode", "TabChildScreen")
+    containerView.content = view
+    containerView.id = menuItemContent.id
+    view.navController = containerView.navController
+
     view.menuItemContent = menuItemContent
+    m.viewsByMenuItemId[menuItemContent.id] = containerView
     view.id = menuItemContent.id
     'we want to clear out the view's vis, so the initialize
     'won't trigger show callbacks prematurely
@@ -82,9 +88,8 @@ function createView(menuItemContent)
     view.isShown = false
 
     initializeView(view)
-    view.visible = false
-    m.viewsByMenuItemId[menuItemContent.id] = view
-    return view
+    containerView.visible = false
+    return containerView
   else
     logError("menu item ", menuItemContent.id, " has no screenType - a call to registerExistingView should've been made first")
     return invalid

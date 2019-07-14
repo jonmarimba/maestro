@@ -9,12 +9,12 @@
 	</interface>
 	<script type="text/brightscript" uri="HomeView.brs" />
     <script type="text/brightscript" uri="pkg:/source/rLog/rLogMixin.brs" />
-  <script type="text/brightscript" uri="pkg:/source/Framework/lib/Utils.brs" />
-  <script type="text/brightscript" uri="pkg:/source/Framework/ViewModels/BaseViewModel.brs" />
-  <script type="text/brightscript" uri="pkg:/source/Framework/ViewModels/BaseObservable.brs" />
-  <script type="text/brightscript" uri="pkg:/source/Framework/ViewModels/ObservableMixin.brs" />
-  <script type="text/brightscript" uri="pkg:/source/Framework/ViewModels/ViewModelMixin.brs" />
-	<script type="text/brightscript" uri="pkg:/source/ViewModels/TodoScreenVM.brs" />
+  <script type="text/brightscript" uri="pkg:/source/maestro/lib/Utils.brs" />
+  <script type="text/brightscript" uri="pkg:/source/maestro/viewModel/BaseViewModel.brs" />
+  <script type="text/brightscript" uri="pkg:/source/maestro/viewModel/BaseObservable.brs" />
+  <script type="text/brightscript" uri="pkg:/source/maestro/viewModel/ObservableMixin.brs" />
+  <script type="text/brightscript" uri="pkg:/source/maestro/viewModel/ViewModelMixin.brs" />
+	<script type="text/brightscript" uri="pkg:/source/viewModel/TodoScreenVM.brs" />
 	<children>
     
 		<LayoutGroup>
