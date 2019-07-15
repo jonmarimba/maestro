@@ -25,7 +25,7 @@ function BaseViewModel(subClass)
       "destroyed": "destroyed"
     }
   })
-  if isAACompatible(subClass) and subClass.name <> invalid and subClass.name <> ""
+  if MU_isAACompatible(subClass) and subClass.name <> invalid and subClass.name <> ""
     this.append(subClass)
     registerlogger(subClass.name, true, this)
   else

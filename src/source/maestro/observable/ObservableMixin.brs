@@ -395,7 +395,7 @@ function MOM_bindingCallback(event) as void
   for each key in nodeBindings
     bindingData = nodeBindings[key]
     observable = m._observables[bindingData.contextId]
-    if isAACompatible(observable)
+    if MU_isAACompatible(observable)
       if bindingData.transformFunction <> invalid
         bindingValue = bindingData.transformFunction(value)
       else
@@ -463,12 +463,12 @@ end function
 '  * @returns {boolean} true if valid
 '  */
 function MOM_checkValidInputs(observableField, targetNode, nodeField) as boolean
-  if not isString(observableField) or observableField.trim() = ""
+  if not MU_isString(observableField) or observableField.trim() = ""
     logError("illegal observableField", observableField)
     return false
   end if
 
-  if not isString(nodeField) or nodeField.trim() = ""
+  if not MU_isString(nodeField) or nodeField.trim() = ""
     logError("illegal field", nodeField)
     return false
   end if
@@ -492,7 +492,7 @@ function MOM_checkValidInputs(observableField, targetNode, nodeField) as boolean
 end function
 
 function MOM_isObservable(observable) as boolean
-  if not isAACompatible(observable)
+  if not MU_isAACompatible(observable)
     logError("non aa object passed in")
     return false
   end if
@@ -535,7 +535,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function MOM_transform_invertBoolean(value)
-  if isBoolean(value)
+  if  MU_isBoolean(value)
     return not value
   else
     logError("binding was marked as inverse boolean; but value was not boolean")

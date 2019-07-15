@@ -71,7 +71,7 @@ end function
 function MBO_setContext(contextId, contextNode) as void
   m.contextId = contextId
   m.contextNode = contextNode
-  m.isContextValid = isString(contextId) and type(contextNode) = "roSGNode"
+  m.isContextValid = MU_isString(contextId) and type(contextNode) = "roSGNode"
 
   if(m.isContextValid and m.isBindingNotificationEnabled = true)
     m.firePendingObserverNotifications()
@@ -121,7 +121,7 @@ end function
 '  * @returns {boolean} true if succesful
 '  */
 function MBO_setField(fieldName, value, originKey = invalid) as boolean
-  if not isString(fieldName) or fieldName.trim() = ""
+  if not MU_isString(fieldName) or fieldName.trim() = ""
     logError("Tried to setField with illegal field name")
     return false
   end if
@@ -153,12 +153,12 @@ end function
 '  */
 function MBO_observeField(fieldName, functionName, properties = invalid) as boolean
   'TODO - I think we will want a mixin method for this, that provides a prepackaged node, with a context callback we can invoke
-  if not isString(fieldName) or fieldName.trim() = ""
+  if not MU_isString(fieldName) or fieldName.trim() = ""
     logError("Tried to observe field with illegal field name")
     return false
   end if
 
-  if not isString(functionName) or functionName.trim() = ""
+  if not MU_isString(functionName) or functionName.trim() = ""
     logError("Tried to observe field with illegal function")
     return false
   end if
@@ -181,12 +181,12 @@ function MBO_observeField(fieldName, functionName, properties = invalid) as bool
 end function
 
 function MBO_unobserveField(fieldName, functionName) as boolean
-  if not isString(fieldName)
+  if not MU_isString(fieldName)
     logError("Tried to unobserve field with illegal field name")
     return false
   end if
 
-  if not isString(functionName)
+  if not MU_isString(functionName)
     logError("Tried to unobserve field with illegal functionName")
     return false
   end if
@@ -216,7 +216,7 @@ function MBO_notify(fieldName) as void
   end if
 
   value = m[fieldName]
-  if isUndefined(value)
+  if MU_isUndefined(value)
     logError("Tried notify about uninitialized value! interpreting as invalid")
     value = invalid
   end if
@@ -346,7 +346,7 @@ function MBO_notifyBinding(fieldName, specificKey = invalid, excludeKey = invali
   end if
   value = m[fieldName]
   value = m[fieldName]
-  if isUndefined(value)
+  if MU_isUndefined(value)
     logError("Tried notify about uninitialized value! interpreting as invalid")
     value = invalid
   end if

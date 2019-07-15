@@ -159,7 +159,7 @@ function RBS_BTS_GetLegacyCompatibleReturnValue(value) as object
 end function
 function RBS_BTS_AssertFalse(expr , msg = "Expression evaluates to true" ) as dynamic
   if (m.currentResult.isFail) then return m.GetLegacyCompatibleReturnValue(false) ' skip test we already failed
-  if not RBS_CMN_IsBoolean(expr) or expr
+  if not RBS_CMN_isBoolean(expr) or expr
     m.currentResult.AddResult(msg)
     return m.fail(msg)
   end if
@@ -168,7 +168,7 @@ function RBS_BTS_AssertFalse(expr , msg = "Expression evaluates to true" ) as dy
 end function
 function RBS_BTS_AssertTrue(expr , msg = "Expression evaluates to false" ) as dynamic
   if (m.currentResult.isFail) then return m.GetLegacyCompatibleReturnValue(false) ' skip test we already failed
-  if not RBS_CMN_IsBoolean(expr) or not expr then
+  if not RBS_CMN_isBoolean(expr) or not expr then
     m.currentResult.AddResult(msg)
     return m.GetLegacyCompatibleReturnValue(false)
   end if
@@ -1290,7 +1290,7 @@ function RBS_CMN_GetFunctionBruteForce(functionName) as object
   end for
   return invalid
 end function
-function RBS_CMN_IsBoolean(value ) as boolean
+function RBS_CMN_isBoolean(value ) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifBoolean") <> invalid
 end function
 function RBS_CMN_IsInteger(value ) as boolean
@@ -1347,7 +1347,7 @@ function RBS_CMN_AsString(input ) as string
     return ""
   else if RBS_CMN_IsString(input)
     return input
-  else if RBS_CMN_IsInteger(input) or RBS_CMN_IsLongInteger(input) or RBS_CMN_IsBoolean(input)
+  else if RBS_CMN_IsInteger(input) or RBS_CMN_IsLongInteger(input) or RBS_CMN_isBoolean(input)
     return input.ToStr()
   else if RBS_CMN_IsFloat(input) or RBS_CMN_IsDouble(input)
     return Str(input).Trim()
@@ -1424,7 +1424,7 @@ function RBS_CMN_AsBoolean(input ) as boolean
     return LCase(input) = "true"
   else if RBS_CMN_IsInteger(input) or RBS_CMN_IsFloat(input)
     return input <> 0
-  else if RBS_CMN_IsBoolean(input)
+  else if RBS_CMN_isBoolean(input)
     return input
   else
     return false

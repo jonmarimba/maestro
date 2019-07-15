@@ -9,7 +9,7 @@ function MVMM_createFocusMap(vm) as boolean
   focusMap = {}
   success = false
   if MVMM_isVM(vm)
-    if isArray(vm.focusIds)
+    if MU_isArray(vm.focusIds)
       for index = 0 to vm.focusIds.count() -1
         key = vm.focusIds[index]
         control = m[key]

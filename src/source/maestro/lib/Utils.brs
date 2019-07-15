@@ -1,25 +1,25 @@
 '@Namespace MU Utils
 
-function isUndefined(value)
+function MU_isUndefined(value)
   return type(value) = "<uninitialized>"
 end function
 
-function isArray(value)
+function MU_isArray(value)
   return type(value) <> "<uninitialized>" and value <> invalid and GetInterface(value, "ifArray") <> invalid
 end function
 
-function isAACompatible(value)
+function MU_isAACompatible(value)
   return type(value) <> "<uninitialized>" and value <> invalid and GetInterface(value, "ifAssociativeArray") <> invalid
 end function
 
-function isString(value)
+function MU_isString(value)
   return type(value) <> "<uninitialized>" and GetInterface(value, "ifString") <> invalid
 end function
 
-function isBoolean(value)
+function MU_isBoolean(value)
   return type(value) <> "<uninitialized>" and GetInterface(value, "ifBoolean") <> invalid
 end function
 
-function isFunction(value)
+function MU_isFunction(value)
   return type(value) = "Function" or type(value) = "roFunction"
 end function
