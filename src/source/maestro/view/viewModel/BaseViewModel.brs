@@ -9,14 +9,14 @@ function BaseViewModel(subClass)
     __viewModel: true
     state: "none"
     focusId: invalid
-
+    
     'public
     initialize: MBVM_initialize
     destroy: MBVM_destroy
     onShow: MBVM_onShow
     onHide: MBVM_onHide
     onKeyEvent: MBVM_onKeyEvent
-
+    
     'private
     _states: {
       "none": "none",
@@ -78,7 +78,8 @@ function MBVM_onKeyEvent(key as string, press as boolean) as boolean
     if isFunction(m._isAnyKeyPressLocked) and m._isAnyKeyPressLocked()
       return true
     end if
-    if key = "down" and isFunction(m._onKeyPressDown())
+    
+    if key = "down" and isFunction(m._onKeyPressDown)
       result = _onKeyPressDown()
     else if key = "up" and isFunction(m._onKeyPressUp)
       result = m._onKeyPressUp()
@@ -98,14 +99,14 @@ function MBVM_onKeyEvent(key as string, press as boolean) as boolean
   else
     result = false
   end if
-
+  
   if (result = invalid)
     result = false
   end if
-
+  
   if result = false and isFunction(m._isCapturingAnyKeyPress)
     result = m._isCapturingAnyKeyPress(key, press)
   end if
-
+  
   return result
 end function
