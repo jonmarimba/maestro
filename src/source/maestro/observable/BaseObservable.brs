@@ -25,7 +25,7 @@ function BaseObservable() as object
     pendingObservers: {}
     bindings: {}
     pendingBindings: {}
-
+    
     setContext: MBO_setContext
     destroy: MBO_destroy
     checkValidInputs: MOM_checkValidInputs
@@ -42,6 +42,10 @@ function BaseObservable() as object
     unbindField: MBO_unbindField
     notifyBinding: MBO_notifyBinding
     unbindAllFields: MBO_unbindAllFields
+
+    'support for node bindings - allows us to call to the mixin methods, yet having a stub point for testing
+    bindNodeField: MBO_bindNodeField
+    unbindNodeField: MBO_unbindNodeField
   }
 end function
 
@@ -72,7 +76,7 @@ function MBO_setContext(contextId, contextNode) as void
   m.contextId = contextId
   m.contextNode = contextNode
   m.isContextValid = MU_isString(contextId) and type(contextNode) = "roSGNode"
-
+  
   if(m.isContextValid and m.isBindingNotificationEnabled = true)
     m.firePendingObserverNotifications()
     m.firePendingBindingNotifications()
@@ -125,12 +129,12 @@ function MBO_setField(fieldName, value, originKey = invalid) as boolean
     logError("Tried to setField with illegal field name")
     return false
   end if
-
+  
   if type(value) = "<uninitialized>"
     logError("Tried to set a value to uninitialized! interpreting as invalid")
     value = invalid
   end if
-
+  
   m[fieldName] = value
   m.notify(fieldName)
   m.notifyBinding(fieldName, originKey)
@@ -157,22 +161,22 @@ function MBO_observeField(fieldName, functionName, properties = invalid) as bool
     logError("Tried to observe field with illegal field name")
     return false
   end if
-
+  
   if not MU_isString(functionName) or functionName.trim() = ""
     logError("Tried to observe field with illegal function")
     return false
   end if
-
+  
   if properties = invalid
     properties = MOM_createBindingProperties()
   end if
-
+  
   observers = m.observers[fieldName]
   if observers = invalid
     observers = {}
   end if
   observers[functionName] = properties
-
+  
   m.observers[fieldName] = observers
   if properties.isSettingInitialValue = true
     m.notify(fieldName)
@@ -185,18 +189,18 @@ function MBO_unobserveField(fieldName, functionName) as boolean
     logError("Tried to unobserve field with illegal field name")
     return false
   end if
-
+  
   if not MU_isString(functionName)
     logError("Tried to unobserve field with illegal functionName")
     return false
   end if
-
+  
   observers = m.observers[fieldName]
   if observers = invalid
     observers = {}
   end if
   observers.delete(functionName)
-
+  
   if observers.count() = 0
     m.observers.delete(fieldName)
   else
@@ -214,15 +218,15 @@ function MBO_notify(fieldName) as void
   if observers = invalid
     observers = {}
   end if
-
+  
   value = m[fieldName]
   if MU_isUndefined(value)
     logError("Tried notify about uninitialized value! interpreting as invalid")
     value = invalid
   end if
-
+  
   if m.isBindingNotificationEnabled and m.isContextValid
-    m.contextNode.bindingMessage = {"contextId":m.contextId, "fieldName":fieldName}
+    m.contextNode.bindingMessage = { "contextId": m.contextId, "fieldName": fieldName }
   else
     m.pendingObservers[fieldName] = 1
     '        logDebug("notifications disabled - adding to pending observers")
@@ -252,27 +256,27 @@ function MBO_bindField(fieldName, targetNode, targetField, properties = invalid)
   if not m.checkValidInputs(fieldName, targetNode, targetField)
     return false
   end if
-
+  
   if properties = invalid
     properties = MOM_createBindingProperties()
   end if
-
+  
   if not m.isContextValid
     logError("tried to bind a field when a context was not set. Be sure to use the mixin methods to configure bindings on your observable")
     return false
   end if
-
+  
   bindings = m.bindings[fieldName]
   if bindings = invalid
     bindings = {}
   end if
-
+  
   key = m.getNodeFieldBindingKey(targetNode, fieldName, targetField)
-
+  
   if bindings.doesExist(key)
     logWarn("Binding already existed for key")
     binding = bindings[key]
-    if binding.node.isSameNode(targetNode)
+    if binding.targetNode.isSameNode(targetNode)
       logWarn("is same node - ignoring")
       return true
     else
@@ -280,14 +284,20 @@ function MBO_bindField(fieldName, targetNode, targetField, properties = invalid)
       return false
     end if
   end if
-
-  bindings[key] = {"node": targetNode, "fieldName": fieldName, "targetField": targetField, "transformFunction": properties.transformFunction}
+  
+  bindings[key] = {
+    "node": targetNode, 
+    "fieldName": fieldName, 
+    "targetField": targetField, 
+    "transformFunction": properties.transformFunction 
+  }
+  
   m.bindings[fieldName] = bindings
-
+  
   if properties.isSettingInitialValue = true
     m.notifyBinding(fieldName, key)
   end if
-
+  
   return true
 end function
 
@@ -305,17 +315,17 @@ function MBO_unbindField(fieldName, targetNode, targetField) as boolean
   if not m.checkValidInputs(fieldName, targetNode, targetField)
     return false
   end if
-
+  
   if not m.isContextValid
     logError("tried to unbind a field when a context was not set. Be sure to use the mixin methods to configure bindings on your observable")
     return false
   end if
-
+  
   bindings = m.bindings[fieldName]
   if bindings = invalid
     bindings = {}
   end if
-
+  
   key = m.getNodeFieldBindingKey(targetNode, fieldName, targetField)
   if not bindings.doesExist(key)
     logError("tried to unbind unknown field/node/target field with id of", key)
@@ -345,7 +355,6 @@ function MBO_notifyBinding(fieldName, specificKey = invalid, excludeKey = invali
     return false
   end if
   value = m[fieldName]
-  value = m[fieldName]
   if MU_isUndefined(value)
     logError("Tried notify about uninitialized value! interpreting as invalid")
     value = invalid
@@ -362,7 +371,10 @@ function MBO_notifyBinding(fieldName, specificKey = invalid, excludeKey = invali
               bindingValue = value
             end if
             binding.node.setField(binding.targetField, bindingValue)
-            else
+            if binding.unBindOnCall = true
+              'unbind 
+            end if
+          else
             logError("target field did not exist for binding ", key)
           end if 
         else
@@ -380,3 +392,14 @@ function MBO_unbindAllFields() as void
   m.bindings = {}
 end function
 
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ support for node fields
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function MBO_bindNodeField(targetNode, nodeField, observableField, properties = invalid) as boolean
+  return MOM_bindNodeField(targetNode, nodeField, m, observableField, properties)
+end function
+
+function MBO_unbindNodeField(targetNode, nodeField, observableField) as boolean
+  return MOM_unbindNodeField(targetNode, nodeField, m, observableField)
+end function

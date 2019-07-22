@@ -27,13 +27,13 @@ function MVMM_createFocusMap(vm) as boolean
     logError("unknown vm type!")
   end if
 
-  m.focusMap = focusMap
+  m._focusMap = focusMap
   return success
 end function
 
 function MVMM_onFocusIdChange(focusId)
-  if focusId <> invalid and focusId <> ""
-    control = m.focusMap[focusId]
+  if focusId <> invalid and focusId <> "" m._focusMap <> invalid
+    control = m._focusMap[focusId]
     if control <> invalid
       setFocus(control)
     else

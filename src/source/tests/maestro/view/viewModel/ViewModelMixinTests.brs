@@ -49,7 +49,7 @@ end function
 function MVMMT_createFocusMap_valid_noIds()
   vm = MBVMT_createVM()
   m.assertFalse(VMM_createFocusMap(vm))
-  m.assertEmpty(m.node.focusMap)
+  m.assertEmpty(m.node._focusMap)
 end function
 
 '@Test valid - empty ids
@@ -57,7 +57,7 @@ function MVMMT_createFocusMap_valid_emptyIds()
   vm = MBVMT_createVM()
   vm.focusIds = []
   m.assertTrue(VMM_createFocusMap(vm))
-  m.assertEmpty(m.node.focusMap)
+  m.assertEmpty(m.node._focusMap)
 end function
 
 '@Test valid ids - no controls
@@ -69,7 +69,7 @@ function MVMMT_createFocusMap_valid_ids_noControls()
     "three"
   ]
   m.assertTrue(VMM_createFocusMap(vm))
-  m.assertEmpty(m.node.focusMap)
+  m.assertEmpty(m.node._focusMap)
 end function
 
 '@Test valid
@@ -84,7 +84,7 @@ function MVMMT_createFocusMap_valid()
     "three"
   ]
   m.assertTrue(VMM_createFocusMap(vm))
-  m.assertEqual(m.node.focusMap["one"], m.node.one)
-  m.assertEqual(m.node.focusMap["two"], m.node.two)
-  m.assertEqual(m.node.focusMap["three"], m.node.three)
+  m.assertEqual(m.node._focusMap["one"], m.node.one)
+  m.assertEqual(m.node._focusMap["two"], m.node.two)
+  m.assertEqual(m.node._focusMap["three"], m.node.three)
 end function

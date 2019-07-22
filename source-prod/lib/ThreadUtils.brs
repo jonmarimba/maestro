@@ -11,7 +11,7 @@
 '  */
 
 ' /**
-'  * @member waitPort
+'  * @member MTU_waitPort
 '  * @memberof module:ThreadUtils
 '  * @instance
 '  * @description port.wait is buggy and ruins breakpoint debugging, we therefore use this
@@ -21,7 +21,7 @@
 '  * @returns {roMessage} message, once retrieved
 '  * @param {boolean} forceOriginalImpl - if true will use the standard implementation
 '  */
-function waitPort(delay = 0, port = invalid, forceOriginalImpl = false)
+function MTU_waitPort(delay = 0, port = invalid, forceOriginalImpl = false)
   return wait(delay, port)
 end function
 
@@ -33,7 +33,7 @@ end function
 '  * @param {delay} delay in ms
 '  * @param {boolean} forceOriginalImpl - if true will use the standard implementation
 '  */
-function waitForMilliseconds(delay, forceOriginalImpl = false) as void
+function MTU_waitForMilliseconds(delay, forceOriginalImpl = false) as void
   port = CreateObject("roMessagePort")
   wait(delay, port)
 end function

@@ -1281,7 +1281,7 @@ Sub tracker()
 
     while True
         port = 0
-        msg = waitPort(0, inputPort, true)
+        msg = MTU_waitPort(0, inputPort, true)
         if type(msg) = "roInputEvent"
             if msg.IsInput()
                 info = msg.GetInfo()
@@ -1324,13 +1324,13 @@ Sub socketConnection(addr, messagePort, port, buffer, handlersMap, config) as St
     while True
 
         if not wasConnected then
-            event = waitPort(3000, messagePort, true)
+            event = MTU_waitPort(3000, messagePort, true)
             if event = Invalid then
                 tcpListen.close()
                 return "connection timeout"
             end if
         else
-            event = waitPort(config.commandTimeout, messagePort, true)
+            event = MTU_waitPort(config.commandTimeout, messagePort, true)
         end if
 
         ' Resets the screensaver timer

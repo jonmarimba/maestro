@@ -26,19 +26,19 @@ function MOM_observeField(observable, field, functionPointer, properties = inval
     logError("could not observe field - the observable failed to register")
     return false
   end if
-
-  if not isFunction(functionPointer)
+  
+  if not MU_isFunction(functionPointer)
     logError("the function pointer MUST be a function")
     return false
   end if
-
+  
   functionName = functionPointer.toStr().mid(10)
-
+  
   if not m._observableFunctionPointers.doesExist(functionName)
     m._observableFunctionPointerCounts[functionName] = 0
     m._observableFunctionPointers[functionName] = functionPointer
   end if
-  m._observableFunctionPointerCounts[functionName] = m._observableFunctionPointerCounts[functionName] +1
+  m._observableFunctionPointerCounts[functionName] = m._observableFunctionPointerCounts[functionName] + 1
   return observable.observeField(field, functionName, properties)
 end function
 
@@ -55,15 +55,15 @@ function MOM_unobserveField(observable, observableField, functionPointer) as boo
     logError("could not unobserve field - the observable has not been registered")
     return false
   end if
-
-  if not isFunction(functionPointer)
+  
+  if not MU_isFunction(functionPointer)
     logError("the function pointer MUST be a function")
     return false
   end if
   functionName = functionPointer.toStr().mid(10)
   if m._observableFunctionPointerCounts.doesExist(functionName)
     m._observableFunctionPointerCounts[functionName] = m._observableFunctionPointerCounts[functionName] - 1
-
+    
     if m._observableFunctionPointerCounts[functionName] = 0
       m._observableFunctionPointers.delete(functionName)
       m._observableFunctionPointerCounts.delete(functionName)
@@ -93,29 +93,29 @@ function MOM_bindNodeField(targetNode, nodeField, observable, observableField, p
     logError("could not bind node field - the observable failed to register")
     return false
   end if
-
+  
   if not MOM_checkValidInputs(nodeField, targetNode, nodeField)
     return false
   end if
-
+  
   if properties = invalid
     properties = MOM_createBindingProperties()
   end if
-
+  
   nodeKey = targetNode.id + "_" + nodeField
   nodeBindings = m._observableNodeBindings[nodeKey]
-
+  
   if nodeBindings = invalid
     targetNode.observeFieldScoped(nodeField, "MOM_bindingCallback")
     nodeBindings = {}
   end if
-
+  
   key = observable.getNodeFieldBindingKey(targetNode, nodeField, observableField)
-
+  
   if nodeBindings.doesExist(key)
     logWarn("NodeBinding already existed for key")
     binding = nodeBindings[key]
-    if binding.node.isSameNode(node)
+    if binding.targetNode.isSameNode(targetNode)
       logWarn("is same node - ignoring")
       return true
     else
@@ -123,9 +123,15 @@ function MOM_bindNodeField(targetNode, nodeField, observable, observableField, p
       return false
     end if
   end if
-
-  nodeBindings[key] = {"contextId": observable.contextId, "targetField": observableField, "transformFunction": properties.transformFunction}
-
+  
+  nodeBindings[key] = {
+    "contextId": observable.contextId
+    "targetNode": targetNode
+    "targetField": observableField
+    "transformFunction": properties.transformFunction
+    "unBindOnCall": properties.unBindOnCall = true
+  }
+  
   m._observableNodeBindings[nodeKey] = nodeBindings
   if properties.isSettingInitialValue = true
     if properties.transformFunction <> invalid
@@ -133,13 +139,16 @@ function MOM_bindNodeField(targetNode, nodeField, observable, observableField, p
     else
       value = targetNode[nodeField]
     end if
-    if isFunction(observable[observableField])
+    if MU_isFunction(observable[observableField])
       observable[observableField](value)
     else
       if not observable.doesExist(observableField)
         logWarn(observableField, "was not present on observable when setting initial value for node key", nodeKey)
       end if
       observable.setField(observableField, value)
+    end if
+    if properties.unBindOnCall = true
+      'NOTE - initial value unbind is not supported
     end if
   end if
   return true
@@ -159,28 +168,28 @@ function MOM_unbindNodeField(targetNode, nodeField, observable, observableField)
   if not MOM_checkValidInputs(observableField, targetNode, nodeField)
     return false
   end if
-
+  
   nodeKey = targetNode.id + "_" + nodeField
   nodeBindings = m._observableNodeBindings[nodeKey]
   if nodeBindings = invalid
     nodeBindings = {}
   end if
-
+  
   key = observable.getNodeFieldBindingKey(targetNode, nodeField, observableField)
   bindings = nodeBindings[key]
-
+  
   if bindings <> invalid
     nodeBindings.delete(key)
   end if
-
+  
   if nodeBindings.count() = 0
     targetNode.unobserveFieldScoped(nodeField)
     m._observableNodeBindings.delete(nodeKey)
   else
     m._observableNodeBindings[nodeKey] = nodeBindings
-
+    
   end if
-
+  
   return true
 end function
 
@@ -201,21 +210,21 @@ function MOM_registerObservable(observable) as boolean
     logError("the passed in object is not an Observable subclass")
     return false
   end if
-
+  
   if observable.doesExist("contextId") and m._observables <> invalid and m._observables.doesExist(observable.contextId)
     'we don't need to reregister this observable
     'TODO - check if it's the same observable; but that will require
     'enforcing ids or internal guids..
     return true
   end if
-
+  
   logVerbose("this observable has never been registered - creating a new context id")
   if m._observableContextId = invalid
     m["_observableContextId"] = -1
   end if
   m._observableContextId++
   contextId = str(m._observableContextId).trim()
-
+  
   if m._observables = invalid
     m._observables = {}
     m._observableFunctionPointers = {}
@@ -225,7 +234,7 @@ function MOM_registerObservable(observable) as boolean
     m._observableContext.addField("bindingMessage", "assocarray", true)
     m._observableContext.observeField("bindingMessage", "MOM_observerCallback")
   end if
-
+  
   registeredObservable = m._observables[contextId]
   if registeredObservable = invalid
     m._observables[contextId] = observable
@@ -249,7 +258,7 @@ function MOM_unregisterObservable(observable) as boolean
     logError("passed in node did not contain a context Id")
     return false
   end if
-
+  
   if m._observables = invalid
     m._observables = {}
   end if
@@ -302,6 +311,7 @@ function MOM_unbindObservableField(observable, observableField, targetNode, node
   end if
   return false
 end function
+
 ' /**
 '  * @member MOM_cleanup
 '  * @memberof module:ObservableMixin
@@ -342,7 +352,7 @@ end function
 '  */
 function MOM_bindFieldTwoWay(observable, observableField, targetNode, nodeField, properties = invalid) as void
   MOM_bindObservableField(observable, observableField, targetNode, nodeField, invalid)
-  MOM_bindNodeField(targetNode, nodeField, observable, observableField, {isSettingInitialValue: false})
+  MOM_bindNodeField(targetNode, nodeField, observable, observableField, { isSettingInitialValue: false })
 end function
 
 ' /**
@@ -383,12 +393,12 @@ function MOM_bindingCallback(event) as void
     logError("Binding callback invoked when no node bindings were registered")
     return
   end if
-
+  
   if m._observables = invalid
     logError("Observer callback invoked when no node observables were registered")
     return
   end if
-
+  
   nodeKey = event.getNode() + "_" + event.getField()
   nodeBindings = m._observableNodeBindings[nodeKey]
   value = event.getData()
@@ -401,13 +411,16 @@ function MOM_bindingCallback(event) as void
       else
         bindingValue = value
       end if
-      if isFunction(observable[bindingData.targetField])
+      if MU_isFunction(observable[bindingData.targetField])
         observable[bindingData.targetField](bindingValue)
       else
         if not observable.doesExist(bindingData.targetField)
           logWarn(bindingData.targetField, "was not present on observable when setting value for nodeKey", nodeKey)
         end if
         observable.setField(bindingData.targetField, bindingValue, key)
+      end if
+      if bindingData.unBindOnCall = true
+        MOM_unbindNodeField(bindingData.targetNode, event.getField(), observable, observable[bindingData.targetField]) 
       end if
     else
       logError("could not find observable with context id ", contextId)
@@ -428,8 +441,8 @@ function MOM_observerCallback(event) as void
     logError("Observer callback invoked when no node observables were registered")
     return
   end if
-
-  data =  event.getData()
+  
+  data = event.getData()
   observable = m._observables[data.contextId]
   observers = observable.observers[data.fieldName]
   if observers <> invalid
@@ -467,27 +480,27 @@ function MOM_checkValidInputs(observableField, targetNode, nodeField) as boolean
     logError("illegal observableField", observableField)
     return false
   end if
-
+  
   if not MU_isString(nodeField) or nodeField.trim() = ""
     logError("illegal field", nodeField)
     return false
   end if
-
+  
   if type(targetNode) <> "roSGNode"
     logError("illegal node")
     return false
   end if
-
+  
   if not targetNode.doesExist(nodeField)
     logError("nodeField doesn't exist", nodeField)
     return false
   end if
-
+  
   if targetNode.id.trim() = ""
     logError("target node has no id - an id is required for node observing", observableField, nodeField)
     return false
   end if
-
+  
   return true
 end function
 
@@ -496,12 +509,12 @@ function MOM_isObservable(observable) as boolean
     logError("non aa object passed in")
     return false
   end if
-
+  
   if not observable.doesExist("__observableObject")
     logError("the passed in object is not an Observable subclass")
     return false
   end if
-
+  
   return true
 end function
 
@@ -516,17 +529,19 @@ end function
 '  * @description creates properties for using in bindings
 '  * @param {boolean} settingInitialValue - if true, field will be set on binding call
 '  * @param {function} transformFunction - pointer to function to call to modify this value when executing the binding
+'  * @param {boolean} unbindOnCall - if true, then the binding is removed as soon as as it is invoked
 '  * @returns {assocarray} binding properties, set with relevant default values
 '  */
-function MOM_createBindingProperties(settingInitialValue = true, transformFunction = invalid)
-  if transformFunction <> invalid and not isFunction(transformFunction)
+function MOM_createBindingProperties(settingInitialValue = true, transformFunction = invalid, unBindOnCall = false)
+  if transformFunction <> invalid and not MU_isFunction(transformFunction)
     logError("transformFunction was not a function! was it in scope?")
     transformFunction = invalid
   end if
-
+  
   return {
     "isSettingInitialValue": settingInitialValue
     "transformFunction": transformFunction
+    "unBindOnCall": unBindOnCall
   }
 end function
 
@@ -535,7 +550,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function MOM_transform_invertBoolean(value)
-  if  MU_isBoolean(value)
+  if MU_isBoolean(value)
     return not value
   else
     logError("binding was marked as inverse boolean; but value was not boolean")
