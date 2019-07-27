@@ -23,3 +23,7 @@ end function
 function MU_isFunction(value)
   return type(value) = "Function" or type(value) = "roFunction"
 end function
+
+function MU_isInteger(value)
+  return type(value) <> "<uninitialized>" and GetInterface(value, "ifInt") <> invalid and (Type(value) = "roInt" or Type(value) = "roInteger" or Type(value) = "Integer")
+end function
