@@ -1,7 +1,6 @@
 import { series } from "gulp";
 import { BurpConfig, BurpProcessor } from "burp-brightscript";
 import { RooibosProcessor } from "rooibos-preprocessor";
-import { MaestroProjectProcessor, createMaestroConfig } from 'maestro-cli';
 
 const gulp = require('gulp');
 const path = require('path');
@@ -85,11 +84,7 @@ export function addDevLogs(cb) {
     "globPattern": "**/*.brs",
     "replacements": [
       {
-        "regex": "(^.*(logInfo|logError|logVerbose|logDebug)\\((\\s*\"))",
-        "replacement": "$1#FullPath# "
-      },
-      {
-        "regex": "(^.*(logMethod)\\((\\s*\"))",
+        "regex": "(^(.*)(logMethod|logInfo|logError|logVerbose|logDebug)\\((\\s*\"))",
         "replacement": "$1#FullPath# "
       }
     ]
@@ -108,31 +103,8 @@ export function doc(cb) {
   return task;
 }
 
-function copyToSamples(cb) {
-
-}
-
-async function compile(cb) {
-  let config = createMaestroConfig({
-    "filePattern": [
-      "**/*.bs",
-      "**/*.brs",
-      "**/*.xml",
-    ],
-    "sourcePath": "framework",
-    "outputPath": "build",
-    "logLevel": 4
-  });
-  let processor = new MaestroProjectProcessor(config);
-  await processor.processFiles();
-}
-
-function bundle(cb) {
-
-}
-
-exports.build = series(clean, createDirectories, compile);
+exports.build = series(clean, createDirectories);
 exports.prePublishTests = series(exports.build, prepareTests, addDevLogs)
 exports.runTests = series(exports.prePublishTests, zipTests, deployTests)
 exports.prePublish = series(exports.build, prepare, addDevLogs)
-exports.dist = series(exports.build, bundle, doc, copyToSamples);
+exports.dist = series(exports.build, doc);

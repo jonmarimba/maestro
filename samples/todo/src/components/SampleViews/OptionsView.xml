@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="OptionsView" extends="BaseScreen" 
+	>
+	<interface>
+	</interface>
+	<script type="text/brightscript" uri="OptionsView.brs" />
+
+	<children>
+		<Label text="Options view" />
+	</children>
+
+</component>
