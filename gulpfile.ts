@@ -112,16 +112,20 @@ function copyToSamples(cb) {
 
 }
 
-async function compile(cb) {
+async function compileFramework(cb) {
   let config = createMaestroConfig({
     "filePattern": [
       "**/*.bs",
       "**/*.brs",
       "**/*.xml",
     ],
-    "sourcePath": "framework",
+    "sourcePath": "framework/src",
     "outputPath": "build",
-    "logLevel": 4
+    "logLevel": 4,
+    "nonCheckedImports": ['source/rLog/rLogMixin.brs',
+      'source/tests/rooibosDist.brs',
+      'source/tests/rooibosFunctionMap.brs'
+    ]
   });
   let processor = new MaestroProjectProcessor(config);
   await processor.processFiles();
@@ -131,8 +135,9 @@ function bundle(cb) {
 
 }
 
-exports.build = series(clean, createDirectories, compile);
+exports.build = series(clean, createDirectories, compileFramework);
 exports.prePublishTests = series(exports.build, prepareTests, addDevLogs)
 exports.runTests = series(exports.prePublishTests, zipTests, deployTests)
 exports.prePublish = series(exports.build, prepare, addDevLogs)
-exports.dist = series(exports.build, bundle, doc, copyToSamples);
+exports.compile = series(exports.build, copyToSamples);
+exports.dist = series(compileFramework, bundle, doc);

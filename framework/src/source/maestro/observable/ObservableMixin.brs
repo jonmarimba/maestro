@@ -1,4 +1,8 @@
 '@Namespace MOM ObservableMixin
+' import "BaseObservable.bs"
+' import "../lib/Utils.bs"
+' import "pkg:/source/maestro/observable/ObservableMixin.brs"
+
 '@Import rLogMixin
 '@Import Utils
 

@@ -1,6 +1,8 @@
 '@SGNode ObservableTests
 '@TestSuite [MOT] Observable Tests
 'Integration testing for our mixin and BaseObservables
+' import "pkg:/source/maestro/observable/BaseObservable.brs"
+' import "pkg:/source/maestro/observable/ObservableMixin.brs"
 
 function init()
   registerLogger("ObservableTests")
