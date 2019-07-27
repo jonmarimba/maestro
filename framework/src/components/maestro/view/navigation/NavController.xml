@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="NavController" extends="BaseAggregateView">
-  <script type="text/brightscript" uri="NavController.brs" />
 
   <interface>
     <field id="numberOfViews" type="integer" alwaysNotify="true"/>

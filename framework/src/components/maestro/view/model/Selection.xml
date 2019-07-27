@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="Selection" extends="ContentNode" >
-  <script	type="text/brightscript"  uri="selection.brs" />
-  <script type="text/brightscript" uri="pkg:/source/rLog/rLogMixin.brs" />
 
   <interface>
     <!-- Describes the current playback selection. It is possible that playback for a group of items 

@@ -1,8 +1,14 @@
 '@SGNode ObservableTests
 '@TestSuite [MOT] Observable Tests
 'Integration testing for our mixin and BaseObservables
-' import "pkg:/source/maestro/observable/BaseObservable.brs"
-' import "pkg:/source/maestro/observable/ObservableMixin.brs"
+  
+import "pkg:/source/rLog/rLogMixin.brs"
+import "pkg:/source/tests/rooibosDist.brs"
+import "pkg:/source/tests/rooibosFunctionMap.brs"
+import "pkg:/source/maestro/lib/Utils.brs"
+
+import "pkg:/source/maestro/observable/BaseObservable.brs"
+import "pkg:/source/maestro/observable/ObservableMixin.brs"
 
 namespace MOT
 

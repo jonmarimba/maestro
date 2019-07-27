@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="TabController" extends="BaseAggregateView">
-    <script type="text/brightscript" uri="TabController.brs" />
-
     <interface>
         <!-- nav item of the currently displayed view -->
         <field id="currentItem" type="node"/>

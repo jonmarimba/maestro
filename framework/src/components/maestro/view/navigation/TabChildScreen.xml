@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="TabChildScreen" extends="BaseScreen">
-  <script type="text/brightscript" uri="TabChildScreen.brs" />
 
   <interface>
     <!-- INPUTS -->

@@ -11,8 +11,6 @@
     </interface>
 
     <!-- Utils -->
-    <script type="text/brightscript" uri="NavItemMenu.brs" />
-    <script type="text/brightscript" uri="pkg:/source/rLog/rLogMixin.brs" />
     <children>
         <LayoutGroup id="container" 
             layoutDirection="horizontal" 

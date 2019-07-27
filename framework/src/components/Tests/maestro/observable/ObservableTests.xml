@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="ObservableTests" extends="Group">
   <script type="text/brightscript" uri="pkg:/source/tests/maestro/observable/ObservableTests.bs"/>
-  
-  <script type="text/brightscript" uri="pkg:/source/rLog/rLogMixin.brs" />
-  <script type="text/brightscript" uri="pkg:/source/tests/rooibosDist.brs" />
-  <script type="text/brightscript" uri="pkg:/source/tests/rooibosFunctionMap.brs" />
-  <script type="text/brightscript" uri="pkg:/source/maestro/lib/Utils.brs" />
-
   <interface>
     <function name="Rooibos_RunNodeTests" />
   </interface>
