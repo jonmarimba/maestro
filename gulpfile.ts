@@ -22,8 +22,8 @@ let args = {
   //   '!src/components/Tests/**/*',
   //   '!src/source/tests/**/*'
   // ],
-  files: ['src/**/*'],
-  outDir: './build',
+  files: ['build/**/*'],
+  outDir: './out',
   retainStagingFolder: true
 };
 
@@ -33,22 +33,20 @@ function setEnvTest(args) {
 
 export function clean() {
   console.log('Doing a clean at ' + outDir);
-  return gulp.src(outDir, { allowEmpty: true }).pipe(gulpClean({ force: true }));
+  return gulp.src(['out', 'build'], { allowEmpty: true }).pipe(gulpClean({ force: true }));
 }
 
 export function createDirectories() {
   return gulp.src('*.*', { read: false })
-    .pipe(gulp.dest(outDir));
+    .pipe(gulp.dest('./build'))
+    .pipe(gulp.dest('./out'));
 }
 
 /**
  * This target is used for CI
  */
 export async function prepareTests(cb) {
-  setEnvTest(args);
-  console.log(args)
-  await rokuDeploy.prepublishToStaging(args);
-  let processor = new RooibosProcessor('build/.roku-deploy-staging/source/tests', 'build/.roku-deploy-staging', 'build/.roku-deploy-staging/source/tests');
+  let processor = new RooibosProcessor('build/source/tests', 'build', 'build/source/tests');
   processor.processFiles();
 
   cb();
