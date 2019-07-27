@@ -7,14 +7,7 @@
 >
 	<interface>
 	</interface>
-	<script type="text/brightscript" uri="HomeView.brs" />
-    <script type="text/brightscript" uri="pkg:/source/rLog/rLogMixin.brs" />
-  <script type="text/brightscript" uri="pkg:/source/maestro/lib/Utils.brs" />
-  <script type="text/brightscript" uri="pkg:/source/maestro/view/viewModel/BaseViewModel.brs" />
-  <script type="text/brightscript" uri="pkg:/source/maestro/observable/BaseObservable.brs" />
-  <script type="text/brightscript" uri="pkg:/source/maestro/observable/ObservableMixin.brs" />
-  <script type="text/brightscript" uri="pkg:/source/maestro/view/viewModel/ViewModelMixin.brs" />
-	<script type="text/brightscript" uri="pkg:/source/viewModel/TodoScreenVM.brs" />
+
 	<children>
     
 		<LayoutGroup>

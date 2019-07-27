@@ -3,7 +3,6 @@
 	>
 	<interface>
 	</interface>
-	<script type="text/brightscript" uri="GridView.brs" />
 
 	<children>
 		<Label text="Grid view" />

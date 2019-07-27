@@ -7,8 +7,6 @@
         <field id="rLog" type="node" />
         <field id="mainView" type="node" />
     </interface>
-    <script type="text/brightscript" uri="MainScene.brs" />
-    <script type="text/brightscript" uri="pkg:/source/rLog/rLogMixin.brs" />
     <children>
 
     </children>

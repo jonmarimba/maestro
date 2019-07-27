@@ -6,8 +6,6 @@
 		<field id="isFocusedOnContent" type="boolean" value="false" onChange="onIsFocusedOnContentChange" />
 	</interface>
 
-	<script type="text/brightscript" uri="MainView.brs"  />
-
 	<children>
 		<!-- Main Menu -->
 		<LayoutGroup id="topNav" 

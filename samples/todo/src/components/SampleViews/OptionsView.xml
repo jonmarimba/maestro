@@ -3,7 +3,6 @@
 	>
 	<interface>
 	</interface>
-	<script type="text/brightscript" uri="OptionsView.brs" />
 
 	<children>
 		<Label text="Options view" />

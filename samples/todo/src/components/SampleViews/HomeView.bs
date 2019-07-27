@@ -1,3 +1,9 @@
+import "HomeView.brs"
+import "pkg:/source/rLog/rLogMixin.brs"
+import "pkg:/source/maestro/observable/ObservableMixin.brs"
+import "pkg:/source/maestro/view/viewModel/ViewModelMixin.brs"
+import "pkg:/source/viewModel/TodoScreenVM.brs"
+
 function Init()
   registerLogger("HomeView")
   findNodes(["titleLabel", "itemList", "addButton", "removeButton"])
