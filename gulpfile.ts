@@ -2,11 +2,10 @@ import { series } from "gulp";
 import { BurpConfig, BurpProcessor } from "burp-brightscript";
 import { RooibosProcessor } from "rooibos-preprocessor";
 import { MaestroProjectProcessor, createMaestroConfig } from 'maestro-cli';
+import * as fs from 'fs-extra';
 
 const gulp = require('gulp');
-const path = require('path');
 const gulpClean = require('gulp-clean');
-const pkg = require('./package.json');
 const outDir = './build';
 const rokuDeploy = require('roku-deploy');
 const cp = require('child_process');
@@ -15,14 +14,8 @@ let args = {
   host: process.env.ROKU_HOST || '192.168.16.3',
   username: process.env.ROKU_USER || 'rokudev',
   password: process.env.ROKU_PASSWORD || 'aaaa',
-  rootDir: './',
-  // annoying bug stops these working right
-  // files: [
-  //   'src/**/*',
-  //   '!src/components/Tests/**/*',
-  //   '!src/source/tests/**/*'
-  // ],
-  files: ['build/**/*'],
+  rootDir: './build',
+  files: ['**/*'],
   outDir: './out',
   retainStagingFolder: true
 };
@@ -62,20 +55,6 @@ export async function zipTests(cb) {
   await rokuDeploy.zipPackage(args);
 }
 
-export async function prepare(cb) {
-  console.log(args);
-  await rokuDeploy.prepublishToStaging(args);
-  //annoying issue makes me delete these folders, coz I can't just filter them
-  //:/
-  gulp.src("build/.roku-deploy-staging/components/Tests", { allowEmpty: true }).pipe(gulpClean({ force: true }));
-  gulp.src("build/.roku-deploy-staging/source/tests", { allowEmpty: true }).pipe(gulpClean({ force: true }));
-
-}
-
-export async function zip(cb) {
-  await rokuDeploy.zipPackage(args);
-}
-
 export function addDevLogs(cb) {
   let config: BurpConfig = {
     "sourcePath": "build",
@@ -96,20 +75,12 @@ export function addDevLogs(cb) {
   cb();
 }
 
-export async function deploy(cb) {
-  await rokuDeploy.publish(args);
-}
-
 export function doc(cb) {
   let task = cp.exec('./node_modules/.bin/jsdoc -c jsdoc.json -t node_modules/minami -d docs');
   return task;
 }
 
-function copyToSamples(cb) {
-
-}
-
-async function compileFramework(cb) {
+async function compile(cb) {
   let config = createMaestroConfig({
     "filePattern": [
       "**/*.bs",
@@ -126,15 +97,23 @@ async function compileFramework(cb) {
   });
   let processor = new MaestroProjectProcessor(config);
   await processor.processFiles();
+  cb();
 }
 
 function bundle(cb) {
-
+  fs.removeSync('dist');
+  fs.mkdirSync('dist');
+  fs.mkdirSync('dist/source');
+  fs.mkdirSync('dist/components');
+  fs.copySync('build/source/maestro', 'dist/source/maestro');
+  fs.copySync('build/components/maestro', 'dist/components/maestro');
+  fs.copySync('build/source/rLog', 'dist/source/rLog');
+  fs.copySync('build/components/rLogComponents', 'dist/components/rLogComponents');
+  cb();
 }
 
-exports.build = series(clean, createDirectories, compileFramework);
+exports.build = series(clean, createDirectories, compile);
 exports.prePublishTests = series(exports.build, prepareTests, addDevLogs)
 exports.runTests = series(exports.prePublishTests, zipTests, deployTests)
-exports.prePublish = series(exports.build, prepare, addDevLogs)
-exports.compile = series(exports.build, copyToSamples);
-exports.dist = series(compileFramework, bundle, doc);
+// exports.dist = series(exports.build, doc, bundle);
+exports.dist = series(bundle);

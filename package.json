@@ -7,6 +7,7 @@
     "doc": "docs"
   },
   "dependencies": {
+    "fs-extra": "^5.0.0",
     "gulp-header": "^2.0.7",
     "maestro-cli": "file:../maestro-cli",
     "roku-deploy": "^2.0.0",
@@ -16,6 +17,7 @@
     "burp-brightscript": "^0.3.2",
     "del": "^3.0.0",
     "docdash": "^0.4.0",
+    "@types/fs-extra": "^8.0.0",
     "gulp": "^4.0.1",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
