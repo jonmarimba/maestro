@@ -1,37 +1,21 @@
-'@Namespace BVM BaseViewModel
-'@Import rLogMixin
-'@Import Utils
-'@Import BaseObservable
+import "../../observable/BaseObservable.bs"
 
-function BaseViewModel(subClass)
-  this = BaseObservable()
-  this.append({
-    __viewModel: true
-    state: "none"
-    focusId: invalid
-    
-    'public
-    initialize: MBVM_initialize
-    destroy: MBVM_destroy
-    onShow: MBVM_onShow
-    onHide: MBVM_onHide
-    onKeyEvent: MBVM_onKeyEvent
-  })
-  
-  if MU_isAACompatible(subClass) and subClass.name <> invalid and subClass.name <> ""
-    this.append(subClass)
-    registerlogger(subClass.name, true, this)
-  else
-    this.state = "invalid"
-  end if
-  return this
+namespace MBVM
+class BaseViewModel extends BaseObserbale
+
+public function new()
 end function
+
+public state = "none"
+public focusId = invalid
+
+private _viewModel = true
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ public API
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function MBVM_initialize()
+public function initialize()
   m.logMethod("initialize")
   if MU_isFunction(m._initialize)
     m._initialize()
@@ -39,7 +23,7 @@ function MBVM_initialize()
   m.state = "initialized"
 end function
 
-function MBVM_destroy()
+public function destroy()
   m.logMethod("destroy")
   if MU_isFunction(m._destroy)
     m._destroy()
@@ -47,14 +31,14 @@ function MBVM_destroy()
   m.state = "destroyed"
 end function
 
-function MBVM_onShow()
+public function onShow()
   m.logMethod("onShow")
   if MU_isFunction(m._onShow)
     m._onShow()
   end if
 end function
 
-function MBVM_onHide()
+public function onHide()
   m.logMethod("onHide")
   if MU_isFunction(m._onHide)
     m._onHide()
@@ -65,7 +49,7 @@ end function
 '++ KEY HANDLING
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function MBVM_onKeyEvent(key as string, press as boolean) as boolean
+public function onKeyEvent(key as string, press as boolean) as boolean
   result = false
   if press
     if MU_isFunction(m._isAnyKeyPressLocked) and m._isAnyKeyPressLocked()
@@ -103,3 +87,6 @@ function MBVM_onKeyEvent(key as string, press as boolean) as boolean
   
   return result
 end function
+
+end class
+end namespace
