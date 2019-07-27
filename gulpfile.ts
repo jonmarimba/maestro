@@ -78,16 +78,15 @@ export async function zip(cb) {
 
 export function addDevLogs(cb) {
   let config: BurpConfig = {
-    "sourcePath": "build/.roku-deploy-staging",
-    // "sourcePath": "build/wtf",
+    "sourcePath": "build",
     "globPattern": "**/*.brs",
     "replacements": [
       {
-        "regex": "(^.*(logInfo|logError|logVerbose|logDebug)\\((\\s*\"))",
+        "regex": "(^.*(m\\.)*(logInfo|logError|logVerbose|logDebug)\\((\\s*\"))",
         "replacement": "$1#FullPath# "
       },
       {
-        "regex": "(^.*(logMethod)\\((\\s*\"))",
+        "regex": "(^.*(m\\.)*(logMethod)\\((\\s*\"))",
         "replacement": "$1#FullPath# "
       }
     ]
