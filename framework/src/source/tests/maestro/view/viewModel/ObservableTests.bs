@@ -4,12 +4,14 @@
 ' import "pkg:/source/maestro/observable/BaseObservable.brs"
 ' import "pkg:/source/maestro/observable/ObservableMixin.brs"
 
+namespace MOT
+
 function init()
   registerLogger("ObservableTests")
 end function
 
 '@BeforeEach
-function MOT_BeforeEach()
+function BeforeEach()
   logInfo("beforeEach")
   m.node.delete("_observerCallbackValue1")
   m.node.delete("_observerCallbackValue2")
@@ -17,11 +19,11 @@ function MOT_BeforeEach()
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'@It tests MOT_ObserverCallback
+'@It tests ObserverCallback
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test no observer
-function MOT_ObserverCallback_noObserver()
+function ObserverCallback_noObserver()
   event = {}
   m.expectNone(event, "getData")
 
@@ -32,11 +34,11 @@ function MOT_ObserverCallback_noObserver()
 end function
 
 '@Test observer is set
-function MOT_ObserverCallback_registered()
+function ObserverCallback_registered()
   o1 = BaseObservable()
   o1.id = "o1"
 
-  MOM_observeField(o1, "f1", MOT_callbackTarget1)
+  MOM_observeField(o1, "f1", callbackTarget1)
 
   o1.setField("f1", true)
 
@@ -45,7 +47,7 @@ function MOT_ObserverCallback_registered()
 end function
 
 '@Test multiple fields
-function MOT_ObserverCallback_multipleFields()
+function ObserverCallback_multipleFields()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = false
@@ -54,8 +56,8 @@ function MOT_ObserverCallback_multipleFields()
   m.assertInvalid(m.node._observerCallbackValue1)
   m.assertInvalid(m.node._observerCallbackValue2)
 
-  MOM_observeField(o1, "f1", MOT_callbackTarget1)
-  MOM_observeField(o1, "f2", MOT_callbackTarget2)
+  MOM_observeField(o1, "f1", callbackTarget1)
+  MOM_observeField(o1, "f2", callbackTarget2)
 
   m.assertFalse(m.node._observerCallbackValue1, "observeField should set value by default")
   m.assertFalse(m.node._observerCallbackValue2, "observeField should set value by default")
@@ -83,13 +85,13 @@ function MOT_ObserverCallback_multipleFields()
 end function
 
 '@Test observer inverse boolean
-function MOT_ObserverCallback_inverseBoolean()
+function ObserverCallback_inverseBoolean()
   properties = MOM_createBindingProperties(true, MOM_transform_invertBoolean)
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = false
 
-  MOM_observeField(o1, "f1", MOT_callbackTarget1, properties)
+  MOM_observeField(o1, "f1", callbackTarget1, properties)
 
   m.assertTrue(m.node._observerCallbackValue1)
   o1.setField("f1", true)
@@ -103,7 +105,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test not registered
-function MOT_BindingCallback_notRegistered()
+function BindingCallback_notRegistered()
   event = {}
   m.expectNone(event, "getData")
 
@@ -111,7 +113,7 @@ function MOT_BindingCallback_notRegistered()
 end function
 
 '@Test no bound observable fields
-function MOT_BindingCallback_noBoundFields_registerd()
+function BindingCallback_noBoundFields_registerd()
   o1 = BaseObservable()
   o1.id = "o1"
   MOM_registerObservable(o1)
@@ -125,7 +127,7 @@ function MOT_BindingCallback_noBoundFields_registerd()
 end function
 
 '@Test one field
-function MOT_BindingCallback_oneField()
+function BindingCallback_oneField()
   o1 = BaseObservable()
   o1.id = "o1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -139,7 +141,7 @@ function MOT_BindingCallback_oneField()
 end function
 
 '@Test multiple different fields
-function MOT_BindingCallback_multipleFields()
+function BindingCallback_multipleFields()
   o1 = BaseObservable()
   o1.id = "o1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -175,7 +177,7 @@ function MOT_BindingCallback_multipleFields()
 end function
 
 '@Test multiple nodes
-function MOT_BindingCallback_multipleNodes()
+function BindingCallback_multipleNodes()
   o1 = BaseObservable()
   o1.id = "o1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -221,7 +223,7 @@ function MOT_BindingCallback_multipleNodes()
 end function
 
 '@Test multiple observables
-function MOT_BindingCallback_multipleObservables()
+function BindingCallback_multipleObservables()
   o1 = BaseObservable()
   o1.id = "o1"
   o2 = BaseObservable()
@@ -258,10 +260,10 @@ function MOT_BindingCallback_multipleObservables()
 end function
 
 '@Test one function
-function MOT_BindingCallback_oneFunction()
+function BindingCallback_oneFunction()
   o1 = BaseObservable()
   o1.id = "o1"
-  o1.f1 = MOT_callbackTarget1
+  o1.f1 = callbackTarget1
   n1 = createObject("roSGNode", "ContentNode")
   n1.id = "n1"
   n1.title = "title"
@@ -275,10 +277,10 @@ function MOT_BindingCallback_oneFunction()
 end function
 
 '@Test one function 100 times to time
-function MOT_BindingCallback_oneFunction_100times()
+function BindingCallback_oneFunction_100times()
   o1 = BaseObservable()
   o1.id = "o1"
-  o1.f1 = MOT_callbackTarget1
+  o1.f1 = callbackTarget1
   n1 = createObject("roSGNode", "ContentNode")
   n1.id = "n1"
 
@@ -290,7 +292,7 @@ function MOT_BindingCallback_oneFunction_100times()
 end function
 
 '@Test one field 100 times
-function MOT_BindingCallback_oneField_100()
+function BindingCallback_oneField_100()
   o1 = BaseObservable()
   o1.id = "o1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -309,21 +311,21 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test invalid observable
-function MOT_bindObservableField_invalidObservable()
+function bindObservableField_invalidObservable()
   n1 = createObject("roSGNode", "ContentNode")
   n1.id = "n1"
   MOM_bindObservableField(invalid, "f1", n1, "title")
 end function
 
 '@Test valid observable, invalid data
-function MOT_bindObservableField_invalidFields()
+function bindObservableField_invalidFields()
   o1 = BaseObservable()
   o1.id = "o1"
   m.assertFalse(MOM_bindObservableField(o1, invalid, invalid, invalid))
 end function
 
 '@Test valid observable, one field
-function MOT_bindObservableField_oneField_oneNode()
+function bindObservableField_oneField_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = "title"
@@ -340,7 +342,7 @@ function MOT_bindObservableField_oneField_oneNode()
 end function
 
 '@Test valid observable, one field multi nodes
-function MOT_bindObservableField_oneField_twoNodes()
+function bindObservableField_oneField_twoNodes()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = "title"
@@ -362,7 +364,7 @@ function MOT_bindObservableField_oneField_twoNodes()
 end function
 
 '@Test valid observable, multi fields multi nodes
-function MOT_bindObservableField_multiField_twoNodes()
+function bindObservableField_multiField_twoNodes()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = "title"
@@ -393,7 +395,7 @@ function MOT_bindObservableField_multiField_twoNodes()
 end function
 
 '@Test multi node multi field - measure timing only - no asserts
-function MOT_bindObservableField_multiField_twoNodes_measure()
+function bindObservableField_multiField_twoNodes_measure()
   o1 = BaseObservable()
   o1.id = "o1"
 
@@ -413,7 +415,7 @@ function MOT_bindObservableField_multiField_twoNodes_measure()
 end function
 
 '@Test multi node multi field 100 times - to measure
-function MOT_bindObservableField_multiField_twoNodes_measure_100times()
+function bindObservableField_multiField_twoNodes_measure_100times()
   o1 = BaseObservable()
   o1.id = "o1"
 
@@ -435,7 +437,7 @@ function MOT_bindObservableField_multiField_twoNodes_measure_100times()
 end function
 
 '@Test compare with setField observed 100 times -
-function MOT_bindObservableField_multiField_twoNodes_measure_100times_compareWithSetField()
+function bindObservableField_multiField_twoNodes_measure_100times_compareWithSetField()
   o1 = BaseObservable()
   o1.id = "o1"
 
@@ -449,8 +451,8 @@ function MOT_bindObservableField_multiField_twoNodes_measure_100times_compareWit
   MOM_bindObservableField(o1, "f1", n2, "NumEpisodes")
   MOM_bindObservableField(o1, "f2", n1, "UserStarRating")
   MOM_bindObservableField(o1, "f2", n2, "UserStarRating")
-  n1.observeField("UserStarRating", "MOT_callbackTarget1")
-  n2.observeField("UserStarRating", "MOT_callbackTarget1")
+  n1.observeField("UserStarRating", "callbackTarget1")
+  n2.observeField("UserStarRating", "callbackTarget1")
 
   for i = 0 to 100
     n1.UserStarRating = i
@@ -463,7 +465,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test valid observable, multiple fields
-function MOT_bindFieldTwoWay_multipleFields_oneNode()
+function bindFieldTwoWay_multipleFields_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = "title"
@@ -491,7 +493,7 @@ function MOT_bindFieldTwoWay_multipleFields_oneNode()
 end function
 
 '@Test valid observable, one field
-function MOT_bindFieldTwoWay_oneField_oneNode()
+function bindFieldTwoWay_oneField_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = "title"
@@ -512,7 +514,7 @@ function MOT_bindFieldTwoWay_oneField_oneNode()
 end function
 
 '@Test valid observable, one field
-function MOT_bindFieldTwoWay_multipleNodeFields_oneNode()
+function bindFieldTwoWay_multipleNodeFields_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = "title"
@@ -548,7 +550,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test valid observable, multiple fields
-function MOT_unbindFieldTwoWay_multipleFields_oneNode()
+function unbindFieldTwoWay_multipleFields_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = "title"
@@ -576,7 +578,7 @@ function MOT_unbindFieldTwoWay_multipleFields_oneNode()
 end function
 
 '@Test valid observable, one field
-function MOT_unbindFieldTwoWay_oneField_oneNode()
+function unbindFieldTwoWay_oneField_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = "title"
@@ -604,7 +606,7 @@ function MOT_unbindFieldTwoWay_oneField_oneNode()
 end function
 
 '@Test valid observable, one field
-function MOT_unbindFieldTwoWay_multipleNodeFields_oneNode()
+function unbindFieldTwoWay_multipleNodeFields_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"
   o1.f1 = "title"
@@ -652,10 +654,12 @@ end function
 '++ callback functions for observer testing
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function MOT_callbackTarget1(value)
+function callbackTarget1(value)
   m._observerCallbackValue1 = value
 end function
 
-function MOT_callbackTarget2(value)
+function callbackTarget2(value)
   m._observerCallbackValue2 = value
 end function
+
+end namespace

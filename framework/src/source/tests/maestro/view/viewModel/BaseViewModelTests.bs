@@ -1,8 +1,9 @@
 '@Only
 '@TestSuite [MBVMT] BaseViewModel Tests
+namespace MBVMT
 
 '@BeforeEach
-function MBVMT_BeforeEach()
+function BeforeEach()
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -16,13 +17,13 @@ end function
 '@Params[[]]
 '@Params[{"prop":invalid}]
 '@Params[{"name":""}]
-function MBVMT_constructor_invalid(subClass)
+function constructor_invalid(subClass)
   vm = BaseViewModel(subClass)
   m.assertEqual(vm.state, "invalid")
 end function
 
 '@Test valid
-function MBVMT_constructor_valid()
+function constructor_valid()
   subClass = {
     name: "testVM"
   }
@@ -36,8 +37,8 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test valid
-function MBVMT_testVM()
-  vm = MBVMT_createVM()
+function testVM()
+  vm = createVM()
   m.assertEqual(vm.state, "none")
   m.assertEqual(vm.name, "testVM")
 
@@ -49,8 +50,8 @@ function MBVMT_testVM()
 end function
 
 '@Test calls abstract methods
-function MBVMT_testVM_abstractMethods()
-  vm = MBVMT_createVM()
+function testVM_abstractMethods()
+  vm = createVM()
   m.assertEqual(vm.state, "none")
   m.assertEqual(vm.name, "testVM")
 
@@ -69,52 +70,54 @@ function MBVMT_testVM_abstractMethods()
 end function
 
 '@Test timeConstructor
-function MBVMT_timeConstructor()
-  vm = MBVMT_createVM()
+function timeConstructor()
+  vm = createVM()
 end function
 
 '@Test time method calls
-function MBVMT_testVM_time()
-  vm = MBVMT_createVM()
+function testVM_time()
+  vm = createVM()
   vm.initialize()
   vm.onShow()
   vm.onHide()
   vm.destroy()
 end function
 
-function MBVMT_getAge()
+function getAge()
   return m.age
 end function
 
-function MBVMT_setAge(age)
+function setAge(age)
   return m.setField("age", age)
 end function
 
-function MBVMT_customInitialize()
+function customInitialize()
   m.isInitCalled = true
 end function
 
-function MBVMT_customOnShow()
+function customOnShow()
   m.isOnShowCalled = true
 end function
 
-function MBVMT_customOnHide()
+function customOnHide()
   m.isOnHideCalled = true
 end function
 
-function MBVMT_customDestroy()
+function customDestroy()
   m.isDestroyCalled = true
 end function
 
-function MBVMT_createVM()
+function createVM()
   subClass = {
     name: "testVM"
-    getAge: MBVMT_getAge
-    setAge: MBVMT_setAge
-    _initialize: MBVMT_customInitialize
-    _destroy: MBVMT_customDestroy
-    _onShow: MBVMT_customOnShow
-    _onHide: MBVMT_customOnHide
+    getAge: getAge
+    setAge: setAge
+    _initialize: customInitialize
+    _destroy: customDestroy
+    _onShow: customOnShow
+    _onHide: customOnHide
   }
   return BaseViewModel(subClass)
 end function
+
+end namespace

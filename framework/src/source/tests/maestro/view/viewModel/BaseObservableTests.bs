@@ -1,8 +1,9 @@
 '@Only
 '@TestSuite [MBOT] BaseObservable Tests
+namespace MBOT
 
 '@BeforeEach
-function MBOT_BeforeEach()
+function BeforeEach()
   m.defaultBindableProperties = MOM_createBindingProperties()
   m.observable = BaseObservable()
 end function
@@ -11,7 +12,7 @@ end function
 '@It tests constructor
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function MBOT_constructor()
+function constructor()
   m.assertTrue(m.observable.__observableObject)
   m.assertTrue(m.observable.isBindingNotificationEnabled)
   m.assertFalse(m.observable.isContextValid)
@@ -38,7 +39,7 @@ end function
 '@Params["testField2", 22.5]
 '@Params["testField2", {}]
 '@Params["testField2", {"someField":"#value"}]
-function MBOT_setField(fieldName, value)
+function setField(fieldName, value)
   m.expectOnce(m.observable, "notify", [fieldName])
   m.expectOnce(m.observable, "notifyBinding", [fieldName])
 
@@ -48,7 +49,7 @@ function MBOT_setField(fieldName, value)
 end function
 
 '@Test set multiple times
-function MBOT_setField_multiple()
+function setField_multiple()
   m.expectOnce(m.observable, "notify", ["_fieldName"])
   m.expectOnce(m.observable, "notifyBinding", ["_fieldName"])
   m.expectOnce(m.observable, "notify", ["_fieldName"])
@@ -64,7 +65,7 @@ function MBOT_setField_multiple()
 end function
 
 '@Test uninitialized value
-function MBOT_setField_illegalFieldName()
+function setField_illegalFieldName()
   m.expectOnce(m.observable, "notify", ["testValue"])
   m.expectOnce(m.observable, "notifyBinding", ["testValue"])
 
@@ -74,7 +75,7 @@ function MBOT_setField_illegalFieldName()
 end function
 
 '@Test setField for node
-function MBOT_setField_node()
+function setField_node()
   value = createObject("roSGNode", "ContentNode")
 
   m.expectOnce(m.observable, "notify", ["testValue"])
@@ -90,7 +91,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test
-function MBOT_destroy()
+function destroy()
   m.expectOnce(m.observable, "unobserveAllFields")
   m.expectOnce(m.observable, "unbindAllFields")
 
@@ -108,7 +109,7 @@ end function
 '@Params["", {}, "", false]
 '@Params["valid", {}, "", false]
 '@Params["valid", {}, "valid", false]
-function MBOT_checkValidInputs(fieldName, targetNode, targetField, expected)
+function checkValidInputs(fieldName, targetNode, targetField, expected)
   value = m.observable.checkValidInputs(fieldName, targetNode, targetField)
 
   m.assertEqual(value, expected)
@@ -117,7 +118,7 @@ end function
 '@Test invalid node ids
 '@Params[""]
 '@Params["   "]
-function MBOT_checkValidInputs_invalid_nodeIds(nodeId)
+function checkValidInputs_invalid_nodeIds(nodeId)
   targetNode = createObject("roSGNode", "ContentNode")
   targetNode.id = nodeId
 
@@ -129,7 +130,7 @@ end function
 '@Test valid node ids
 '@Params["valid1"]
 '@Params["valid2"]
-function MBOT_checkValidInputs_valid_nodeIds(nodeId)
+function checkValidInputs_valid_nodeIds(nodeId)
   targetNode = createObject("roSGNode", "ContentNode")
   targetNode.addField("targetField", "string", false)
   targetNode.id = nodeId
@@ -146,7 +147,7 @@ end function
 '@Test invalid inputs
 '@Params["contextId", "nodeId", "field", "targetField", "contextId_nodeId_field_targetField"]
 '@Params["contextId2", "nodeId2", "field2", "targetField2", "contextId2_nodeId2_field2_targetField2"]
-function MBOT_getNodeFieldBindingKey(contextId, nodeId, field, targetField, expected)
+function getNodeFieldBindingKey(contextId, nodeId, field, targetField, expected)
   m.observable.contextId = contextId
   node = createObject("roSGNode", "ContentNode")
   node.id = nodeId
@@ -161,7 +162,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test on
-function MBOT_toggleNotifications_on()
+function toggleNotifications_on()
   m.expectOnce(m.observable, "firePendingObserverNotifications")
   m.expectOnce(m.observable, "firePendingBindingNotifications")
 
@@ -171,7 +172,7 @@ function MBOT_toggleNotifications_on()
 end function
 
 '@Test off
-function MBOT_toggleNotifications_off()
+function toggleNotifications_off()
   m.expectNone(m.observable, "firePendingObserverNotifications")
   m.expectNone(m.observable, "firePendingBindingNotifications")
 
@@ -185,7 +186,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test no notifications
-function MBOT_firePendingObserverNotifications_none()
+function firePendingObserverNotifications_none()
   m.expectNone(m.observable, "notify")
 
   m.observable.firePendingObserverNotifications()
@@ -196,7 +197,7 @@ end function
 '@Test one notification
 '@Params["fieldA", "a"]
 '@Params["fieldB", "b"]
-function MBOT_firePendingObserverNotifications_one(field1Name, value1)
+function firePendingObserverNotifications_one(field1Name, value1)
   m.expectOnce(m.observable, "notify", [field1Name])
   m.observable[field1Name] = value1
   m.observable.pendingObservers = {}
@@ -208,7 +209,7 @@ end function
 
 '@Test multiple notification
 '@Params["fieldA", "a", "fieldB", "b", "fieldC", "c"]
-function MBOT_firePendingObserverNotifications_multiple(field1Name, value1, field2Name, value2, field3Name, value3)
+function firePendingObserverNotifications_multiple(field1Name, value1, field2Name, value2, field3Name, value3)
   'note these come out in a very specific order
   m.expectOnce(m.observable, "notify", [field3Name])
   m.expectOnce(m.observable, "notify", [field1Name])
@@ -230,7 +231,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test no notifications
-function MBOT_firePendingBindingNotifications_none()
+function firePendingBindingNotifications_none()
   m.expectNone(m.observable, "notifyBinding")
 
   m.observable.firePendingBindingNotifications()
@@ -241,7 +242,7 @@ end function
 '@Test one notification
 '@Params["fieldA", "a"]
 '@Params["fieldB", "b"]
-function MBOT_firePendingBindingNotifications_one(field1Name, value1)
+function firePendingBindingNotifications_one(field1Name, value1)
   m.expectOnce(m.observable, "notifyBinding", [field1Name])
   m.observable[field1Name] = value1
   m.observable.pendingBindings = {}
@@ -253,7 +254,7 @@ end function
 
 '@Test multiple notification
 '@Params["fieldA", "a", "fieldB", "b", "fieldC", "c"]
-function MBOT_firePendingBindingNotifications_multiple(field1Name, value1, field2Name, value2, field3Name, value3)
+function firePendingBindingNotifications_multiple(field1Name, value1, field2Name, value2, field3Name, value3)
   'note these come out in a very specific order
   m.expectOnce(m.observable, "notifyBinding", [field3Name])
   m.expectOnce(m.observable, "notifyBinding", [field1Name])
@@ -282,7 +283,7 @@ end function
 '@Params["   ", "   "]
 '@Params["_fieldName", ""]
 '@Params["", "functionName"]
-function MBOT_observeField(fieldName, functionName)
+function observeField(fieldName, functionName)
   m.expectNone(m.observable, "notify")
 
   m.observable.observeField(fieldName, functionName)
@@ -292,7 +293,7 @@ end function
 
 '@Test valud default initial value
 '@Params["field1", "function1", "#value1"]
-function MBOT_observeField_valid_defaultisSettingInitialValue(fieldName, functionName, value)
+function observeField_valid_defaultisSettingInitialValue(fieldName, functionName, value)
   m.expectOnce(m.observable, "notify", [fieldName])
   m.observable[fieldName] = value
   m.observable.observeField(fieldName, functionName)
@@ -304,7 +305,7 @@ end function
 '@Test valid
 '@Params["field1", "function1", "#value1", true, 1]
 '@Params["field1", "function1", "#value1", false, 0]
-function MBOT_observeField_valid(fieldName, functionName, value, isSettingInitialValue, expectedNotifyCount)
+function observeField_valid(fieldName, functionName, value, isSettingInitialValue, expectedNotifyCount)
   properties = MOM_createBindingProperties(isSettingInitialValue)
   m.expect(m.observable, "notify", expectedNotifyCount, [fieldName])
   m.observable[fieldName] = value
@@ -322,7 +323,7 @@ end function
 '@Test valid - one observer one field - no initial set value
 '@Params["field1", "function1", "#value1"]
 '@Params["field1", "function1", "#value1"]
-function MBOT_unobserveField_valid_oneObserver_oneField(fieldName, functionName, value)
+function unobserveField_valid_oneObserver_oneField(fieldName, functionName, value)
   m.observable[fieldName] = value
   m.observable.observeField(fieldName, functionName, {isSettingInitialValue:false})
 
@@ -335,7 +336,7 @@ function MBOT_unobserveField_valid_oneObserver_oneField(fieldName, functionName,
 end function
 
 '@Test valid - multiple observer one field
-function MBOT_unobserveField_valid_multipleObservers_oneField()
+function unobserveField_valid_multipleObservers_oneField()
   m.observable["field1"] = 1
   m.observable["field2"] = 2
   m.observable.observeField("field1", "func1", {isSettingInitialValue:false})
@@ -356,7 +357,7 @@ function MBOT_unobserveField_valid_multipleObservers_oneField()
 end function
 
 '@Test valid - multiple observers multiple fields
-function MBOT_unobserveField_valid_multipleObservers_multipleFields()
+function unobserveField_valid_multipleObservers_multipleFields()
   m.observable["field1"] = 1
   m.observable["field2"] = 2
   m.observable.observeField("field1", "func1", {isSettingInitialValue:false})
@@ -393,7 +394,7 @@ end function
 '@Test invalid
 '@Params[invalid, invalid]
 '@Params[22, invalid]
-function MBOT_setContext_invalid(contextId, contextNode)
+function setContext_invalid(contextId, contextNode)
   m.observable.setContext(contextId, contextNode)
 
   m.assertFalse(m.observable.isContextValid)
@@ -402,8 +403,8 @@ end function
 '@Test valid node
 '@Params[invalid]
 '@Params[22]
-function MBOT_setContext_valid_node_invalidContextId(contextId)
-  contextNode = MBOT_createContextNode()
+function setContext_valid_node_invalidContextId(contextId)
+  contextNode = createContextNode()
 
   m.observable.setContext(contextId, contextNode)
 
@@ -411,10 +412,10 @@ function MBOT_setContext_valid_node_invalidContextId(contextId)
 end function
 
 '@Test valid no pending bindings
-function MBOT_setContext_valid_noPendingBindings()
+function setContext_valid_noPendingBindings()
   m.expectOnce(m.observable, "firePendingObserverNotifications")
   m.expectOnce(m.observable, "firePendingBindingNotifications")
-  contextNode = MBOT_createContextNode()
+  contextNode = createContextNode()
 
   m.observable.setContext("1", contextNode)
 
@@ -422,14 +423,14 @@ function MBOT_setContext_valid_noPendingBindings()
 end function
 
 '@Test valid pending bindings, but binding notifications off
-function MBOT_setContext_valid_pendingBindings_observerOff()
+function setContext_valid_pendingBindings_observerOff()
   m.expectNone(m.observable, "firePendingObserverNotifications")
   m.expectNone(m.observable, "firePendingBindingNotifications")
   m.observable.isBindingNotificationEnabled = false
   m.observable["field1Name"] = "#value1"
   m.observable.pendingObservers = {}
   m.observable.pendingObservers["field1Name"] = 1
-  contextNode = MBOT_createContextNode()
+  contextNode = createContextNode()
 
   m.observable.setContext("1", contextNode)
 
@@ -437,14 +438,14 @@ function MBOT_setContext_valid_pendingBindings_observerOff()
 end function
 
 '@Test valid pending bindings, binding notifications on
-function MBOT_setContext_valid_pendingBindings()
+function setContext_valid_pendingBindings()
   m.expectOnce(m.observable, "firePendingObserverNotifications")
   m.expectOnce(m.observable, "firePendingBindingNotifications")
   m.observable.isBindingNotificationEnabled = true
   m.observable["field1Name"] = "#value1"
   m.observable.pendingObservers = {}
   m.observable.pendingObservers["field1Name"] = 1
-  contextNode = MBOT_createContextNode()
+  contextNode = createContextNode()
 
   m.observable.setContext("1", contextNode)
 
@@ -458,7 +459,7 @@ end function
 '@Test valid - one observer one field
 '@Params["field1", "function1", "#value1"]
 '@Params["field1", "function1", "#value1"]
-function MBOT_unobserveAllFields_valid_oneObserver_oneField(fieldName, functionName, value)
+function unobserveAllFields_valid_oneObserver_oneField(fieldName, functionName, value)
   m.observable[fieldName] = value
   m.observable.observeField(fieldName, functionName, {isSettingInitialValue:false})
   m.assertArrayCount(m.observable.observers, 1)
@@ -475,7 +476,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test 1 field, 1 observer, notifications, no context
-function MBOT_notify_oneObserver_oneField_notificationsEnabled_noContext()
+function notify_oneObserver_oneField_notificationsEnabled_noContext()
   m.observable["_fieldName"] = "#value"
   m.observable.isBindingNotificationEnabled = true
   m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
@@ -489,9 +490,9 @@ function MBOT_notify_oneObserver_oneField_notificationsEnabled_noContext()
 end function
 
 '@Test 1 field, 1 observer, context, no notifications
-function MBOT_notify_oneObserver_oneField_notificationsDisabled_context()
+function notify_oneObserver_oneField_notificationsDisabled_context()
   m.observable["_fieldName"] = "#value"
-  contextNode = MBOT_createContextNode()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = false
   m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
@@ -505,9 +506,9 @@ function MBOT_notify_oneObserver_oneField_notificationsDisabled_context()
 end function
 
 '@Test 1 field, 1 observer, context,  notifications
-function MBOT_notify_oneObserver_oneField_notificationsEnabled_context()
+function notify_oneObserver_oneField_notificationsEnabled_context()
   m.observable["_fieldName"] = "#value"
-  contextNode = MBOT_createContextNode()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = true
   m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
@@ -522,10 +523,10 @@ function MBOT_notify_oneObserver_oneField_notificationsEnabled_context()
 end function
 
 '@Test 2 fields, 1 observer, context, notifications
-function MBOT_notify_oneObserver_twoFields_notificationsEnabled_context()
+function notify_oneObserver_twoFields_notificationsEnabled_context()
   m.observable["_fieldName"] = "#value"
   m.observable["_fieldName2"] = "#value2"
-  contextNode = MBOT_createContextNode()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = true
   m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
@@ -541,10 +542,10 @@ function MBOT_notify_oneObserver_twoFields_notificationsEnabled_context()
 end function
 
 '@Test 2 fields, 2 observers, context, notifications
-function MBOT_notify_twoObservers_twoFields_notificationsEnabled_context()
+function notify_twoObservers_twoFields_notificationsEnabled_context()
   m.observable["_fieldName"] = "#value"
   m.observable["_fieldName2"] = "#value2"
-  contextNode = MBOT_createContextNode()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = true
   m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
@@ -561,10 +562,10 @@ function MBOT_notify_twoObservers_twoFields_notificationsEnabled_context()
 end function
 
 '@Test 2 fields, 2 observers, context, notifications
-function MBOT_notify_twoObservers_twoFields_notificationsEnabled_context_otherField()
+function notify_twoObservers_twoFields_notificationsEnabled_context_otherField()
   m.observable["_fieldName"] = "#value"
   m.observable["_fieldName2"] = "#value2"
-  contextNode = MBOT_createContextNode()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = true
   m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
@@ -592,14 +593,14 @@ end function
 '@Params["", "#RBSNode", ""]
 '@Params["_fieldName", "#RBSNode", ""]
 '@Params["", "#RBSNode", "target_field"]
-function MBOT_bindField_invalid(fieldName, targetNode, targetField)
+function bindField_invalid(fieldName, targetNode, targetField)
   m.assertFalse(m.observable.bindField(fieldName, targetNode, targetField))
   m.assertEmpty(m.observable.bindings)
 end function
 
 
 '@Test - no context set
-function MBOT_bindField_noContext()
+function bindField_noContext()
   n1 = createObject("roSGNode", "ContentNode")
   n1.id ="n1"
   n1.addField("t1", "string", false)
@@ -609,8 +610,8 @@ end function
 
 '@Test valid inputs - no initial value
 '@Params["_fieldName", "#RBSNode", "_targetField"]
-function MBOT_bindField_valid(fieldName, targetNode, targetField)
-  contextNode = MBOT_createContextNode()
+function bindField_valid(fieldName, targetNode, targetField)
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable[fieldName] = "value"
   targetNode.id ="nodeId"
@@ -630,8 +631,8 @@ function MBOT_bindField_valid(fieldName, targetNode, targetField)
 end function
 
 '@Test 2 fields
-function MBOT_bindField_valid_2fields()
-  contextNode = MBOT_createContextNode()
+function bindField_valid_2fields()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -666,8 +667,8 @@ function MBOT_bindField_valid_2fields()
 end function
 
 '@Test 1 fields 2 node targets
-function MBOT_bindField_valid_1fields_2bindings()
-  contextNode = MBOT_createContextNode()
+function bindField_valid_1fields_2bindings()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -712,21 +713,21 @@ end function
 '@Params["", "#RBSNode", ""]
 '@Params["_fieldName", "#RBSNode", ""]
 '@Params["", "#RBSNode", "target_field"]
-function MBOT_unbindField_invalid(fieldName, targetNode, targetField)
+function unbindField_invalid(fieldName, targetNode, targetField)
   m.assertFalse(m.observable.unbindField(fieldName, targetNode, targetField))
 end function
 
 '@Test - no context set
-function MBOT_unbindField_noContext()
+function unbindField_noContext()
   n1 = createObject("roSGNode", "ContentNode")
   n1.id ="n1"
   m.assertFalse(m.observable.unbindField("fieldName", n1, "targetField"))
 end function
 
 '@Test 1 fields 2 node targets
-function MBOT_unbindField_valid_1fields_2bindings()
+function unbindField_valid_1fields_2bindings()
   'setup 2 bindings
-  contextNode = MBOT_createContextNode()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -786,13 +787,13 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test no matching field
-function MBOT_notifyBinding_noField()
+function notifyBinding_noField()
   m.assertFalse(m.observable.notifyBinding("noField"))
 end function
 
 '@Test not enabled
-function MBOT_notifyBinding_notEnabled()
-  contextNode = MBOT_createContextNode()
+function notifyBinding_notEnabled()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -807,8 +808,8 @@ function MBOT_notifyBinding_notEnabled()
 end function
 
 '@Test enabled
-function MBOT_notifyBinding_enabled()
-  contextNode = MBOT_createContextNode()
+function notifyBinding_enabled()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -824,8 +825,8 @@ function MBOT_notifyBinding_enabled()
 end function
 
 '@Test enabled mulitple bindings
-function MBOT_notifyBinding_enabled_multiple()
-  contextNode = MBOT_createContextNode()
+function notifyBinding_enabled_multiple()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -846,8 +847,8 @@ function MBOT_notifyBinding_enabled_multiple()
 end function
 
 '@Test enabled mulitple bindings specfific key
-function MBOT_notifyBinding_enabled_multiple_specificKey()
-  contextNode = MBOT_createContextNode()
+function notifyBinding_enabled_multiple_specificKey()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -869,8 +870,8 @@ function MBOT_notifyBinding_enabled_multiple_specificKey()
 end function
 
 '@Test enabled mulitple bindings specfific key - not found
-function MBOT_notifyBinding_enabled_multiple_specificKey_notThere()
-  contextNode = MBOT_createContextNode()
+function notifyBinding_enabled_multiple_specificKey_notThere()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -895,8 +896,8 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 '@Test
-function MBOT_unbindAllFields()
-  contextNode = MBOT_createContextNode()
+function unbindAllFields()
+  contextNode = createContextNode()
   m.observable.setContext("1", contextNode)
   'setup 2 bindings
   n1 = createObject("roSGNode", "ContentNode")
@@ -915,8 +916,10 @@ end function
 '++ Utils
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function MBOT_createContextNode()
+function createContextNode()
   observableContext = createObject("roSGNode", "ContentNode")
   observableContext.addField("bindingMessage", "assocarray", true)
   return observableContext
 end function
+
+end namespace
