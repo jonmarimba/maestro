@@ -11,6 +11,4 @@
         <!-- if true, then this item is the special options menu item, toggled by the * key -->
         <field id="isOptionsItem" type="boolean" onChange="testThis"/>
     </interface>
-
-    <script type="text/brightscript" uri="NavItem.brs" />
 </component>

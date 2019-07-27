@@ -1,3 +1,4 @@
+namespace MTU
 ' /**
 '  * ThreadUtils
 '  *
@@ -10,8 +11,9 @@
 '  * out the original wait(0, port) functionality.
 '  */
 
+
 ' /**
-'  * @member MTU_waitPort
+'  * @member waitPort
 '  * @memberof module:ThreadUtils
 '  * @instance
 '  * @description port.wait is buggy and ruins breakpoint debugging, we therefore use this
@@ -21,8 +23,28 @@
 '  * @returns {roMessage} message, once retrieved
 '  * @param {boolean} forceOriginalImpl - if true will use the standard implementation
 '  */
-function MTU_waitPort(delay = 0, port = invalid, forceOriginalImpl = false)
-  return wait(delay, port)
+function waitPort(delay = 0, port = invalid, forceOriginalImpl = false)
+  if forceOriginalImpl
+    '? "waitPort: forcing original implementation"
+    return wait(delay, port)
+  end if
+  if port = invalid
+    return invalid
+  end if
+  if delay = 0
+    msg = invalid
+    while msg = invalid
+      msg = port.getMessage()
+    end while
+  else
+    timespan = CreateObject("roTimespan")
+    msg = invalid
+    while msg = invalid
+      if timespan.TotalMilliseconds() > delay then exit while
+      msg = port.getMessage()
+    end while
+  end if
+  return msg
 end function
 
 ' /**
@@ -33,7 +55,17 @@ end function
 '  * @param {delay} delay in ms
 '  * @param {boolean} forceOriginalImpl - if true will use the standard implementation
 '  */
-function MTU_waitForMilliseconds(delay, forceOriginalImpl = false) as void
-  port = CreateObject("roMessagePort")
-  wait(delay, port)
+function waitForMilliseconds(delay, forceOriginalImpl = false) as void
+  if forceOriginalImpl
+    '? "waitForMilliseconds: forcing original implementation"
+    port = CreateObject("roMessagePort")
+    wait(delay, port)
+    return
+  end if
+  timespan = CreateObject("roTimespan")
+  while true
+    if timespan.TotalMilliseconds() > delay then exit while
+  end while
 end function
+
+end namespace

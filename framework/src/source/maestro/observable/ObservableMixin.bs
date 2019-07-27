@@ -1,17 +1,13 @@
-'@Namespace MOM ObservableMixin
-' import "BaseObservable.bs"
-' import "../lib/Utils.bs"
-' import "pkg:/source/maestro/observable/ObservableMixin.brs"
+import "../lib/Utils.bs"
+import "pkg:/source/rLog/rLogMixin.brs"
 
-'@Import rLogMixin
-'@Import Utils
-
+namespace MOM
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ MIXIN METHODS
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ' /**
-'  * @member MOM_observeField
+'  * @member observeField
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description observes the field on observable, calling the passed in function when the value changes
@@ -25,8 +21,8 @@
 '  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
 '  * @returns {returnType} returnDescription
 '  */
-function MOM_observeField(observable, field, functionPointer, properties = invalid) as boolean
-  if not MOM_registerObservable(observable)
+function observeField(observable, field, functionPointer, properties = invalid) as boolean
+  if not registerObservable(observable)
     logError("could not observe field - the observable failed to register")
     return false
   end if
@@ -47,15 +43,15 @@ function MOM_observeField(observable, field, functionPointer, properties = inval
 end function
 
 ' /**
-'  * @member MOM_unobserveField
+'  * @member unobserveField
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description removes the observer for the given field
 '  * @param {paramType} paramDescription
 '  * @returns {returnType} returnDescription
 '  */
-function MOM_unobserveField(observable, observableField, functionPointer) as boolean
-  if not MOM_isRegistered(observable)
+function unobserveField(observable, observableField, functionPointer) as boolean
+  if not isRegistered(observable)
     logError("could not unobserve field - the observable has not been registered")
     return false
   end if
@@ -92,25 +88,25 @@ end function
 '  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
 '  * @returns {boolean} true if successful
 '  */
-function MOM_bindNodeField(targetNode, nodeField, observable, observableField, properties = invalid) as boolean
-  if not MOM_registerObservable(observable)
+function bindNodeField(targetNode, nodeField, observable, observableField, properties = invalid) as boolean
+  if not registerObservable(observable)
     logError("could not bind node field - the observable failed to register")
     return false
   end if
   
-  if not MOM_checkValidInputs(nodeField, targetNode, nodeField)
+  if not checkValidInputs(nodeField, targetNode, nodeField)
     return false
   end if
   
   if properties = invalid
-    properties = MOM_createBindingProperties()
+    properties = createBindingProperties()
   end if
   
   nodeKey = targetNode.id + "_" + nodeField
   nodeBindings = m._observableNodeBindings[nodeKey]
   
   if nodeBindings = invalid
-    targetNode.observeFieldScoped(nodeField, "MOM_bindingCallback")
+    targetNode.observeFieldScoped(nodeField, "bindingCallback")
     nodeBindings = {}
   end if
   
@@ -168,8 +164,8 @@ end function
 '  * @param {string} observableField - field on this observer to update with change values
 '  * @returns {boolean} true if successful
 '  */
-function MOM_unbindNodeField(targetNode, nodeField, observable, observableField) as boolean
-  if not MOM_checkValidInputs(observableField, targetNode, nodeField)
+function unbindNodeField(targetNode, nodeField, observable, observableField) as boolean
+  if not checkValidInputs(observableField, targetNode, nodeField)
     return false
   end if
   
@@ -209,8 +205,8 @@ end function
 '  * @param {observable} instance of an observable
 '  * @returns {boolean} true if successfully registered, or was already registered
 '  */
-function MOM_registerObservable(observable) as boolean
-  if not MOM_isObservable(observable)
+function registerObservable(observable) as boolean
+  if not isObservable(observable)
     logError("the passed in object is not an Observable subclass")
     return false
   end if
@@ -236,7 +232,7 @@ function MOM_registerObservable(observable) as boolean
     m._observableNodeBindings = {}
     m._observableContext = createObject("roSGNode", "ContentNode")
     m._observableContext.addField("bindingMessage", "assocarray", true)
-    m._observableContext.observeField("bindingMessage", "MOM_observerCallback")
+    m._observableContext.observeField("bindingMessage", "observerCallback")
   end if
   
   registeredObservable = m._observables[contextId]
@@ -250,15 +246,15 @@ function MOM_registerObservable(observable) as boolean
 end function
 
 ' /**
-'  * @member MOM_unregisterObservable
+'  * @member unregisterObservable
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description unregisters the passed in observable
 '  * @param {BaseObservable} instance of an observable
 '  * @returns {boolean} true if successfully removed
 '  */
-function MOM_unregisterObservable(observable) as boolean
-  if not MOM_isRegistered(observable)
+function unregisterObservable(observable) as boolean
+  if not isRegistered(observable)
     logError("passed in node did not contain a context Id")
     return false
   end if
@@ -269,14 +265,14 @@ function MOM_unregisterObservable(observable) as boolean
   m._observables.delete(observable.contextId)
   if m._observables.count() = 0
     logInfo("unregistered last observable, cleaning up")
-    MOM_cleanup()
+    cleanup()
   end if
   observable.setContext(invalid, invalid)
   return true
 end function
 
 ' /**
-'  * @member MOM_bindObservableField
+'  * @member bindObservableField
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description binds the field from observable, to the target node's field
@@ -291,15 +287,15 @@ end function
 '  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
 '  * @returns {boolean} true if successful
 '  */
-function MOM_bindObservableField(observable, observableField, targetNode, nodeField, properties = invalid) as boolean
-  if MOM_registerObservable(observable)
+function bindObservableField(observable, observableField, targetNode, nodeField, properties = invalid) as boolean
+  if registerObservable(observable)
     return observable.bindField(observableField, targetNode, nodeField, properties)
   end if
   return false
 end function
 
 ' /**
-'  * @member MOM_unbindObservableField
+'  * @member unbindObservableField
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description removes binding for the field from observable, to the target node's field
@@ -309,20 +305,20 @@ end function
 '  * @param {string} nodeField - name of field to set on node
 '  * @returns {boolean} true if successful
 '  */
-function MOM_unbindObservableField(observable, observableField, targetNode, nodeField) as boolean
-  if MOM_isObservable(observable)
+function unbindObservableField(observable, observableField, targetNode, nodeField) as boolean
+  if isObservable(observable)
     return observable.unbindField(observableField, targetNode, nodeField)
   end if
   return false
 end function
 
 ' /**
-'  * @member MOM_cleanup
+'  * @member cleanup
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description cleans up all vars associated with binding support
 '  */
-function MOM_cleanup()
+function cleanup()
   if m._observableContext <> invalid
     m._observableContext.unobserveField("bindingMessage")
   end if
@@ -340,7 +336,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ' /**
-'  * @member MOM_bindFieldTwoWay
+'  * @member bindFieldTwoWay
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description wires the field on the observable to the target field on the targetNode, and will update it in a 2 way relationship
@@ -354,13 +350,13 @@ end function
 '  *                          will set the value instantly
 '  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
 '  */
-function MOM_bindFieldTwoWay(observable, observableField, targetNode, nodeField, properties = invalid) as void
-  MOM_bindObservableField(observable, observableField, targetNode, nodeField, invalid)
-  MOM_bindNodeField(targetNode, nodeField, observable, observableField, { isSettingInitialValue: false })
+function bindFieldTwoWay(observable, observableField, targetNode, nodeField, properties = invalid) as void
+  bindObservableField(observable, observableField, targetNode, nodeField, invalid)
+  bindNodeField(targetNode, nodeField, observable, observableField, { isSettingInitialValue: false })
 end function
 
 ' /**
-'  * @member MOM_unbindFieldTwoWay
+'  * @member unbindFieldTwoWay
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description unwires the field on the observable to the target field on the targetNode
@@ -369,10 +365,10 @@ end function
 '  * @param {roSGNode} targetNode - node to bind to
 '  * @param {string} nodeField - field on target node to bind to
 '  */
-function MOM_unbindFieldTwoWay(observable, observableField, targetNode, nodeField) as void
-  if MOM_isRegistered(observable)
-    MOM_unbindObservableField(observable, observableField, targetNode, nodeField)
-    MOM_unbindNodeField(targetNode, nodeField, observable, observableField)
+function unbindFieldTwoWay(observable, observableField, targetNode, nodeField) as void
+  if isRegistered(observable)
+    unbindObservableField(observable, observableField, targetNode, nodeField)
+    unbindNodeField(targetNode, nodeField, observable, observableField)
   else
     logError("could not unbind two way - the observable has not yet been registered")
   end if
@@ -385,14 +381,14 @@ end function
 'The following methods are mixed in as conveniences
 
 ' /**
-'  * @member MOM_bindingCallback
+'  * @member bindingCallback
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description event handler for processing node events to set the value on
 '  *              the correct observable field or invoke the correct observable function
 '  * @param {event} event
 '  */
-function MOM_bindingCallback(event) as void
+function bindingCallback(event) as void
   if m._observableNodeBindings = invalid
     logError("Binding callback invoked when no node bindings were registered")
     return
@@ -424,7 +420,7 @@ function MOM_bindingCallback(event) as void
         observable.setField(bindingData.targetField, bindingValue, key)
       end if
       if bindingData.unBindOnCall = true
-        MOM_unbindNodeField(bindingData.targetNode, event.getField(), observable, observable[bindingData.targetField]) 
+        unbindNodeField(bindingData.targetNode, event.getField(), observable, observable[bindingData.targetField]) 
       end if
     else
       logError("could not find observable with context id ", contextId)
@@ -433,14 +429,14 @@ function MOM_bindingCallback(event) as void
 end function
 
 ' /**
-'  * @member MOM_observerCallback
+'  * @member observerCallback
 '  * @memberof module:ObservableMixin
 '  *
 '  * @description event handler for handling observable events, which then get
 '  *              passed onto the correct function
 '  * @param {event} event
 '  */
-function MOM_observerCallback(event) as void
+function observerCallback(event) as void
   if m._observables = invalid
     logError("Observer callback invoked when no node observables were registered")
     return
@@ -479,7 +475,7 @@ end function
 '  * @param {string} nodeField  - name of target field
 '  * @returns {boolean} true if valid
 '  */
-function MOM_checkValidInputs(observableField, targetNode, nodeField) as boolean
+function checkValidInputs(observableField, targetNode, nodeField) as boolean
   if not MU_isString(observableField) or observableField.trim() = ""
     logError("illegal observableField", observableField)
     return false
@@ -508,7 +504,7 @@ function MOM_checkValidInputs(observableField, targetNode, nodeField) as boolean
   return true
 end function
 
-function MOM_isObservable(observable) as boolean
+function isObservable(observable) as boolean
   if not MU_isAACompatible(observable)
     logError("non aa object passed in")
     return false
@@ -522,12 +518,12 @@ function MOM_isObservable(observable) as boolean
   return true
 end function
 
-function MOM_isRegistered(observable) as boolean
-  return MOM_isObservable(observable) and observable.doesExist("contextId")
+function isRegistered(observable) as boolean
+  return isObservable(observable) and observable.doesExist("contextId")
 end function
 
 ' /**
-'  * @member MOM_createBindingProperties
+'  * @member createBindingProperties
 '  * @memberof module:ObservableMixin
 '  * @instance
 '  * @description creates properties for using in bindings
@@ -536,7 +532,7 @@ end function
 '  * @param {boolean} unbindOnCall - if true, then the binding is removed as soon as as it is invoked
 '  * @returns {assocarray} binding properties, set with relevant default values
 '  */
-function MOM_createBindingProperties(settingInitialValue = true, transformFunction = invalid, unBindOnCall = false)
+function createBindingProperties(settingInitialValue = true, transformFunction = invalid, unBindOnCall = false)
   if transformFunction <> invalid and not MU_isFunction(transformFunction)
     logError("transformFunction was not a function! was it in scope?")
     transformFunction = invalid
@@ -553,7 +549,7 @@ end function
 '++ Transform functions
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function MOM_transform_invertBoolean(value)
+function transform_invertBoolean(value)
   if MU_isBoolean(value)
     return not value
   else
@@ -561,3 +557,5 @@ function MOM_transform_invertBoolean(value)
     return false
   end if
 end function
+
+end namespace
