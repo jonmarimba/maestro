@@ -18,6 +18,7 @@ class BaseObservable
 '  *              note - that for correct function you must use the BaseObservableMixin methods to interact with this class for registering, observing and binding
 '  */
 public function new()
+  m.checkValidInputs = MOM_checkValidInputs
 end function
 
 private _observableObject = true 'for framework tracking
