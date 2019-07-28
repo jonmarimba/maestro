@@ -35,7 +35,7 @@ function createFocusMap(vm) as boolean
 end function
 
 function onFocusIdChange(focusId)
-  if focusId <> invalid and focusId <> "" m._focusMap <> invalid
+  if focusId <> invalid and focusId <> "" and m._focusMap <> invalid
     control = m._focusMap[focusId]
     if control <> invalid
       setFocus(control)
