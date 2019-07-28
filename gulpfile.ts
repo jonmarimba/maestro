@@ -85,13 +85,15 @@ async function compile(cb) {
     "filePattern": [
       "**/*.bs",
       "**/*.brs",
-      "**/*.xml",
-      '!components/rLogComponents/**/*.*',
-      '!source/rLog/**/*.*',
-      '!source/tests/rooibosDist.brs',
-      '!source/tests/rooibosFunctionMap.brs'
+      "**/*.xml"
     ],
-    "sourcePath": "framework/src",
+    "processingExcludedPaths": [
+      'components/rLogComponents/**/*.*',
+      'source/rLog/**/*.*',
+      'source/tests/rooibosDist.brs',
+      'source/tests/rooibosFunctionMap.brs'
+    ],
+    "sourcePath": "/Users/georgecook/Documents/h7ci/hope/maestro/framework/src",
     "outputPath": "build",
     "logLevel": 4,
     "nonCheckedImports": ['source/rLog/rLogMixin.brs',
