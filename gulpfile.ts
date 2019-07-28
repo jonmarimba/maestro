@@ -86,6 +86,10 @@ async function compile(cb) {
       "**/*.bs",
       "**/*.brs",
       "**/*.xml",
+      '!components/rLogComponents/**/*.*',
+      '!source/rLog/**/*.*',
+      '!source/tests/rooibosDist.brs',
+      '!source/tests/rooibosFunctionMap.brs'
     ],
     "sourcePath": "framework/src",
     "outputPath": "build",
