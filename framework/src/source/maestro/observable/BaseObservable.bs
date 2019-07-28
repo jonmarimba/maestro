@@ -127,11 +127,7 @@ end function
 '  * @description will callback a function in the owning node's scope when the field changes value
 '  * @param {string} fieldName - field on this observer to observe
 '  * @param {string} functionName - name of function to callback, should be visible to the node's code-behind
-'  * @param {assocarray} properties - the properties for the particular binding
-'  *                     - can include
-'  *                     isSettingInitialValue -(default true) if true,
-'  *                          will set the value instantly
-'  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
+'  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {boolean} true if successful
 '  */
 public function observeField(fieldName, functionName, properties = invalid) as boolean
@@ -157,7 +153,7 @@ public function observeField(fieldName, functionName, properties = invalid) as b
   observers[functionName] = properties
   
   m.observers[fieldName] = observers
-  if properties.isSettingInitialValue = true
+  if properties[0] = true
     m.notify(fieldName)
   end if
   return true
@@ -224,11 +220,7 @@ end function
 '  * @param {string} fieldName - field on this observer to observe
 '  * @param {node} targetNode - the node to notify when the field changes - must have a unique id
 '  * @param {string} targetField - field on node to update with change values
-'  * @param {assocarray} properties - the properties for the particular binding
-'  *                     - can include
-'  *                     isSettingInitialValue -(default true) if true,
-'  *                          will set the value instantly
-'  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
+'  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {boolean} true if successful
 '  */
 public function bindField(fieldName, targetNode, targetField, properties = invalid) as boolean
@@ -268,12 +260,12 @@ public function bindField(fieldName, targetNode, targetField, properties = inval
     "node": targetNode, 
     "fieldName": fieldName, 
     "targetField": targetField, 
-    "transformFunction": properties.transformFunction 
+    "transformFunction": properties[1]
   }
   
   m.bindings[fieldName] = bindings
   
-  if properties.isSettingInitialValue = true
+  if properties[0] = true
     m.notifyBinding(fieldName, key)
   end if
   

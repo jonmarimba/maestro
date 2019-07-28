@@ -14,11 +14,7 @@ namespace MOM
 '  * @param {BaseObservable} observable instance of observable
 '  * @param {string} field field to observe on the passed in observable
 '  * @param {function} functionPointer method to invoke when the value changes
-'  * @param {assocarray} properties - the properties for the particular binding
-'  *                     - can include
-'  *                     isSettingInitialValue -(default true) if true,
-'  *                          will set the value instantly
-'  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
+'  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {returnType} returnDescription
 '  */
 function observeField(observable, field, functionPointer, properties = invalid) as boolean
@@ -81,11 +77,7 @@ end function
 '  * @param {string} nodeField - field on the node to observe
 '  * @param {BaseObservable} observable - observable instance
 '  * @param {string} observableField - field on the observable to update with change values
-'  * @param {assocarray} properties - the properties for the particular binding
-'  *                     - can include
-'  *                     isSettingInitialValue -(default true) if true,
-'  *                          will set the value instantly
-'  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
+'  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {boolean} true if successful
 '  */
 function bindNodeField(targetNode, nodeField, observable, observableField, properties = invalid) as boolean
@@ -128,14 +120,14 @@ function bindNodeField(targetNode, nodeField, observable, observableField, prope
     "contextId": observable.contextId
     "targetNode": targetNode
     "targetField": observableField
-    "transformFunction": properties.transformFunction
-    "unBindOnCall": properties.unBindOnCall = true
+    "transformFunction": properties[1]
+    "unBindOnCall": properties[2] = true
   }
   
   m._observableNodeBindings[nodeKey] = nodeBindings
-  if properties.isSettingInitialValue = true
-    if properties.transformFunction <> invalid
-      value = properties.transformFunction(targetNode[nodeField])
+  if properties[0] = true
+    if properties[1] <> invalid
+      value = properties[1](targetNode[nodeField])
     else
       value = targetNode[nodeField]
     end if
@@ -147,7 +139,7 @@ function bindNodeField(targetNode, nodeField, observable, observableField, prope
       end if
       observable.setField(observableField, value)
     end if
-    if properties.unBindOnCall = true
+    if properties[2] = true
       'NOTE - initial value unbind is not supported
     end if
   end if
@@ -280,11 +272,7 @@ end function
 '  * @param {string} observableField - name of field to bind
 '  * @param {node} targetNode - node to set bound field value on
 '  * @param {string} nodeField - name of field to set on node
-'  * @param {assocarray} properties - the properties for the particular binding
-'  *                     - can include
-'  *                     isSettingInitialValue -(default true) if true,
-'  *                          will set the value instantly
-'  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
+'  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {boolean} true if successful
 '  */
 function bindObservableField(observable, observableField, targetNode, nodeField, properties = invalid) as boolean
@@ -344,11 +332,7 @@ end function
 '  * @param {string} observableField - field on observable to bind
 '  * @param {roSGNode} targetNode - node to bind to
 '  * @param {string} nodeField - field on target node to bind to
-'  * @param {assocarray} properties - the properties for the particular binding
-'  *                     - can include
-'  *                     isSettingInitialValue -(default true) if true,
-'  *                          will set the value instantly
-'  *                     transformFunction - function pointer to a value that will modify the value before calling the binding.
+'  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  */
 function bindFieldTwoWay(observable, observableField, targetNode, nodeField, properties = invalid) as void
   bindObservableField(observable, observableField, targetNode, nodeField, invalid)
@@ -451,8 +435,8 @@ function observerCallback(event) as void
       functionPointer = m._observableFunctionPointers[functionName]
       if functionPointer <> invalid
         properties = observers[functionName]
-        if properties.transformFunction <> invalid
-          bindingValue = properties.transformFunction(value)
+        if properties[1] <> invalid
+          bindingValue = properties[1](value)
         else
           bindingValue = value
         end if
@@ -530,7 +514,7 @@ end function
 '  * @param {boolean} settingInitialValue - if true, field will be set on binding call
 '  * @param {function} transformFunction - pointer to function to call to modify this value when executing the binding
 '  * @param {boolean} unbindOnCall - if true, then the binding is removed as soon as as it is invoked
-'  * @returns {assocarray} binding properties, set with relevant default values
+'  * @returns {array} binding properties, set with relevant default values, in order as they appear here
 '  */
 function createBindingProperties(settingInitialValue = true, transformFunction = invalid, unBindOnCall = false)
   if transformFunction <> invalid and not MU_isFunction(transformFunction)
@@ -538,11 +522,8 @@ function createBindingProperties(settingInitialValue = true, transformFunction =
     transformFunction = invalid
   end if
   
-  return {
-    "isSettingInitialValue": settingInitialValue
-    "transformFunction": transformFunction
-    "unBindOnCall": unBindOnCall
-  }
+  return [settingInitialValue = true, transformFunction, unBindOnCall = true]
+  
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
