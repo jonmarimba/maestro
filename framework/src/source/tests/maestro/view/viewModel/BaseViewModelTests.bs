@@ -18,18 +18,8 @@ end function
 '@Params[{"prop":invalid}]
 '@Params[{"name":""}]
 function constructor_invalid(subClass)
-  vm = BaseViewModel(subClass)
+  vm = BaseViewModel()
   m.assertEqual(vm.state, "invalid")
-end function
-
-'@Test valid
-function constructor_valid()
-  subClass = {
-    name: "testVM"
-  }
-  vm = BaseViewModel(subClass)
-  m.assertEqual(vm.state, "none")
-  m.assertEqual(vm.name, "testVM")
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -38,7 +28,7 @@ end function
 
 '@Test valid
 function testVM()
-  vm = createVM()
+  vm = MBVMT_createVM()
   m.assertEqual(vm.state, "none")
   m.assertEqual(vm.name, "testVM")
 
@@ -51,7 +41,7 @@ end function
 
 '@Test calls abstract methods
 function testVM_abstractMethods()
-  vm = createVM()
+  vm = MBVMT_createVM()
   m.assertEqual(vm.state, "none")
   m.assertEqual(vm.name, "testVM")
 
@@ -71,12 +61,12 @@ end function
 
 '@Test timeConstructor
 function timeConstructor()
-  vm = createVM()
+  vm = MBVMT_createVM()
 end function
 
 '@Test time method calls
 function testVM_time()
-  vm = createVM()
+  vm = MBVMT_createVM()
   vm.initialize()
   vm.onShow()
   vm.onHide()

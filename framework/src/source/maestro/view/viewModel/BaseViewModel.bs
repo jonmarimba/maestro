@@ -1,7 +1,7 @@
 import "../../observable/BaseObservable.bs"
 
 namespace MBVM
-class BaseViewModel extends BaseObserbale
+class BaseViewModel extends BaseObservable
 
 public function new()
 end function

@@ -325,7 +325,7 @@ end function
 '@Params["field1", "function1", "#value1"]
 function unobserveField_valid_oneObserver_oneField(fieldName, functionName, value)
   m.observable[fieldName] = value
-  m.observable.observeField(fieldName, functionName, {isSettingInitialValue:false})
+  m.observable.observeField(fieldName, functionName, [false])
 
   m.assertArrayCount(m.observable.observers, 1)
   m.assertAAHasKey(m.observable.observers[fieldName], functionName)
@@ -339,8 +339,8 @@ end function
 function unobserveField_valid_multipleObservers_oneField()
   m.observable["field1"] = 1
   m.observable["field2"] = 2
-  m.observable.observeField("field1", "func1", {isSettingInitialValue:false})
-  m.observable.observeField("field1", "func2", {isSettingInitialValue:false})
+  m.observable.observeField("field1", "func1", [0])
+  m.observable.observeField("field1", "func2", [0])
 
   m.assertArrayCount(m.observable.observers, 1)
   m.assertAAHasKey(m.observable.observers["field1"], "func1")
@@ -360,9 +360,9 @@ end function
 function unobserveField_valid_multipleObservers_multipleFields()
   m.observable["field1"] = 1
   m.observable["field2"] = 2
-  m.observable.observeField("field1", "func1", {isSettingInitialValue:false})
-  m.observable.observeField("field1", "func2", {isSettingInitialValue:false})
-  m.observable.observeField("field2", "func1", {isSettingInitialValue:false})
+  m.observable.observeField("field1", "func1", [0])
+  m.observable.observeField("field1", "func2", [0])
+  m.observable.observeField("field2", "func1", [0])
 
   m.assertArrayCount(m.observable.observers, 2)
 
@@ -404,7 +404,7 @@ end function
 '@Params[invalid]
 '@Params[22]
 function setContext_valid_node_invalidContextId(contextId)
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
 
   m.observable.setContext(contextId, contextNode)
 
@@ -415,7 +415,7 @@ end function
 function setContext_valid_noPendingBindings()
   m.expectOnce(m.observable, "firePendingObserverNotifications")
   m.expectOnce(m.observable, "firePendingBindingNotifications")
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
 
   m.observable.setContext("1", contextNode)
 
@@ -430,7 +430,7 @@ function setContext_valid_pendingBindings_observerOff()
   m.observable["field1Name"] = "#value1"
   m.observable.pendingObservers = {}
   m.observable.pendingObservers["field1Name"] = 1
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
 
   m.observable.setContext("1", contextNode)
 
@@ -445,7 +445,7 @@ function setContext_valid_pendingBindings()
   m.observable["field1Name"] = "#value1"
   m.observable.pendingObservers = {}
   m.observable.pendingObservers["field1Name"] = 1
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
 
   m.observable.setContext("1", contextNode)
 
@@ -461,7 +461,7 @@ end function
 '@Params["field1", "function1", "#value1"]
 function unobserveAllFields_valid_oneObserver_oneField(fieldName, functionName, value)
   m.observable[fieldName] = value
-  m.observable.observeField(fieldName, functionName, {isSettingInitialValue:false})
+  m.observable.observeField(fieldName, functionName, [0])
   m.assertArrayCount(m.observable.observers, 1)
 
   m.assertAAHasKey(m.observable.observers[fieldName], functionName)
@@ -479,7 +479,7 @@ end function
 function notify_oneObserver_oneField_notificationsEnabled_noContext()
   m.observable["_fieldName"] = "#value"
   m.observable.isBindingNotificationEnabled = true
-  m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
+  m.observable.observeField("_fieldName", "testFunction", [0])
 
   m.assertArrayCount(m.observable.observers, 1)
   m.assertAAHasKey(m.observable.observers._fieldName, "testFunction")
@@ -492,10 +492,10 @@ end function
 '@Test 1 field, 1 observer, context, no notifications
 function notify_oneObserver_oneField_notificationsDisabled_context()
   m.observable["_fieldName"] = "#value"
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = false
-  m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
+  m.observable.observeField("_fieldName", "testFunction", [0])
 
   m.assertArrayCount(m.observable.observers, 1)
   m.assertAAHasKey(m.observable.observers._fieldName, "testFunction")
@@ -508,10 +508,10 @@ end function
 '@Test 1 field, 1 observer, context,  notifications
 function notify_oneObserver_oneField_notificationsEnabled_context()
   m.observable["_fieldName"] = "#value"
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = true
-  m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
+  m.observable.observeField("_fieldName", "testFunction", [0])
 
   m.assertArrayCount(m.observable.observers, 1)
   m.assertAAHasKey(m.observable.observers._fieldName, "testFunction")
@@ -526,10 +526,10 @@ end function
 function notify_oneObserver_twoFields_notificationsEnabled_context()
   m.observable["_fieldName"] = "#value"
   m.observable["_fieldName2"] = "#value2"
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = true
-  m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
+  m.observable.observeField("_fieldName", "testFunction", [0])
 
   m.assertArrayCount(m.observable.observers, 1)
   m.assertAAHasKey(m.observable.observers._fieldName, "testFunction")
@@ -545,11 +545,11 @@ end function
 function notify_twoObservers_twoFields_notificationsEnabled_context()
   m.observable["_fieldName"] = "#value"
   m.observable["_fieldName2"] = "#value2"
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = true
-  m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
-  m.observable.observeField("_fieldName", "testFunction2", {isSettingInitialValue:false})
+  m.observable.observeField("_fieldName", "testFunction", [0])
+  m.observable.observeField("_fieldName", "testFunction2", [0])
 
   m.assertArrayCount(m.observable.observers, 1)
   m.assertAAHasKey(m.observable.observers._fieldName, "testFunction")
@@ -565,11 +565,11 @@ end function
 function notify_twoObservers_twoFields_notificationsEnabled_context_otherField()
   m.observable["_fieldName"] = "#value"
   m.observable["_fieldName2"] = "#value2"
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable.isBindingNotificationEnabled = true
-  m.observable.observeField("_fieldName", "testFunction", {isSettingInitialValue:false})
-  m.observable.observeField("_fieldName", "testFunction2", {isSettingInitialValue:false})
+  m.observable.observeField("_fieldName", "testFunction", [0])
+  m.observable.observeField("_fieldName", "testFunction2", [0])
 
   m.assertArrayCount(m.observable.observers, 1)
   m.assertAAHasKey(m.observable.observers._fieldName, "testFunction")
@@ -611,13 +611,13 @@ end function
 '@Test valid inputs - no initial value
 '@Params["_fieldName", "#RBSNode", "_targetField"]
 function bindField_valid(fieldName, targetNode, targetField)
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable[fieldName] = "value"
   targetNode.id ="nodeId"
   targetNode.addField(targetField, "string", false)
 
-  m.assertTrue(m.observable.bindField(fieldName, targetNode, targetField, {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField(fieldName, targetNode, targetField, [0]))
 
   bindings = m.observable.bindings[fieldName]
   m.assertAAHasKey(bindings, "1_nodeId__fieldName__targetField")
@@ -632,7 +632,7 @@ end function
 
 '@Test 2 fields
 function bindField_valid_2fields()
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -643,8 +643,8 @@ function bindField_valid_2fields()
   n2.addField("t2", "string", false)
   n2.id ="n2"
 
-  m.assertTrue(m.observable.bindField("f1", n1, "t1", {isSettingInitialValue:false}))
-  m.assertTrue(m.observable.bindField("f2", n2, "t2", {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField("f1", n1, "t1", [0]))
+  m.assertTrue(m.observable.bindField("f2", n2, "t2", [0]))
 
   bindings = m.observable.bindings["f1"]
   m.assertAAHasKey(bindings, "1_n1_f1_t1")
@@ -668,7 +668,7 @@ end function
 
 '@Test 1 fields 2 node targets
 function bindField_valid_1fields_2bindings()
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -679,8 +679,8 @@ function bindField_valid_1fields_2bindings()
   n2.addField("t2", "string", false)
   n2.id ="n2"
 
-  m.assertTrue(m.observable.bindField("f2", n1, "t1", {isSettingInitialValue:false}))
-  m.assertTrue(m.observable.bindField("f2", n2, "t2", {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField("f2", n1, "t1", [0]))
+  m.assertTrue(m.observable.bindField("f2", n2, "t2", [0]))
 
   m.assertAANotHasKey(m.observable.bindings, "f1")
 
@@ -727,7 +727,7 @@ end function
 '@Test 1 fields 2 node targets
 function unbindField_valid_1fields_2bindings()
   'setup 2 bindings
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -738,8 +738,8 @@ function unbindField_valid_1fields_2bindings()
   n2.addField("t2", "string", false)
   n2.id ="n2"
 
-  m.assertTrue(m.observable.bindField("f2", n1, "t1", {isSettingInitialValue:false}))
-  m.assertTrue(m.observable.bindField("f2", n2, "t2", {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField("f2", n1, "t1", [0]))
+  m.assertTrue(m.observable.bindField("f2", n2, "t2", [0]))
 
   m.assertAANotHasKey(m.observable.bindings, "f1")
 
@@ -793,7 +793,7 @@ end function
 
 '@Test not enabled
 function notifyBinding_notEnabled()
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -801,7 +801,7 @@ function notifyBinding_notEnabled()
   n1.id ="n1"
   m.observable.isBindingNotificationEnabled = false
   m.assertEmpty(m.observable.pendingBindings)
-  m.assertTrue(m.observable.bindField("f1", n1, "t1", {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField("f1", n1, "t1", [0]))
 
   m.assertTrue(m.observable.notifyBinding("f1"))
   m.assertNotEmpty(m.observable.pendingBindings)
@@ -809,7 +809,7 @@ end function
 
 '@Test enabled
 function notifyBinding_enabled()
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -817,7 +817,7 @@ function notifyBinding_enabled()
   n1.id ="n1"
   m.observable.isBindingNotificationEnabled = true
   m.assertEmpty(m.observable.pendingBindings)
-  m.assertTrue(m.observable.bindField("f1", n1, "title", {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField("f1", n1, "title", [0]))
 
   m.assertTrue(m.observable.notifyBinding("f1"))
   m.assertEmpty(m.observable.pendingBindings)
@@ -826,7 +826,7 @@ end function
 
 '@Test enabled mulitple bindings
 function notifyBinding_enabled_multiple()
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -837,8 +837,8 @@ function notifyBinding_enabled_multiple()
   n2.id ="n2"
   m.observable.isBindingNotificationEnabled = true
   m.assertEmpty(m.observable.pendingBindings)
-  m.assertTrue(m.observable.bindField("f1", n1, "title", {isSettingInitialValue:false}))
-  m.assertTrue(m.observable.bindField("f1", n2, "title", {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField("f1", n1, "title", [0]))
+  m.assertTrue(m.observable.bindField("f1", n2, "title", [0]))
 
   m.assertTrue(m.observable.notifyBinding("f1"))
   m.assertEmpty(m.observable.pendingBindings)
@@ -848,7 +848,7 @@ end function
 
 '@Test enabled mulitple bindings specfific key
 function notifyBinding_enabled_multiple_specificKey()
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -860,8 +860,8 @@ function notifyBinding_enabled_multiple_specificKey()
   n2.id ="n2"
   m.observable.isBindingNotificationEnabled = true
   m.assertEmpty(m.observable.pendingBindings)
-  m.assertTrue(m.observable.bindField("f1", n1, "title", {isSettingInitialValue:false}))
-  m.assertTrue(m.observable.bindField("f1", n2, "title", {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField("f1", n1, "title", [0]))
+  m.assertTrue(m.observable.bindField("f1", n2, "title", [0]))
 
   m.assertTrue(m.observable.notifyBinding("f1", "1_n2_f1_title"))
   m.assertEmpty(m.observable.pendingBindings)
@@ -871,7 +871,7 @@ end function
 
 '@Test enabled mulitple bindings specfific key - not found
 function notifyBinding_enabled_multiple_specificKey_notThere()
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   m.observable["f1"] = "v1"
   n1 = createObject("roSGNode", "ContentNode")
@@ -882,8 +882,8 @@ function notifyBinding_enabled_multiple_specificKey_notThere()
   n2.id ="n2"
   m.observable.isBindingNotificationEnabled = true
   m.assertEmpty(m.observable.pendingBindings)
-  m.assertTrue(m.observable.bindField("f1", n1, "title", {isSettingInitialValue:false}))
-  m.assertTrue(m.observable.bindField("f1", n2, "title", {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField("f1", n1, "title", [0]))
+  m.assertTrue(m.observable.bindField("f1", n2, "title", [0]))
 
   m.assertTrue(m.observable.notifyBinding("f1", "1_n3_f1_title"))
   m.assertEmpty(m.observable.pendingBindings)
@@ -897,7 +897,7 @@ end function
 
 '@Test
 function unbindAllFields()
-  contextNode = createContextNode()
+  contextNode = MBOT_createContextNode()
   m.observable.setContext("1", contextNode)
   'setup 2 bindings
   n1 = createObject("roSGNode", "ContentNode")
@@ -905,7 +905,7 @@ function unbindAllFields()
   n1.id ="n1"
   m.observable["f2"] = "v2"
 
-  m.assertTrue(m.observable.bindField("f2", n1, "t1", {isSettingInitialValue:false}))
+  m.assertTrue(m.observable.bindField("f2", n1, "t1", [0]))
 
   m.assertNotEmpty(m.observable.bindings)
   m.observable.unbindAllFields()
