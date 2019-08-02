@@ -12,7 +12,6 @@ A development platform for building roku channels in brighterscript
 [![GitHub](https://img.shields.io/github/release/georgejecook/maestro.svg?style=flat-square)](https://github.com/georgejecook/meastro/releases) 
 
 ## Links
- - **[Youtube training videos]()**
  - **[Documentation](docs/index.md)**
  - **[API Documentaiton](https://georgejecook.github.io/maestro)**
  - **[CHANGELOG](CHANGELOG.md)**
