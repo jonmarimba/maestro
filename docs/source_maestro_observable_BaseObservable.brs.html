@@ -1,15 +1,56 @@
-import "ObservableMixin.brs"
-import "../lib/Utils.bs"
-import "pkg:/source/rLog/rLogMixin.brs"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>source/maestro/observable/BaseObservable.brs - Documentation</title>
 
-namespace MBO
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseObservable.html">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#BaseObservable">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#bindField">bindField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#notifyBinding">notifyBinding</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setContext">setContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setField">setField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#unbindField">unbindField</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseScreen.html">BaseScreen</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseView.html">BaseView</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-FocusMixin.html">FocusMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-KeyMixin.html">KeyMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MaestroUtils.html">MaestroUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MTU%2520MaestroThreadUtils.html">MTU MaestroThreadUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ObservableMixin.html">ObservableMixin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindFieldTwoWay">bindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindingCallback">bindingCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindNodeField">bindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindObservableField">bindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.checkValidInputs">checkValidInputs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.cleanup">cleanup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observerCallback">observerCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.registerObservable">registerObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindFieldTwoWay">unbindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindNodeField">unbindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindObservableField">unbindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unobserveField">unobserveField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unregisterObservable">unregisterObservable</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ViewModelMixin.html">ViewModelMixin</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">source/maestro/observable/BaseObservable.brs</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'import "ObservableMixin.brs"
+'import "../lib/Utils.bs"
+'import "pkg:/source/rLog/rLogMixin.brs"
+
+
 
 ' /**
 '  * @module BaseObservable
 '  * @description Base class of all observables
 '  */
 
-class BaseObservable
+
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ Base observer class
@@ -24,23 +65,23 @@ class BaseObservable
 '  * @description creates a BaseObserver instance, which you can extend,
 '  *              note - that for correct function you must use the BaseObservableMixin methods to interact with this class for registering, observing and binding
 '  */
-public function new()
+      function MBO_new()
   m.checkValidInputs = MOM_checkValidInputs
 end function
 
-private _observableObject = true 'for framework tracking
-public isContextValid = false
-public isBindingNotificationEnabled = true
-public observers = {}
-public pendingObservers = {}
-public bindings = {}
-public pendingBindings = {}
+
+
+
+
+
+
+
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ Utils
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-public function getNodeFieldBindingKey(node, field, targetField)
+      function MBO_getNodeFieldBindingKey(node, field, targetField)
   return m.contextId + "_" + node.id + "_" + field + "_" + targetField
 end function
 
@@ -60,7 +101,7 @@ end function
 '  * @param {node} contextNode - the owner's context node, which is used to handle
 '  *                             scoped communication for observer/binding callbacks
 '  */
-public function setContext(contextId, contextNode) as void
+      function MBO_setContext(contextId, contextNode) as void
   m.contextId = contextId
   m.contextNode = contextNode
   m.isContextValid = MU_isString(contextId) and type(contextNode) = "roSGNode"
@@ -71,12 +112,12 @@ public function setContext(contextId, contextNode) as void
   end if
 end function
 
-public function destroy() as void
+      function MBO_destroy() as void
   m.unobserveAllFields()
   m.unbindAllFields()
 end function
 
-public function toggleNotifications(isEnabled) as void
+      function MBO_toggleNotifications(isEnabled) as void
   m.isBindingNotificationEnabled = isEnabled
   if(m.isBindingNotificationEnabled = true)
     '        logDebug("bindings renabled notifying pending observers")
@@ -85,14 +126,14 @@ public function toggleNotifications(isEnabled) as void
   end if
 end function
 
-public function firePendingObserverNotifications() as void
+      function MBO_firePendingObserverNotifications() as void
   for each field in m.pendingObservers
     m.notify(field)
   end for
   m.pendingObservers = {}
 end function
 
-public function firePendingBindingNotifications() as void
+      function MBO_firePendingBindingNotifications() as void
   for each field in m.pendingBindings
     m.notifyBinding(field)
   end for
@@ -113,13 +154,13 @@ end function
 '  * @param {boolean} alwaysNotify - if true, will notify on same value being set
 '  * @returns {boolean} true if succesful
 '  */
-public function setField(fieldName, value, originKey = invalid) as boolean
+      function MBO_setField(fieldName, value, originKey = invalid) as boolean
   if not MU_isString(fieldName) or fieldName.trim() = ""
     logError("Tried to setField with illegal field name")
     return false
   end if
   
-  if type(value) = "<uninitialized>"
+  if type(value) = "&lt;uninitialized>"
     logError("Tried to set a value to uninitialized! interpreting as invalid")
     value = invalid
   end if
@@ -141,7 +182,7 @@ end function
 '  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {boolean} true if successful
 '  */
-public function observeField(fieldName, functionName, properties = invalid) as boolean
+      function MBO_observeField(fieldName, functionName, properties = invalid) as boolean
   'TODO - I think we will want a mixin method for this, that provides a prepackaged node, with a context callback we can invoke
   if not MU_isString(fieldName) or fieldName.trim() = ""
     logError("Tried to observe field with illegal field name")
@@ -170,7 +211,7 @@ public function observeField(fieldName, functionName, properties = invalid) as b
   return true
 end function
 
-public function unobserveField(fieldName, functionName) as boolean
+      function MBO_unobserveField(fieldName, functionName) as boolean
   if not MU_isString(fieldName)
     logError("Tried to unobserve field with illegal field name")
     return false
@@ -195,11 +236,11 @@ public function unobserveField(fieldName, functionName) as boolean
   return true
 end function
 
-public function unobserveAllFields() as void
+      function MBO_unobserveAllFields() as void
   m.observers = {}
 end function
 
-public function notify(fieldName) as void
+      function MBO_notify(fieldName) as void
   observers = m.observers[fieldName]
   if observers = invalid
     observers = {}
@@ -235,7 +276,7 @@ end function
 '  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {boolean} true if successful
 '  */
-public function bindField(fieldName, targetNode, targetField, properties = invalid) as boolean
+      function MBO_bindField(fieldName, targetNode, targetField, properties = invalid) as boolean
   if not m.checkValidInputs(fieldName, targetNode, targetField)
     return false
   end if
@@ -295,7 +336,7 @@ end function
 '  * @param {string} targetField - field on node to update with change values
 '  * @returns {boolean} true if successful
 '  */
-public function unbindField(fieldName, targetNode, targetField) as boolean
+      function MBO_unbindField(fieldName, targetNode, targetField) as boolean
   if not m.checkValidInputs(fieldName, targetNode, targetField)
     return false
   end if
@@ -333,7 +374,7 @@ end function
 '  * @param {string} specificKey - if present, will specify a particular binding key
 '  * @param {string} excludeKey - if present, will not update this node field - to stop cyclical bindings
 '  */
-public function notifyBinding(fieldName, specificKey = invalid, excludeKey = invalid) as boolean
+      function MBO_notifyBinding(fieldName, specificKey = invalid, excludeKey = invalid) as boolean
   bindings = m.bindings[fieldName]
   if bindings = invalid
     ' logVerbose("No bindings for field ", fieldName)
@@ -346,11 +387,11 @@ public function notifyBinding(fieldName, specificKey = invalid, excludeKey = inv
   end if
   if m.isBindingNotificationEnabled
     for each key in bindings
-      if (specificKey = invalid or specificKey = key) and (excludeKey = invalid or excludeKey <> key)
+      if (specificKey = invalid or specificKey = key) and (excludeKey = invalid or excludeKey &lt;> key)
         binding = bindings[key]
         if type(binding.node) = "roSGNode"
           if binding.node.doesExist(binding.targetField)
-            if binding.transformFunction <> invalid
+            if binding.transformFunction &lt;> invalid
               bindingValue = binding.transformFunction(value)
             else
               bindingValue = value
@@ -373,7 +414,7 @@ public function notifyBinding(fieldName, specificKey = invalid, excludeKey = inv
   return true
 end function
 
-public function unbindAllFields() as void
+      function MBO_unbindAllFields() as void
   m.bindings = {}
 end function
 
@@ -381,13 +422,84 @@ end function
 '++ support for node fields
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-public function bindNodeField(targetNode, nodeField, observableField, properties = invalid) as boolean
+      function MBO_bindNodeField(targetNode, nodeField, observableField, properties = invalid) as boolean
   return MOM_bindNodeField(targetNode, nodeField, m, observableField, properties)
 end function
 
-public function unbindNodeField(targetNode, nodeField, observableField) as boolean
+      function MBO_unbindNodeField(targetNode, nodeField, observableField) as boolean
   return MOM_unbindNodeField(targetNode, nodeField, m, observableField)
 end function
 
 end class
-end namespace
+
+
+
+      function __BaseObservable_builder()
+      instance = {}
+      BaseObservable_instance = {
+        
+
+         __BaseObservable: MBO_new
+        
+
+        getNodeFieldBindingKey: MBO_getNodeFieldBindingKey
+        setContext: MBO_setContext
+        destroy: MBO_destroy
+        toggleNotifications: MBO_toggleNotifications
+        firePendingObserverNotifications: MBO_firePendingObserverNotifications
+        firePendingBindingNotifications: MBO_firePendingBindingNotifications
+        setField: MBO_setField
+        observeField: MBO_observeField
+        unobserveField: MBO_unobserveField
+        unobserveAllFields: MBO_unobserveAllFields
+        notify: MBO_notify
+        bindField: MBO_bindField
+        unbindField: MBO_unbindField
+        notifyBinding: MBO_notifyBinding
+        unbindAllFields: MBO_unbindAllFields
+        bindNodeField: MBO_bindNodeField
+        unbindNodeField: MBO_unbindNodeField
+        
+
+        isContextValid: false
+        isBindingNotificationEnabled: true
+        observers: {}
+        pendingObservers: {}
+        bindings: {}
+        pendingBindings: {}
+        
+
+        __observableObject: true 'for framework tracking
+        
+
+      }
+      instance.append(BaseObservable_instance)
+      return instance
+      end function
+    
+
+
+      function BaseObservable()
+        instance = __BaseObservable_builder()
+        instance.__BaseObservable()
+        return instance
+      end function
+    </code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 01 2019 20:12:16 GMT-0500 (-05) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

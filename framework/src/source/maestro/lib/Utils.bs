@@ -1,3 +1,7 @@
+' /**
+'  * @module MaestroUtils
+'  * @description General maestro util methods
+'  */
 namespace MU
 
 function isUndefined(value)

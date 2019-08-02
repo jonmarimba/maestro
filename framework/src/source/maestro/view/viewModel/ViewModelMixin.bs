@@ -2,6 +2,12 @@ import "../lib/Utils.bs"
 import "pkg:/source/rLog/rLogMixin.brs"
 
 namespace MVVM
+
+' /**
+'  * @module ViewModelMixin
+'  * @description Mixin method for helping with ViewModelIntegration. These are all private methods, handled by the framework
+'  */
+
 'note - not using namespaces on mixin methods until the IDE supports them, or
 'we won't get symbol definitions
 function isVM(vm)

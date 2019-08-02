@@ -1,5 +1,11 @@
 'Note this file is intentionally _not_ namespaced
 
+
+' /**
+'  * @module FocusMixin
+'  * @description Mixin methods for managing focus
+'  */
+
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ FOCUS
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

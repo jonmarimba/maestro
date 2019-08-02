@@ -2,6 +2,12 @@ import "pkg:/source/rLog/rLogMixin.brs"
 import "../mixin/FocusMixin.brs"
 import "../mixin/KeyMixin.brs"
 
+
+' /**
+'  * @module BaseView
+'  * @description BaseView class for all controls or screens
+'  */
+
 function init() as void
   m.modelLocator = m.global.modelLocator
   focusMixinInit()

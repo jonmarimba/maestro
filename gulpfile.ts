@@ -2,13 +2,17 @@ import { series } from "gulp";
 import { BurpConfig, BurpProcessor } from "burp-brightscript";
 import { RooibosProcessor } from "rooibos-preprocessor";
 import { MaestroProjectProcessor, createMaestroConfig } from 'maestro-cli';
+
 import * as fs from 'fs-extra';
+import * as path from 'path';
 
 const gulp = require('gulp');
 const gulpClean = require('gulp-clean');
 const outDir = './build';
 const rokuDeploy = require('roku-deploy');
 const cp = require('child_process');
+const pkg = require('./package.json');
+const zip = require('gulp-zip');
 
 let args = {
   host: process.env.ROKU_HOST || '192.168.16.3',
@@ -106,20 +110,27 @@ async function compile(cb) {
   cb();
 }
 
-function bundle(cb) {
-  fs.removeSync('dist');
-  fs.mkdirSync('dist');
-  fs.mkdirSync('dist/source');
-  fs.mkdirSync('dist/components');
-  fs.copySync('build/source/maestro', 'dist/source/maestro');
-  fs.copySync('build/components/maestro', 'dist/components/maestro');
-  fs.copySync('build/source/rLog', 'dist/source/rLog');
-  fs.copySync('build/components/rLogComponents', 'dist/components/rLogComponents');
-  cb();
+function bundle() {
+  return gulp.src([
+    'build/source/maestro/**/*',
+    'build/components/maestro/**/*',
+    'build/source/rLog/**/*',
+    'build/components/rLogComponents/**/*'
+  ], { base: './build' })
+    .pipe(zip(`maestro${pkg.version}.zip`))
+    .pipe(gulp.dest('./dist'));
+}
+
+function bundleNoRLog() {
+  return gulp.src([
+    'build/source/maestro/**/*',
+    'build/components/maestro/**/*',
+  ], { base: './build' })
+    .pipe(zip(`maestro${pkg.version}-noRLog.zip`))
+    .pipe(gulp.dest('./dist'));
 }
 
 exports.build = series(clean, createDirectories, compile);
 exports.prePublishTests = series(exports.build, prepareTests, addDevLogs)
 exports.runTests = series(exports.prePublishTests, zipTests, deployTests)
-// exports.dist = series(exports.build, doc, bundle);
-exports.dist = series(bundle);
+exports.dist = series(exports.build, doc, bundle, bundleNoRLog);

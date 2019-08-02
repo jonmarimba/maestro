@@ -1,0 +1,16 @@
+{
+  "plugins": ["brightscriptCommentsOnlyJSDocPlugin.js", "plugins/markdown"],
+  "source": {
+    "include": [ "build\\components\\maestro", "build\\source\\maestro"],
+    "includePattern": ".+\\.brs?$"
+  },
+  "opts": {
+    "recurse": true,
+    "verbose": true,
+    "debug": true
+  },
+  "templates": {
+    "systemName": "maestro",
+    "search": true
+  }
+}

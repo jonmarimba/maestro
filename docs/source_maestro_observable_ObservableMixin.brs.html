@@ -1,7 +1,48 @@
-import "../lib/Utils.bs"
-import "pkg:/source/rLog/rLogMixin.brs"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>source/maestro/observable/ObservableMixin.brs - Documentation</title>
 
-namespace MOM
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseObservable.html">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#BaseObservable">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#bindField">bindField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#notifyBinding">notifyBinding</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setContext">setContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setField">setField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#unbindField">unbindField</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseScreen.html">BaseScreen</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseView.html">BaseView</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-FocusMixin.html">FocusMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-KeyMixin.html">KeyMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MaestroUtils.html">MaestroUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MTU%2520MaestroThreadUtils.html">MTU MaestroThreadUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ObservableMixin.html">ObservableMixin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindFieldTwoWay">bindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindingCallback">bindingCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindNodeField">bindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindObservableField">bindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.checkValidInputs">checkValidInputs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.cleanup">cleanup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observerCallback">observerCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.registerObservable">registerObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindFieldTwoWay">unbindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindNodeField">unbindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindObservableField">unbindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unobserveField">unobserveField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unregisterObservable">unregisterObservable</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ViewModelMixin.html">ViewModelMixin</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">source/maestro/observable/ObservableMixin.brs</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'import "../lib/Utils.bs"
+'import "pkg:/source/rLog/rLogMixin.brs"
+
+
 
 
 ' /**
@@ -27,7 +68,7 @@ namespace MOM
 '  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {returnType} returnDescription
 '  */
-function observeField(observable, field, functionPointer, properties = invalid) as boolean
+function MOM_observeField(observable, field, functionPointer, properties = invalid) as boolean
   if not registerObservable(observable)
     logError("could not observe field - the observable failed to register")
     return false
@@ -38,7 +79,7 @@ function observeField(observable, field, functionPointer, properties = invalid) 
     return false
   end if
   
-  functionName = functionPointer.toStr().mid(10)
+  functionMOM_Name = functionPointer.toStr().mid(10)
   
   if not m._observableFunctionPointers.doesExist(functionName)
     m._observableFunctionPointerCounts[functionName] = 0
@@ -57,7 +98,7 @@ end function
 '  * @param {paramType} paramDescription
 '  * @returns {returnType} returnDescription
 '  */
-function unobserveField(observable, observableField, functionPointer) as boolean
+function MOM_unobserveField(observable, observableField, functionPointer) as boolean
   if not isRegistered(observable)
     logError("could not unobserve field - the observable has not been registered")
     return false
@@ -67,7 +108,7 @@ function unobserveField(observable, observableField, functionPointer) as boolean
     logError("the function pointer MUST be a function")
     return false
   end if
-  functionName = functionPointer.toStr().mid(10)
+  functionMOM_Name = functionPointer.toStr().mid(10)
   if m._observableFunctionPointerCounts.doesExist(functionName)
     m._observableFunctionPointerCounts[functionName] = m._observableFunctionPointerCounts[functionName] - 1
     
@@ -92,7 +133,7 @@ end function
 '  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {boolean} true if successful
 '  */
-function bindNodeField(targetNode, nodeField, observable, observableField, properties = invalid) as boolean
+function MOM_bindNodeField(targetNode, nodeField, observable, observableField, properties = invalid) as boolean
   if not registerObservable(observable)
     logError("could not bind node field - the observable failed to register")
     return false
@@ -138,7 +179,7 @@ function bindNodeField(targetNode, nodeField, observable, observableField, prope
   
   m._observableNodeBindings[nodeKey] = nodeBindings
   if properties[0] = true
-    if properties[1] <> invalid
+    if properties[1] &lt;> invalid
       value = properties[1](targetNode[nodeField])
     else
       value = targetNode[nodeField]
@@ -169,7 +210,7 @@ end function
 '  * @param {string} observableField - field on this observer to update with change values
 '  * @returns {boolean} true if successful
 '  */
-function unbindNodeField(targetNode, nodeField, observable, observableField) as boolean
+function MOM_unbindNodeField(targetNode, nodeField, observable, observableField) as boolean
   if not checkValidInputs(observableField, targetNode, nodeField)
     return false
   end if
@@ -183,7 +224,7 @@ function unbindNodeField(targetNode, nodeField, observable, observableField) as 
   key = observable.getNodeFieldBindingKey(targetNode, nodeField, observableField)
   bindings = nodeBindings[key]
   
-  if bindings <> invalid
+  if bindings &lt;> invalid
     nodeBindings.delete(key)
   end if
   
@@ -211,13 +252,13 @@ end function
 '  * @param {observable} instance of an observable
 '  * @returns {boolean} true if successfully registered, or was already registered
 '  */
-function registerObservable(observable) as boolean
+function MOM_registerObservable(observable) as boolean
   if not isObservable(observable)
     logError("the passed in object is not an Observable subclass")
     return false
   end if
   
-  if observable.doesExist("contextId") and m._observables <> invalid and m._observables.doesExist(observable.contextId)
+  if observable.doesExist("contextId") and m._observables &lt;> invalid and m._observables.doesExist(observable.contextId)
     'we don't need to reregister this observable
     'TODO - check if it's the same observable; but that will require
     'enforcing ids or internal guids..
@@ -260,7 +301,7 @@ end function
 '  * @param {BaseObservable} instance of an observable
 '  * @returns {boolean} true if successfully removed
 '  */
-function unregisterObservable(observable) as boolean
+function MOM_unregisterObservable(observable) as boolean
   if not isRegistered(observable)
     logError("passed in node did not contain a context Id")
     return false
@@ -291,7 +332,7 @@ end function
 '  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  * @returns {boolean} true if successful
 '  */
-function bindObservableField(observable, observableField, targetNode, nodeField, properties = invalid) as boolean
+function MOM_bindObservableField(observable, observableField, targetNode, nodeField, properties = invalid) as boolean
   if registerObservable(observable)
     return observable.bindField(observableField, targetNode, nodeField, properties)
   end if
@@ -310,7 +351,7 @@ end function
 '  * @param {string} nodeField - name of field to set on node
 '  * @returns {boolean} true if successful
 '  */
-function unbindObservableField(observable, observableField, targetNode, nodeField) as boolean
+function MOM_unbindObservableField(observable, observableField, targetNode, nodeField) as boolean
   if isObservable(observable)
     return observable.unbindField(observableField, targetNode, nodeField)
   end if
@@ -324,8 +365,8 @@ end function
 '  * @function
 '  * @description cleans up all vars associated with binding support
 '  */
-function cleanup()
-  if m._observableContext <> invalid
+function MOM_cleanup()
+  if m._observableContext &lt;> invalid
     m._observableContext.unobserveField("bindingMessage")
   end if
   'TODO - remove all bindings!
@@ -353,7 +394,7 @@ end function
 '  * @param {string} nodeField - field on target node to bind to
 '  * @param {array} properties - the properties for the particular binding. see @MOM_createBindingProperties for more info
 '  */
-function bindFieldTwoWay(observable, observableField, targetNode, nodeField, properties = invalid) as void
+function MOM_bindFieldTwoWay(observable, observableField, targetNode, nodeField, properties = invalid) as void
   bindObservableField(observable, observableField, targetNode, nodeField, invalid)
   bindNodeField(targetNode, nodeField, observable, observableField, { isSettingInitialValue: false })
 end function
@@ -369,7 +410,7 @@ end function
 '  * @param {roSGNode} targetNode - node to bind to
 '  * @param {string} nodeField - field on target node to bind to
 '  */
-function unbindFieldTwoWay(observable, observableField, targetNode, nodeField) as void
+function MOM_unbindFieldTwoWay(observable, observableField, targetNode, nodeField) as void
   if isRegistered(observable)
     unbindObservableField(observable, observableField, targetNode, nodeField)
     unbindNodeField(targetNode, nodeField, observable, observableField)
@@ -393,7 +434,7 @@ end function
 '  *              the correct observable field or invoke the correct observable function
 '  * @param {event} event
 '  */
-function bindingCallback(event) as void
+function MOM_bindingCallback(event) as void
   if m._observableNodeBindings = invalid
     logError("Binding callback invoked when no node bindings were registered")
     return
@@ -411,7 +452,7 @@ function bindingCallback(event) as void
     bindingData = nodeBindings[key]
     observable = m._observables[bindingData.contextId]
     if MU_isAACompatible(observable)
-      if bindingData.transformFunction <> invalid
+      if bindingData.transformFunction &lt;> invalid
         bindingValue = bindingData.transformFunction(value)
       else
         bindingValue = value
@@ -442,7 +483,7 @@ end function
 '  *              passed onto the correct function
 '  * @param {event} event
 '  */
-function observerCallback(event) as void
+function MOM_observerCallback(event) as void
   if m._observables = invalid
     logError("Observer callback invoked when no node observables were registered")
     return
@@ -451,18 +492,18 @@ function observerCallback(event) as void
   data = event.getData()
   observable = m._observables[data.contextId]
   observers = observable.observers[data.fieldName]
-  if observers <> invalid
+  if observers &lt;> invalid
     value = observable[data.fieldName]
     for each functionName in observers
-      functionPointer = m._observableFunctionPointers[functionName]
-      if functionPointer <> invalid
+      functionMOM_Pointer = m._observableFunctionPointers[functionName]
+      if functionPointer &lt;> invalid
         properties = observers[functionName]
-        if properties[1] <> invalid
+        if properties[1] &lt;> invalid
           bindingValue = properties[1](value)
         else
           bindingValue = value
         end if
-        functionPointer(bindingValue)
+        functionMOM_Pointer(bindingValue)
       else
         logError("could not find function pointer for function ", functionName)
       end if
@@ -482,7 +523,7 @@ end function
 '  * @param {string} nodeField  - name of target field
 '  * @returns {boolean} true if valid
 '  */
-function checkValidInputs(observableField, targetNode, nodeField) as boolean
+function MOM_checkValidInputs(observableField, targetNode, nodeField) as boolean
   if not MU_isString(observableField) or observableField.trim() = ""
     logError("illegal observableField", observableField)
     return false
@@ -493,7 +534,7 @@ function checkValidInputs(observableField, targetNode, nodeField) as boolean
     return false
   end if
   
-  if type(targetNode) <> "roSGNode"
+  if type(targetNode) &lt;> "roSGNode"
     logError("illegal node")
     return false
   end if
@@ -511,7 +552,7 @@ function checkValidInputs(observableField, targetNode, nodeField) as boolean
   return true
 end function
 
-function isObservable(observable) as boolean
+function MOM_isObservable(observable) as boolean
   if not MU_isAACompatible(observable)
     logError("non aa object passed in")
     return false
@@ -525,7 +566,7 @@ function isObservable(observable) as boolean
   return true
 end function
 
-function isRegistered(observable) as boolean
+function MOM_isRegistered(observable) as boolean
   return isObservable(observable) and observable.doesExist("contextId")
 end function
 
@@ -540,8 +581,8 @@ end function
 '  * @param {boolean} unbindOnCall - if true, then the binding is removed as soon as as it is invoked
 '  * @returns {array} binding properties, set with relevant default values, in order as they appear here
 '  */
-function createBindingProperties(settingInitialValue = true, transformFunction = invalid, unBindOnCall = false)
-  if transformFunction <> invalid and not MU_isFunction(transformFunction)
+function MOM_createBindingProperties(settingInitialValue = true, transformFunction = invalid, unBindOnCall = false)
+  if transformFunction &lt;> invalid and not MU_isFunction(transformFunction)
     logError("transformFunction was not a function! was it in scope?")
     transformFunction = invalid
   end if
@@ -554,7 +595,7 @@ end function
 '++ Transform functions
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function transform_invertBoolean(value)
+function MOM_transform_invertBoolean(value)
   if MU_isBoolean(value)
     return not value
   else
@@ -563,4 +604,22 @@ function transform_invertBoolean(value)
   end if
 end function
 
-end namespace
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 01 2019 20:12:16 GMT-0500 (-05) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

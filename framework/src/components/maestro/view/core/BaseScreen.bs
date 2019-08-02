@@ -1,3 +1,9 @@
+' /**
+'  * @module BaseScreen
+'  * @description Base view for all screens.
+'     provides common functions, which all screens require
+'  */
+
 function Init()
   'get a reference to your model locator/central message bus/DIP here.
   ' m.modelLocator = m.global.modelLocator
