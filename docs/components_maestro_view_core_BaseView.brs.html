@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>components/maestro/view/core/BaseView.brs - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseObservable.html">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#BaseObservable">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#bindField">bindField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#notifyBinding">notifyBinding</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setContext">setContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setField">setField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#unbindField">unbindField</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseScreen.html">BaseScreen</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseView.html">BaseView</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-FocusMixin.html">FocusMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-KeyMixin.html">KeyMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MaestroUtils.html">MaestroUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MTU%2520MaestroThreadUtils.html">MTU MaestroThreadUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ObservableMixin.html">ObservableMixin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindFieldTwoWay">bindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindingCallback">bindingCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindNodeField">bindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindObservableField">bindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.checkValidInputs">checkValidInputs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.cleanup">cleanup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observerCallback">observerCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.registerObservable">registerObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindFieldTwoWay">unbindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindNodeField">unbindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindObservableField">unbindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unobserveField">unobserveField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unregisterObservable">unregisterObservable</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ViewModelMixin.html">ViewModelMixin</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">components/maestro/view/core/BaseView.brs</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'import "pkg:/source/rLog/rLogMixin.brs"
+'import "../mixin/FocusMixin.brs"
+'import "../mixin/KeyMixin.brs"
+
+
+' /**
+'  * @module BaseView
+'  * @description BaseView class for all controls or screens
+'  */
+
+function init() as void
+  m.modelLocator = m.global.modelLocator
+  focusMixinInit()
+  keyPressMixinInit()
+  m.wasShown = false
+  m.isKeyPressLocked = false
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ utils
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function findNodes(nodeIds) as void
+  if (type(nodeIds) = "roArray")
+    for each nodeId in nodeIds
+      node = m.top.findNode(nodeId)
+      if (node &lt;> invalid)
+        m[nodeId] = node
+      else
+        logWarn("could not find node with id {0}", nodeId)
+      end if
+    end for
+  end if
+end function
+
+function getContentItemAtRowIndex(content, index)
+  if index.Count() = 2 then
+    logInfo("getContentItemAtRowIndex [" + stri(index[0]) + "," + stri(index[1]) + "]")
+    'get content node by index from grid
+    row = content.getChild(index[0])
+    if row &lt;> invalid then
+      item = row.getChild(index[1])
+      if item &lt;> invalid then
+        return item
+      end if
+    end if
+  end if
+  return invalid
+end function
+
+function getRowAtIndex(content, index)
+  if content &lt;> invalid and index.Count() = 2 then
+    logInfo("getRowAtIndex [" + stri(index[0]) + "," + stri(index[1]) + "]")
+    return content.getChild(index[0])
+  end if
+  return invalid
+end function
+
+function getIndexOfItem(parent, item)
+  if item &lt;> invalid
+    for index = 0 to parent.getChildCount() -1
+      node = parent.getChild(index)
+      if node.id = item.id
+        return index
+      end if
+    end for
+  end if
+  return -1
+end function
+
+' /**
+'  * @member intializeView
+'  * @memberof module:BaseView
+'  * @instance
+'  * @description initializes the passed in View
+'  * @param {BaseView} the view to initialize
+'  */
+function initializeView(view, args = invalid) as void
+  view.callFunc("initialize", args)
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'** VISIBILITY
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function _onVisibleChange()
+  'TODO - does the nav controller handle this in future?
+  logInfo(m.top.id, "_onVisibleChange visible ", m.top.visible)
+  if m.top.visible
+    onShow(invalid)
+  else
+    onHide(invalid)
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Lifecycle methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function applyStyle()
+  styles = m.modelLocator.styles
+  localizations = m.modelLocator.localizations
+  assets = m.modelLocator.assets
+  _applyStyle(styles, localizations, assets)
+end function
+
+function onShow(args) as void
+  ' ? ">> base VIEW ONSHOW " ; m.top.id ; " isShown " ; m.top.isShown
+  oldIsShowing = m.top.isShown
+  if not m.top.isInitialized
+    return
+  end if
+  m.top.isShown = true
+  
+  if not m.wasShown
+    _onFirstShow()
+    m.wasShown = true
+  end if
+
+  if oldIsShowing &lt;> m.top.isShown
+    _baseScreenOnShow()
+    _onShow()
+  end if
+end function
+
+function onHide(args)
+  if m.wasShown
+    m.top.isShown = false
+    _onHide()
+  else
+    logWarn("onHide called before show: ignoring")
+  end if
+end function
+
+function initialize(args = invalid)
+  logMethod("initialize")
+  if not m.top.isInitialized
+    m.top.isInitialized = true
+    _initialize(args)
+    applyStyle()
+    m.top.observeField("visible", "_onVisibleChange")
+    if m.top.visible and not m.top.isShown
+      onShow(invalid)
+    end if
+  else
+    logWarn("View was already initialized. Ignoring subsequent call ", m.top)
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ abstract lifecycle methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function _initialize(args)
+end function
+
+function _applyStyle(styles, localizations, assets)
+  'override me ; but this function should appear at the top of the script file, 
+  ' with the init method, for readability
+end function
+
+function _onFirstShow()
+end function
+
+'SG has a limit to how many times you can override a method
+'this function allows us to wire in extra show driven behavior in screens.
+'It's a hack; but it's better than having to duplicate behavior
+function _baseScreenOnShow()
+end function
+
+function _onShow()
+end function
+
+function _onHide()
+end function
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 01 2019 20:12:16 GMT-0500 (-05) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="ObservableTests" extends="Group">
+  <script type="text/brightscript" uri="pkg:/source/tests/maestro/observable/ObservableTests.bs"/>
+  <interface>
+    <function name="Rooibos_RunNodeTests" />
+  </interface>
+
+  <children>  
+  </children>
+</component>

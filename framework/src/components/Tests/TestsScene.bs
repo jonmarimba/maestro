@@ -1,0 +1,11 @@
+import "pkg:/source/maestro/lib/Utils.bs"
+import "pkg:/source/tests/rooibosDist.brs" 
+import "pkg:/source/rLog/rLogMixin.brs" 
+import "pkg:/source/maestro/view/viewModel/BaseViewModel.brs"
+
+function Init() as void
+  m.global.addFields({ "isFocusLocked": false })
+  m.top.rLog = initializeRlog()
+  m.top.rLog.logLevel = 5
+end function
+

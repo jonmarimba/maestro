@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>components/maestro/view/core/BaseScreen.brs - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseObservable.html">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#BaseObservable">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#bindField">bindField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#notifyBinding">notifyBinding</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setContext">setContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setField">setField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#unbindField">unbindField</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseScreen.html">BaseScreen</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseView.html">BaseView</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-FocusMixin.html">FocusMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-KeyMixin.html">KeyMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MaestroUtils.html">MaestroUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MTU%2520MaestroThreadUtils.html">MTU MaestroThreadUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ObservableMixin.html">ObservableMixin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindFieldTwoWay">bindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindingCallback">bindingCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindNodeField">bindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindObservableField">bindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.checkValidInputs">checkValidInputs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.cleanup">cleanup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observerCallback">observerCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.registerObservable">registerObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindFieldTwoWay">unbindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindNodeField">unbindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindObservableField">unbindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unobserveField">unobserveField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unregisterObservable">unregisterObservable</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ViewModelMixin.html">ViewModelMixin</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">components/maestro/view/core/BaseScreen.brs</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>' /**
+'  * @module BaseScreen
+'  * @description Base view for all screens.
+'     provides common functions, which all screens require
+'  */
+
+function Init()
+  'get a reference to your model locator/central message bus/DIP here.
+  ' m.modelLocator = m.global.modelLocator
+
+  'Track whatever constitutes a reload here, so any visible views can get reloaded
+  ' m.modelLocator.user.observeField("isLoggedIn", "onUserChange")
+end function
+
+function onUserChange()
+  if m.top.isShown
+    m.top.isUserChangePending = false
+    _onUserChange()
+  else
+    logInfo("user is change; but screen is not showing - marked as pending")
+    m.top.isUserChangePending = true
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Overridden methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function _baseScreenOnShow()
+  logMethod("_baseScreenOnShow")
+  if m.top.isUserChangePending
+    logInfo("a user change was pending, and the screen is now shown")
+    m.top.isUserChangePending = false
+    _onUserChange()
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ abstract methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+function _onUserChange()
+  'override me
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ nav support
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function push(view)
+  if (m.top.navController &lt;> invalid)
+    m.top.navController.callFunc("push", view)
+  else
+    logError("Push failed - there is no navcontroller on ", m.top)
+  end if
+end function
+
+function pop() as object
+  if (m.top.navController &lt;> invalid)
+    return m.top.navController.callFunc("pop", invalid)
+  else
+    logError("Pop failed - there is no navcontroller on ", m.top)
+  end if
+end function
+
+function resetNavControllerToRoot()
+  logMethod("resetNavControllerToRoot." + m.top.id)
+  if (m.top.navController &lt;> invalid)
+    m.top.navController.callFunc("resetToIndex", 0)
+  else
+    logError("Pop failed - there is no navcontroller on ", m.top)
+  end if
+end function
+
+function resetNavController(newFirstScreen = invalid)
+  logMethod("resetNavController." + m.top.id)
+  if (m.top.navController &lt;> invalid)
+    m.top.navController.callFunc("reset", newFirstScreen)
+  else
+    logError("Pop failed - there is no navcontroller on ", m.top)
+  end if
+end function
+
+function onAddedToAggregateView(navController)
+  logMethod("onAddedToAggregateView", m.top.id)
+  toggleLoadingIndicator(true, "screen was in loading state when added to nav controller")
+
+  _onAddedToAggregateView(navController)
+end function
+
+function onRemovedFromAggregateView(navController)
+  logMethod("onRemovedFromAggregateView", m.top.id)
+  _onRemovedFromAggregateView(navController)
+end function
+
+function _onAddedToAggregateView(navController)
+end function
+
+function _onRemovedFromAggregateView(navController)
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Global app services
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+' Note:
+' The functions here are considered fundamental application-level service functions
+' much as one might consider localization/tab navigation/accessing device sensors/DOM/file system/etc
+
+' This will vary app to app - here's some examples
+function playSelection(selection, isResuming = false, originScreen = "details")
+end function
+
+function createSelectionFromContent(currentItem, collection = invalid)
+end function
+
+function showOptionsMenu()
+end function
+
+function hideOptionsMenu()
+end function
+
+function showDialog(title = "", message = "", buttons = invalid, focusTargetAfterClosing = invalid)
+end function
+
+function closeDialog(dialog = invalid)
+end function
+
+function postAnalyticsEvent(event)
+end function
+
+function toggleTabBarFocus(isFocused)
+end function
+
+function toggleLoadingIndicator(isActive, reason = "")
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Screen helpers
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+' /**
+'  * @member getTopScreen
+'  * @memberof module:BaseScreen
+'  * @instance
+'  * @description gets the screen at the top of this screen's sceneGraph.
+'  * @returns {BaseScreen} a screen considered as the top of this graph
+'  */
+function getTopScreen(args = invalid)
+  logMethod("getTopScreen")
+  topScreen = _getTopScreen()
+  if topScreen = invalid
+    if m.top.navController &lt;> invalid and m.top.navController.numberOfViews > 0
+      topScreen = m.top.navController.currentView
+    else
+      topScreen = m.top
+    end if
+  end if
+  return topScreen
+end function
+
+' /**
+'  * @member _getTopScreen
+'  * @memberof module:BaseScreen
+'  * @instance
+'  * @description override point, for a screen to provide it's own means
+'  * of looking up a screen at the top of it's stack
+'  * @param {paramType} paramDescription
+'  * @returns {returnType} returnDescription
+'  */
+function _getTopScreen()
+  return invalid
+end function
+
+function getScreenForContent(content)
+  return invalid
+end function
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 01 2019 20:12:16 GMT-0500 (-05) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

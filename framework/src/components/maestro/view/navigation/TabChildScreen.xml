@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="TabChildScreen" extends="BaseScreen">
+
+  <interface>
+    <!-- INPUTS -->
+      <field id="content" type="node" />
+    </interface>
+
+    <children>
+
+      <!-- Navcontroller that contains all views to be shown in a TabController. Note - this navController does not have
+      autoFocus enabled, becuase we don't want these views to capture focus when moving between tabs -->
+      <NavController 
+        id="navController" 
+        name="tabChildNavController"
+        visible="false"
+        isAutoFocusEnabled="false" />
+    </children>
+</component>
