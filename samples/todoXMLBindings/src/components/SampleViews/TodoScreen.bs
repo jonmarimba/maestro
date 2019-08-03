@@ -1,0 +1,36 @@
+import "pkg:/source/rLog/rLogMixin.brs"
+import "pkg:/source/maestro/observable/ObservableMixin.brs"
+import "pkg:/source/maestro/view/viewModel/ViewModelMixin.brs"
+import "pkg:/source/view/viewModels/TodoScreenVM.brs"
+
+function Init()
+  registerLogger("TodoScreen")
+  findNodes(["titleLabel", "itemList", "addButton", "removeButton"])
+  findNodes(["noItemLabel"])
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Lifecycle methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function _initialize(args)
+  m.vm = TodoScreenVM()
+  m.vm.initialize()
+  MVVM.createFocusMap(m.vm)
+  M_initBindings()
+  MOM.observeField(m.vm, "focusId", MVVM.onFocusIdChange)
+end function
+
+function getFocusTitle(value)
+  if value <> invalid
+    return "Focused Item " + value.title
+  else
+    return "No item is selected"
+  end if
+end function
+
+function _onGainedFocus(isSelfFocused)
+  if isSelfFocused
+    MVVM.onFocusIdChange(m.vm.focusId)
+  end if
+end function

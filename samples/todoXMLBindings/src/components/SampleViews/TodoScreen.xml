@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component
+	name="TodoScreen"
+	extends="BaseScreen"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	
+>
+	<interface>
+	</interface>
+
+	<children>
+    
+		<LayoutGroup>
+			<Label text="Home view" />
+      <Rectangle 
+      height="200"/>
+      <Button 
+        id="addButton" 
+        text="add"
+        buttonSelected="@(vm.addTodo())"
+        />
+      <Button 
+        id="removeButton" 
+        buttonSelected="@(vm.removeTodo())"
+        text="remove"
+        />
+			<Label 
+        id="titleLabel"
+        text="@{vm.focusedItem, transform=getFocusTitle}"
+        />
+			<Label 
+        id="noItemLabel" 
+        text="there are no items"
+        visible="@{vm.hasItems, transform=MOM_transform_invertBoolean}"
+        />
+      <LabelList 
+        id="itemList"
+        content="@{vm.items}"
+        visible="@{vm.hasItems}"
+        itemFocused="@(vm.focusItemAtIndex())"
+      />
+		</LayoutGroup>
+
+	</children>
+
+</component>

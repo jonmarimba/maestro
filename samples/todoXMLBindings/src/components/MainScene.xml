@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="MainScene" extends="Scene" 
+    >
+    <interface>
+        <!--  pointer to rLog, so we can change the 
+    the actual rLog lives on the global object-->
+        <field id="rLog" type="node" />
+        <field id="mainView" type="node" />
+    </interface>
+    <children>
+
+    </children>
+</component>
