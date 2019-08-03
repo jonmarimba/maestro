@@ -63,7 +63,7 @@ end function
 public function setContext(contextId, contextNode) as void
   m.contextId = contextId
   m.contextNode = contextNode
-  m.isContextValid = MU_isString(contextId) and type(contextNode) = "roSGNode"
+  m.isContextValid = MU.isString(contextId) and type(contextNode) = "roSGNode"
   
   if(m.isContextValid and m.isBindingNotificationEnabled = true)
     m.firePendingObserverNotifications()
@@ -114,7 +114,7 @@ end function
 '  * @returns {boolean} true if succesful
 '  */
 public function setField(fieldName, value, originKey = invalid) as boolean
-  if not MU_isString(fieldName) or fieldName.trim() = ""
+  if not MU.isString(fieldName) or fieldName.trim() = ""
     logError("Tried to setField with illegal field name")
     return false
   end if
@@ -143,12 +143,12 @@ end function
 '  */
 public function observeField(fieldName, functionName, properties = invalid) as boolean
   'TODO - I think we will want a mixin method for this, that provides a prepackaged node, with a context callback we can invoke
-  if not MU_isString(fieldName) or fieldName.trim() = ""
+  if not MU.isString(fieldName) or fieldName.trim() = ""
     logError("Tried to observe field with illegal field name")
     return false
   end if
   
-  if not MU_isString(functionName) or functionName.trim() = ""
+  if not MU.isString(functionName) or functionName.trim() = ""
     logError("Tried to observe field with illegal function")
     return false
   end if
@@ -171,12 +171,12 @@ public function observeField(fieldName, functionName, properties = invalid) as b
 end function
 
 public function unobserveField(fieldName, functionName) as boolean
-  if not MU_isString(fieldName)
+  if not MU.isString(fieldName)
     logError("Tried to unobserve field with illegal field name")
     return false
   end if
   
-  if not MU_isString(functionName)
+  if not MU.isString(functionName)
     logError("Tried to unobserve field with illegal functionName")
     return false
   end if
@@ -206,7 +206,7 @@ public function notify(fieldName) as void
   end if
   
   value = m[fieldName]
-  if MU_isUndefined(value)
+  if MU.isUndefined(value)
     logError("Tried notify about uninitialized value! interpreting as invalid")
     value = invalid
   end if
@@ -340,7 +340,7 @@ public function notifyBinding(fieldName, specificKey = invalid, excludeKey = inv
     return false
   end if
   value = m[fieldName]
-  if MU_isUndefined(value)
+  if MU.isUndefined(value)
     logError("Tried notify about uninitialized value! interpreting as invalid")
     value = invalid
   end if

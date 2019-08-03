@@ -17,8 +17,8 @@ end function
 function createFocusMap(vm) as boolean
   focusMap = {}
   success = false
-  if isVM(vm)
-    if MU_isArray(vm.focusIds)
+  if MVVM.isVM(vm)
+    if MU.isArray(vm.focusIds)
       for index = 0 to vm.focusIds.count() - 1
         key = vm.focusIds[index]
         control = m[key]
