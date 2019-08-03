@@ -52,10 +52,6 @@ export async function deploy(cb) {
   await rokuDeploy.publish(args);
 }
 
-function copyFrameworkFiles(cb) {
-
-}
-
 async function compile(cb) {
   let config = createMaestroConfig({
     "filePattern": [
@@ -75,5 +71,5 @@ async function compile(cb) {
   await processor.processFiles();
 }
 
-exports.build = series(clean, createDirectories, copyFrameworkFiles, compile);
+exports.build = series(clean, createDirectories, compile);
 exports.prePublish = series(exports.build, addDevLogs)
