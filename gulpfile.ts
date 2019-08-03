@@ -130,7 +130,15 @@ function bundleNoRLog() {
     .pipe(gulp.dest('./dist'));
 }
 
-exports.build = series(clean, createDirectories, compile);
+export function copyToSamples(cb) {
+  let maestroSourcePath = 'build/source/maestro';
+  let maestroComponentsPath = 'build/components/maestro';
+  fs.copySync(maestroSourcePath, 'samples/todo/src/source/maestro');
+  fs.copySync(maestroComponentsPath, 'samples/todo/src/components/maestro');
+  cb();
+}
+
+exports.build = series(clean, createDirectories, compile, copyToSamples);
 exports.prePublishTests = series(exports.build, prepareTests, addDevLogs)
 exports.runTests = series(exports.prePublishTests, zipTests, deployTests)
 exports.dist = series(exports.build, doc, bundle, bundleNoRLog);
