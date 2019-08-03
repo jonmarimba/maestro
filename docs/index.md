@@ -65,8 +65,82 @@ The tool is used as part of your build chain. Once you have compiled all of the 
 Maestro-cli can be used from both the command line, and from javascript, for example as part of your gulp tool chain
 
 ## using maestro-cli
+Simply install the `maestro-cli-roku` npm package and use that to install the framework files, and run your tests.
 
-TBD
+You can even use `maestro-cli` from your npm-compatible build tools, such as gulp.
+
+### installing maestro framework
+
+   ```
+   npm install maestro-cli-roku -g
+   maestro-cli i myProjectRootPath #path where your manifest, source and components folders reside
+   ```
+
+## Compiling
+
+### From command line
+
+Create a config file, with a config for your project, as such:
+
+*project-maestro-config.json
+
+```
+{
+  let config = createMaestroConfig({
+    "filePattern": [
+      "**/*.bs",
+      "**/*.brs",
+      "**/*.xml",
+    ],
+    "sourcePath": "src",
+    "outputPath": "build",
+    "logLevel": 4,
+    "nonCheckedImports": ['source/rLog/rLogMixin.brs',
+      'source/tests/rooibosDist.brs',
+      'source/tests/rooibosFunctionMap.brs'
+    ]
+  });
+  let processor = new MaestroProjectProcessor(config);
+  await processor.processFiles();
+}
+```
+
+and use the following command
+
+```
+maestro-cli project-maestro-config.json
+```
+
+### From gulp
+
+This repo is full of samples that demonstrate how to compile your maestro projects. Here is some sample code 
+
+```
+import { MaestroProjectProcessor, createMaestroConfig } from 'maestro-cli-roku';
+
+async function compile(cb) {
+  let config = createMaestroConfig({
+    "filePattern": [
+      "**/*.bs",
+      "**/*.brs",
+      "**/*.xml",
+    ],
+    "sourcePath": "src",
+    "outputPath": "build",
+    "logLevel": 4,
+    "nonCheckedImports": ['source/rLog/rLogMixin.brs',
+      'source/tests/rooibosDist.brs',
+      'source/tests/rooibosFunctionMap.brs'
+    ]
+  });
+  let processor = new MaestroProjectProcessor(config);
+  await processor.processFiles();
+}
+
+//example gulp build targets
+exports.build = series(clean, createDirectories, compile);
+exports.prePublish = series(exports.build, addDevLogs)
+```
 
 # View framework
 
