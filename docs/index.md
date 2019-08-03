@@ -16,7 +16,7 @@ Maestro is a set of patterns and tools that fulfil the following goals:
  - [Maestro-cli Command Line Tool](#Maestro-cli-Command-Line-tool)
  - [View framework](#View-framework)
  - [MVVM and observable base classes](#MVVM-and-observable-base-classes)
- - [XML bindings](#XML bindings)
+ - [XML bindings](#XML-bindings)
  - [Brighterscript support](#Brighterscript-support)
  - IOC framework - Coming soon!
 
@@ -219,12 +219,181 @@ To make development easier, and remove boilerplate, a lifecycle is provided, so 
  
 # MVVM and observable base classes
 
-Implemented - documentation TBD
+Maestro is an MVVM (Model View View Model) framework. This pattern is, in the author's opinion, well suited to roku development: 
+
+ - It allows us to decouple our view logic from the view
+ - The resulting view models are highly testable
+  - Which means we can write our code using TDD, with rapid turnover
+  - While building a regression suite
+  - And it's much faster to run a vm classes unit tests, than spin up the app and test our logic there
+ - We can more easily stub and mock methods using this pattern 
+ - The boilerplate for observables, and other tasks is encapsulated into unit tested framework methods
+ - Readers of our code have far more indication as to what code is business logic, and what code is pure view management
+
+The framework base classes also have additional benefits
+ - They provide a focus mechanism, making it easy to unit test focus management
+ - They provide key listening hooks, making it easy to unit test keyboard interactions
+ - They provide hooks for the maestro view lifecycle methods, such as onShow, onFirstShow, onHide, etc
+
+## Observables and ViewModels
+
+### BaseObservable
+
+`BaseObservable` is the class that makes this observable behavior possible. It orchestrates it's responsibilities with the `BaseObservableMixin.bs` script
+
+### BaseViewModel
+
+`BaseViewModel` is a specialized BaseObservable subclass. You will extend this class to create your bindings. These are referred to as _VMs_ or _ViewModels_, which is where Model View View Model pattern get's it's name.
+
+We use viewModels like any other class, invoking methods, and setting properties, with one caveat: We must call setField("fieldName", value), for fields we wish to update, so that we can notify any observers of changes
+
+## observers and bindings
+
+These are the 2 forms of observable interaction that the base classes provide:
+
+ - observeField: this will call back a function, when an observable (i.e ViewModel) field is set. This is like `observeField` for brightscript nodes.
+ - bindField: this will bind the value of a field to a field on a node.
+ - bindNodefield: this will bind the value of a field, to a field on an observer (i.e. ViewModel). The target field can also be a funcion, in which case it will be invoked with the bound fields' value.
+
+### Binding and observing fields
+
+This is done using mixin methods from the `ObservableMixin.bs` script.
+
+Here is an example of some bindings:
+
+*TodoScreen.vm*
+```
+function _initialize(args)
+  m.vm = TodoScreenVM()
+  m.vm.initialize()
+  MVVM.createFocusMap(m.vm)
+  noInitialValueProps = MOM.createBindingProperties(false)
+  MOM.bindObservableField(m.vm, "hasItems", m.itemList, "visible")
+  MOM.bindObservableField(m.vm, "focusedIndex", m.itemList, "jumpToItem")
+  MOM.bindObservableField(m.vm, "hasItems", m.noItemLabel, "visible", MOM.createBindingProperties(true, MOM.transform_invertBoolean))
+  MOM.bindObservableField(m.vm, "items", m.itemList, "content")
+  MOM.bindObservableField(m.vm, "focusedItem", m.titleLabel, "text", MOM.createBindingProperties(true, getFocusTitle))
+  MOM.bindNodeField(m.itemList, "itemFocused", m.vm, "focusItemAtIndex", noInitialValueProps)
+  MOM.bindNodeField(m.addButton, "buttonSelected", m.vm, "addTodo", noInitialValueProps)
+  MOM.bindNodeField(m.removeButton, "buttonSelected", m.vm, "removeTodo", noInitialValueProps)
+  MOM.observeField(m.vm, "focusId", MVVM.onFocusIdChange)
+end function
+```
+
+Note that we use [brighterscript](https://github.com/TwitchBronBron/brighterscript/) in maestro, so the above calls `MOM.functionName` are _namespace invocations_ on the `MOM` _namespace_ and can just as well be written `MOM_functionName`
+
+It is best to refer to the API docs for a full explanation; but it's worth noting that each binding supports various properties, which can be created via the `MOM.createBindingProperties` helper.
+
+### Wiring up bindings in code is discouraged
+
+Note however, that we do not generally wire these bindings up ourselves; but prefer xml bindings.
+
+### Removing bindings
+
+All bindings in a given scope (i.e. view or task node) **must** be removed with a call to `MOM.cleanup()`
+
+**You will suffer memory leaks and performance issues if you do not call cleanup, as part of your views destruction code**
 
 # XML bindings
 
-Implemented - documentation TBD
+## Overview
+
+Writing bindings and observers is cumbersome, and requires us to mix view and buisness logic, with boilerplate code.
+
+Maestro allows us to follow MVVM pattern, which in turn means less time spent guessing how things end up in our view : We can see in the xml exactly where field values come from, and what field values will end up doing to our view models.
+
+Here is an example of some bindings in maestro:
+
+```
+  <!--One way binding from model.field to node: "oneWaySource"-->
+  <Label
+      id="titleLabel"
+      text="@{vm.titleText}" />
+
+  <!--One way binding from node.field to model.field: "oneWayTarget"-->
+  <RowList
+      id="rowList"
+      focusedIndex="@(m.vm.focusedIndex)" />
+
+  <!--Two Way binding: "twoWay"-->
+  <InputBox
+      id="nameInput2"
+      text="@[vm.name]" />
+```
+
+In each of the following examples we can see how we use special binding expressions inside the values of our fields.
+
+When maestro-cli encounters these values it will automatically wire up the code (via the helpers in the previous section) to create the binding.
+
+### Indicating binding mode
+
+The bracket type indicates the binding mode
+
+ - `@{...}` - oneWaySource: from model.field to node.field
+ - `@(...)` - oneWayTarget: from node.field to model.field or model.function(value)
+ - `@[...]` - twoWay: both of the above
+ 
+
+### Binding arguments
+
+a binding is as follows:
+
+`@{observable.name, arg1, arg2, ...}`   
+
+ - `observable` is the name of the observable to target, in maestro, this is called `vm`. You should only have one per view; but in fact, any number of any named observables is supported.
+ - `name`, the name of the field on the observable. If this is _oneWayTarget_ binding, then you can provide a function name, and even function `()` brackets
+ - `args` are as follows:
+   - `isSettingInitialValue=true` or `isSettingInitialValue=false` (optional - default to true), will set the value as soon as the binding is created
+   - `transform=functionName` (optoinal) where _functoinName_ of a function *which must be in scope* which transform ths bound field. See `MOM.transform_invertBoolean` for a sample implementation. This is good for allowing us to do view specific transformations without needing multiple vm fields,
+   - `isFiringOnce=true` or `isFiringOnce=false` (optional) - will destroy the binding as soon as a value is set
+   - `mode=oneWaySource` or `mode=oneWayTarget` or `mode=twoWay` (optional) this specifies the binding mode, it is however preferred you simply use alternate bracket types (`[], {} or ()`)
+
+   
 
 # Brighterscript support
 
-Almost done - rewriting some aspects to better fit the official brighterscript spec.
+Maestro supports the following brighterscript features (with some limitations):
+
+ - classes
+ - namespaces
+ - imports
+
+All of these features require that the file have the _brigherscript_ `.bs` extension
+
+ ## namespaces
+
+ - use `namespace [NAME]` and `end namespace` to declare your namespaced code.
+ - all functions and subs in the namespace will be prefixed with `[NAME]` so `function foo` will become `function NAME_foo`. This _namespaced_ name will be used in all files to refer to the function
+ - the namespace will be made available to other `.bs` files, so they can refer to methods via `[NAME].functionName`
+
+### limitations
+
+Only one namespace per file. All your functions in the file will become namespaced
+
+## classes
+
+  - use `class [NAME] (extends [EXTENDS_NAME]` and `end class` to declare your class:
+  - you can extend other classes - `EXTENDS_NAME` must be a valid `.bs` class
+  - declare class functions and subs with `public function`, `private function`, `public sub`, `private sub`. These will be merged into your class.
+  - declare your constructor with `public function new(args...)`
+    - you can call your super constructor (if extending) with `super(args...)`
+    - if you do not create a constructor, then a zero arg constructor is declared for you
+  - declare class fields with `public fieldName = value`
+    - you can also use `as` keyword to declare the type: e.g `public name as string` or `public selectedItem as dynamic = invalid`
+  - classes must be contained in `.bs` files to be compiled
+
+### limitations
+
+Only one class per file. the entire file is considered to be the class
+
+## imports
+
+ - use `import "../relativePath/file.brs"` for path imports relative to the source file in which the import statement is
+ - use `import "pkg:/source/file.bs"` for an absolute import
+ - both `.bs` and `.brs` imports are valid
+ - your nodes will automatically have import statements added to the end
+ - cascading imports are resolved
+ - missing imports are reported, and result in compile error
+ - cyclical imports are reported and result in compile error
+
+ 
