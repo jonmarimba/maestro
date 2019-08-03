@@ -1,4 +1,5 @@
 import "../../observable/BaseObservable.bs"
+import "pkg:/source/rLog/rLogMixin.brs"
 
 namespace MBVM
 class BaseViewModel extends BaseObservable
@@ -15,7 +16,8 @@ private _viewModel = true
 '++ public API
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-public function initialize()
+public function initialize(name = "BaseViewModel")
+  initializeRLog(name)
   m.logMethod("initialize")
   if MU_isFunction(m._initialize)
     m._initialize()
