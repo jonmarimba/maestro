@@ -1,4 +1,4 @@
-import "../lib/Utils.bs"
+import "../../lib/Utils.bs"
 import "pkg:/source/rLog/rLogMixin.brs"
 
 namespace MVVM
