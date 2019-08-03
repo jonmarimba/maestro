@@ -1,6 +1,6 @@
 import { series } from "gulp";
 import { BurpConfig, BurpProcessor } from "burp-brightscript";
-import { MaestroProjectProcessor, createMaestroConfig } from 'maestro-cli';
+import { MaestroProjectProcessor, createMaestroConfig } from 'maestro-cli-roku';
 
 const gulp = require('gulp');
 const gulpClean = require('gulp-clean');
