@@ -18,7 +18,7 @@
 
     <!-- Nav item registry -->
 		<TabController id="tabController">
-			<HomeView id="homeView" />
+			<TodoScreen id="TodoScreen" />
 			<GridView id="gridView" />
 			<OptionsView id="optionsView" />
 		</TabController>

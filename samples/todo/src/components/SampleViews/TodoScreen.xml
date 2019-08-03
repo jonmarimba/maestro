@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component
-	name="HomeView"
+	name="TodoScreen"
 	extends="BaseScreen"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	
@@ -30,7 +30,8 @@
         text="there are no items"
         />
       <LabelList 
-        id="itemList" 
+        id="itemList"
+        content="@{vm.content}" 
       />
 		</LayoutGroup>
 

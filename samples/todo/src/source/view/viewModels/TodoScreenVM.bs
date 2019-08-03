@@ -13,7 +13,7 @@ public currentTitle = "none"
 public hasItems = false
 
 public function new()
-  m.super("TodoVM")
+  super("TodoVM")
   m.focusIds = [
     "addButton",
     "removeButton"
@@ -66,30 +66,41 @@ end function
 
 private function onKeyPressDown() as boolean
   m.logVerbose("press down focusId", m.focusId)
+  
   if m.focusId = "addButton"
     m.setField("focusId", "removeButton")
+    return true
   else if m.focusId = "removeButton"
     m.setField("focusId", "itemList")
+    return true
   end if
-  return true
+  
+  return false
 end function
 
 private function onKeyPressUp() as boolean
   m.logVerbose("press up focusId", m.focusId)
+  
   if m.focusId = "itemList"
     m.setField("focusId", "removeButton")
+    return true
   else if m.focusId = "removeButton"
     m.setField("focusId", "addButton")
+    return true
   end if
-  return true
+  
+  return false
 end function
 
 private function onKeyPressBack() as boolean
   m.logVerbose("press back focusId", m.focusId)
+  
   if m.focusId = "itemList"
     m.setField("focusId", "removeButton")
+    return true
   end if
-  return true
+
+  return false
 end function
 
 end class

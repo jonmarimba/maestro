@@ -2,7 +2,7 @@ function Init()
   registerLogger("MainView")
   'get nav items from our tab controller
   findNodes(["tabMenu", "tabController"])
-  findNodes(["homeView", "gridView", "optionsView"])
+  findNodes(["TodoScreen", "gridView", "optionsView"])
   m.tabController.callFunc("initialize",{})
 
   m.tabMenu.observeField("currentItem", "onTabMenuCurrentItemChange")  
@@ -12,7 +12,7 @@ end function
 
 function createMenuItems()
   items = []
-  items.push(createNavItem(m.homeView, "HOME"))
+  items.push(createNavItem(m.TodoScreen, "HOME"))
   items.push(createNavItem(m.gridView, "GRID"))
   items.push(createNavItem(m.optionsView, "OPTIONS"))
   return items
