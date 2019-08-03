@@ -378,6 +378,13 @@ public function unbindAllFields() as void
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ maestro-c integration
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+public function onBindingsConfigured()
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ support for node fields
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
