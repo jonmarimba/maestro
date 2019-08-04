@@ -75,35 +75,6 @@ function navigateToHomeItem()
   m.isHomeLoaded = true
 end function
 
-function getTopScreen()
-  logInfo("getTopScreen", menuItem)
-  topScreen = invalid
-  
-  if m.videoPlayer 
-    return m.videoPlayer
-  else
-    
-    if menuItem = invalid
-      if m.isInDeeplinkMode
-        menuItem = m.deeplinkingNavItem
-      else
-        menuItem = m.topMenuBar.currentItem
-      end if
-    end if
-    
-    if menuItem <> invalid
-      
-      topScreen = m.tabController.callFunc("getViewForMenuItemContent", menuItem)
-      
-      if topScreen <> invalid
-        topScreen = topScreen.callFunc("getTopScreen", invalid)
-      end if
-    end if
-    
-  end if
-  return topScreen
-end function
-
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ Deep Linking
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
