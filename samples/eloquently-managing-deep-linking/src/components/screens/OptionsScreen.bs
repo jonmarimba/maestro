@@ -1,0 +1,3 @@
+function Init()
+  registerLogger("OptionsScreen")
+end function

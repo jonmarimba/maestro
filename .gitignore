@@ -39,3 +39,5 @@ samples/todo/src/components/maestro
 samples/todo/src/source/maestro
 samples/todoXMLBindings/src/components/maestro
 samples/todoXMLBindings/src/source/maestro
+samples/eloquently-managing-deep-linking/src/source/maestro
+samples/eloquently-managing-deep-linking/src/components/maestro

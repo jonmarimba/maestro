@@ -1,0 +1,12 @@
+function Init()
+  registerLogger("GridScreen")
+
+  m.debugLabel = m.top.findNode("debugLabel")
+end function
+
+function _initialize(args)
+  if m.top.selection <> invalid
+    m.debugLabel.text = "contains selection " + m.top.selection.currentItem.title
+  end if
+end function
+

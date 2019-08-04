@@ -19,7 +19,11 @@ function InitScreen() as void
   rootScene.id = "ROOT"
   
   screen.show()
-  
+
+  'do any other stuff here that _must_ be done in main
+  'I'm not a fan of that though; but just showing how it would work
+  rootScene.callFunc("begin", m.args)
+
   while(true)
     msg = wait(0, m.port)
     msgType = type(msg)

@@ -1,19 +1,17 @@
 <p align="center">
-  <img src="images/logo.png" alt="Maestro for roku" width="200" height="200"/>
+  <img src="docs/maestroLogo.png" alt="Maestro for roku" />
 </p>
 <h3 align="center">
 A development platform for building roku channels in brighterscript
 </h3>
-<p align="center">
-  <img src="images/exampleImage.png" alt="Maestro for roku" />
-</p>
+
 
 [![Build Status](https://travis-ci.org/georgejecook/maestro.svg?branch=master)](https://travis-ci.org/georgejecook/maestro)
 [![GitHub](https://img.shields.io/github/release/georgejecook/maestro.svg?style=flat-square)](https://github.com/georgejecook/meastro/releases) 
 
 ## Links
  - **[Documentation](docs/index.md)**
- - **[API Documentaiton](https://georgejecook.github.io/maestro)**
+ - **[API documentatio](https://georgejecook.github.io/maestro)**
  - **[CHANGELOG](CHANGELOG.md)**
  - **[VSCode snippets](docs/vsCodeSnippets.md)**
  - [Roku dev forum topic](https://forums.roku.com/viewforum.php?f=34)
