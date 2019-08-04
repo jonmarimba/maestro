@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="GridView" extends="BaseScreen" 
+<component name="HomeScreen" extends="BaseScreen" 
 	>
 	<interface>
 	</interface>
 
 	<children>
-		<Label text="Grid view" />
+		<Label text="Home Screen" />
 	</children>
 
 </component>

@@ -1,0 +1,33 @@
+function Init()
+  registerLogger("VideoPlayer")
+  m.debugLabel = m.top.findNode("debugLabel")
+  m.focusTrap = m.top.findNode("focusTrap")
+end function
+
+function _initialize(args)
+  m.debugLabel.text = "playing video " + m.top.selection.currentItem.title
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Key Handling
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function _isCapturingAnyKeyPress(key, press) as boolean
+  return true
+end function
+
+function _onKeyPressBack() as boolean
+  m.modelLocator.appController.callFunc("toggleVideoPlayerVisible", false)
+  return true
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ lifeCycle
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+function _onGainedFocus(isSelfFocused) as void
+  if isSelfFocused
+    setFocus(m.focusTrap)
+  end if
+end function

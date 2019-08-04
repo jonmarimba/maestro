@@ -1,7 +1,7 @@
 <?rokuml version="1.0" encoding="utf-8" ?>
 <!--********** Copyright 2019 Roku Corp. All Rights Reserved. **********-->
 
-<component name="RALETrackerTask" extends="Task">
+<component name="TrackerTask" extends="Task">
   <script type="text/brightscript" uri="pkg:/source/maestro/lib/ThreadUtils.brs"/>
 
   <interface>
@@ -1259,14 +1259,13 @@ Sub init()
 
     m.config = RALE_Config()
     m.sceneBG = m.top.GetScene().getChild(0)
-    m.raleVersion = "1.7.8"
+    m.raleVersion = "1.8.2"
 End Sub
 
 ' tracker - TrackerTask run function
 Sub tracker()
     appInfo = CreateObject("roAppInfo")
-    'WE WANT THIS TCP SOCKET TO BE OPEN IN PUBLISHED CASES
-    'if not appInfo.IsDev() then return
+    if not appInfo.IsDev() then return
 
     ?"tracker Run"
     handlersMap = getCommandMap()
@@ -1278,6 +1277,7 @@ Sub tracker()
     inputPort = CreateObject("roMessagePort")
     inputObj  = CreateObject("roInput")
     inputObj.SetMessagePort(inputPort)
+    '? "@@@@@@@@@@@ entering run"
 
     while True
         port = 0
@@ -1442,7 +1442,7 @@ End Function
 ' @param value As Dynamic
 ' @return As Boolean - true if value contains Boolean interface, else return false
 '************************************************* 
-Function FW_isBoolean(value As Dynamic) As Boolean
+Function FW_IsBoolean(value As Dynamic) As Boolean
     Return FW_IsValid(value) And GetInterface(value, "ifBoolean") <> invalid
 End Function
 
@@ -1587,7 +1587,7 @@ Function FW_AsString(input As Dynamic) As String
         Return ""
     Else If FW_IsString(input) Then
         Return input
-    Else If FW_IsInteger(input) or FW_IsLongInteger(input) or FW_isBoolean(input)Then
+    Else If FW_IsInteger(input) or FW_IsLongInteger(input) or FW_IsBoolean(input)Then
         Return input.ToStr()
     Else If FW_IsFloat(input) or FW_IsDouble(input) Then
         Return Str(input).Trim()
@@ -1680,7 +1680,7 @@ Function FW_AsBoolean(input As Dynamic) As Boolean
         Return LCase(input) = "true"
     Else If FW_IsInteger(input) Or FW_IsFloat(input) Then
         Return input <> 0
-    Else If FW_isBoolean(input) Then
+    Else If FW_IsBoolean(input) Then
         Return input
     Else
         Return False
