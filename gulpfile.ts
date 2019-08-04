@@ -159,7 +159,7 @@ export function copyToSamples(cb) {
   let maestroSourcePath = 'framework/src/source/maestro';
   let maestroComponentsPath = 'framework/src/components/maestro';
 
-  ['todoXMLBindings', 'todo'].forEach((sampleName) => {
+  ['todoXMLBindings', 'todo', 'eloquently-managing-deep-linking'].forEach((sampleName) => {
     fs.copySync(maestroSourcePath, `samples/${sampleName}/src/source/maestro`);
     fs.copySync(maestroComponentsPath, `samples/${sampleName}/src/components/maestro`);
   });
@@ -167,7 +167,12 @@ export function copyToSamples(cb) {
   cb();
 }
 
+export function updateVersion(cb) {
+  fs.writeFileSync("docs/version.txt", pkg.version); 
+  cb();
+}
+
 exports.build = series(clean, createDirectories, compile, copyToSamples);
 exports.prePublishTests = series(exports.build, prepareTests, addDevLogs)
 exports.runTests = series(exports.prePublishTests, zipTests, deployTests)
-exports.dist = series(exports.build, doc, bundle, bundleNoRLog, bundleCompiled, bundleNoRLogCompiled);
+exports.dist = series(exports.build, doc, bundle, bundleNoRLog, bundleCompiled, bundleNoRLogCompiled, updateVersion);
