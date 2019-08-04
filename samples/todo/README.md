@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/logo.png" alt="Maestro for roku" width="200" height="200"/>
+  <img src="https://github.com/georgejecook/maestro/blob/master/docs/maestroLogo.png" alt="Maestro for roku" />
 </p>
 <h3 align="center">
 A development platform for building roku channels in brighterscript
@@ -12,22 +12,101 @@ A development platform for building roku channels in brighterscript
 [![GitHub](https://img.shields.io/github/release/georgejecook/maestro.svg?style=flat-square)](https://github.com/georgejecook/meastro/releases) 
 
 ## Links
- - **[Youtube training videos]()**
- - **[Documentation](docs/index.md)**
- - **[API Documentaiton](https://georgejecook.github.io/maestro)**
- - **[CHANGELOG](CHANGELOG.md)**
- - **[VSCode snippets](docs/vsCodeSnippets.md)**
- - [Roku dev forum topic](https://forums.roku.com/viewforum.php?f=34)
+ - **[Documentation](https://github.com/georgejecook/maestro/blob/master/docs/index.md)**
+ - **[API documentatio](https://georgejecook.github.io/maestro)**
  - \#maestro channel on the [roku developer's slack](https://join.slack.com/t/rokudevelopers/shared_invite/enQtMzgyODg0ODY0NDM5LTc2ZDdhZWI2MDBmYjcwYTk5MmE1MTYwMTA2NGVjZmJiNWM4ZWY2MjY1MDY0MmViNmQ1ZWRmMWUzYTVhNzJiY2M)
- - [Issue tracker](https://github.com/georgejecook/maestro/issues)
- - [Roadmap](ROADMAP.md)
 
-## Development
+## Using these samples
 
-Maestro is an independent open-source project, maintained exclusively by volunteers.
+ - Download this repo
+ - Run `npm install`
+ - Run `gulp build`
+ - `cd` into this sample's folder
+ - Run `npm install`
+ - Use the PrePublis gulp task, or add the following launch configurations and tasks
 
-You might want to help! Get in touch via the slack group, or raise issues.
+## Example launcConfig
+Copy this into your `.vscode/launch.json`
 
-### Is Maestro actively maintained?
 
-I am actively invovled in Maestro's development, and have used the patterns contained in it since I started roku development. These are the most productive and maintainable patters and tools I've found so far, and I will continue to use them for my clients. The patterns that are used in maestro are further explorations and rewrites of similar patterns I have used in apps that have millions of installs, with extremely low crash %'s
+ ```
+     {
+      "type": "brightscript",
+      "request": "launch",
+      "name": "Run",
+      "preLaunchTask": "build",
+      "internalConsoleOptions": "neverOpen",
+      "envFile": "${workspaceFolder}/devScripts/.env",
+      "host": "${env:ROKU_DEV_TARGET}",
+      "password": "${env:ROKU_DEVPASSWORD}",
+      "outDir": "${workspaceFolder}/out",
+      "rootDir": "${workspaceFolder}/build",
+      "sourceDirs": [
+        "${workspaceFolder}/src"
+      ],
+      "consoleOutput": "normal",
+      "stopOnEntry": false,
+      "retainDeploymentArchive": true,
+      "retainStagingFolder": true,
+      "files": [
+        "manifest",
+        "source/**/*.*",
+        "components/**/*.*",
+        "images/**/*.*",
+        "!**/tests/**/*.*"
+      ],
+      "enableDebuggerAutoRecovery": true,
+      "stopDebuggerOnAppExit": true
+
+ ```
+## Example tasks
+
+Copy this into your `.vscode/tasks.json`
+
+ ```
+ {
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  // Note running gulptasks in vsce takes us away from the bs log window, so I always wrap my gulp command in shell
+  // scripts, which I can prevent from doing that annoying behaviour
+
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "${workspaceFolder}/devScripts/build.sh",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "buildTests",
+      "type": "shell",
+      "command": "${workspaceFolder}/devScripts/buildTests.sh",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    }
+  ]
+}
+ ```
+ 
