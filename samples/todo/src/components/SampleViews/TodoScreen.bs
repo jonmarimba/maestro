@@ -1,0 +1,44 @@
+import "pkg:/source/rLog/rLogMixin.brs"
+import "pkg:/source/maestro/observable/ObservableMixin.brs"
+import "pkg:/source/maestro/view/viewModel/ViewModelMixin.brs"
+import "pkg:/source/view/viewModels/TodoScreenVM.brs"
+
+function Init()
+  registerLogger("TodoScreen")
+  findNodes(["titleLabel", "itemList", "addButton", "removeButton"])
+  findNodes(["noItemLabel"])
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Lifecycle methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function _initialize(args)
+  m.vm = TodoScreenVM()
+  m.vm.initialize()
+  MVVM.createFocusMap(m.vm)
+  noInitialValueProps = MOM.createBindingProperties(false)
+  MOM.bindObservableField(m.vm, "hasItems", m.itemList, "visible")
+  MOM.bindObservableField(m.vm, "focusedIndex", m.itemList, "jumpToItem")
+  MOM.bindObservableField(m.vm, "hasItems", m.noItemLabel, "visible", MOM.createBindingProperties(true, MOM.transform_invertBoolean))
+  MOM.bindObservableField(m.vm, "items", m.itemList, "content")
+  MOM.bindObservableField(m.vm, "focusedItem", m.titleLabel, "text", MOM.createBindingProperties(true, getFocusTitle))
+  MOM.bindNodeField(m.itemList, "itemFocused", m.vm, "focusItemAtIndex", noInitialValueProps)
+  MOM.bindNodeField(m.addButton, "buttonSelected", m.vm, "addTodo", noInitialValueProps)
+  MOM.bindNodeField(m.removeButton, "buttonSelected", m.vm, "removeTodo", noInitialValueProps)
+  MOM.observeField(m.vm, "focusId", MVVM.onFocusIdChange)
+end function
+
+function getFocusTitle(value)
+  if value <> invalid
+    return "Focused Item " + value.title
+  else
+    return "No item is selected"
+  end if
+end function
+
+function _onGainedFocus(isSelfFocused)
+  if isSelfFocused
+    MVVM.onFocusIdChange(m.vm.focusId)
+  end if
+end function

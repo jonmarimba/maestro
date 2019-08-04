@@ -1,7 +1,7 @@
 import { series } from "gulp";
 import { BurpConfig, BurpProcessor } from "burp-brightscript";
 import { RooibosProcessor } from "rooibos-preprocessor";
-import { MaestroProjectProcessor, createMaestroConfig } from 'maestro-cli';
+import { MaestroProjectProcessor, createMaestroConfig } from 'maestro-cli-roku';
 
 import * as fs from 'fs-extra';
 import * as path from 'path';
@@ -30,7 +30,11 @@ function setEnvTest(args) {
 
 export function clean() {
   console.log('Doing a clean at ' + outDir);
-  return gulp.src(['out', 'build'], { allowEmpty: true }).pipe(gulpClean({ force: true }));
+  return gulp.src(['out',
+    'build',
+    'samples/todo/src/source/maestro',
+    'samples/todo/src/components/maestro'
+  ], { allowEmpty: true }).pipe(gulpClean({ force: true }));
 }
 
 export function createDirectories() {
@@ -112,25 +116,58 @@ async function compile(cb) {
 
 function bundle() {
   return gulp.src([
-    'build/source/maestro/**/*',
-    'build/components/maestro/**/*',
-    'build/source/rLog/**/*',
-    'build/components/rLogComponents/**/*'
-  ], { base: './build' })
+    'framework/src/source/maestro/**/*',
+    'framework/src/components/maestro/**/*',
+    'framework/src/source/rLog/**/*',
+    'framework/src/components/rLogComponents/**/*'
+  ], { base: './framework/src/' })
     .pipe(zip(`maestro${pkg.version}.zip`))
     .pipe(gulp.dest('./dist'));
 }
 
 function bundleNoRLog() {
   return gulp.src([
-    'build/source/maestro/**/*',
-    'build/components/maestro/**/*',
-  ], { base: './build' })
+    'framework/src/source/maestro/**/*',
+    'framework/src/components/maestro/**/*',
+  ], { base: './framework/src/' })
     .pipe(zip(`maestro${pkg.version}-noRLog.zip`))
     .pipe(gulp.dest('./dist'));
 }
 
-exports.build = series(clean, createDirectories, compile);
+function bundleCompiled() {
+  return gulp.src([
+    'build/source/maestro/**/*',
+    'build/components/maestro/**/*',
+    'build/source/rLog/**/*',
+    'build/components/rLogComponents/**/*'
+  ], { base: './build' })
+    .pipe(zip(`maestro${pkg.version}-compiled.zip`))
+    .pipe(gulp.dest('./dist'));
+}
+
+function bundleNoRLogCompiled() {
+  return gulp.src([
+    'build/source/maestro/**/*',
+    'build/components/maestro/**/*',
+  ], { base: './build' })
+    .pipe(zip(`maestro${pkg.version}-noRLog-compiled.zip`))
+    .pipe(gulp.dest('./dist'));
+}
+
+
+export function copyToSamples(cb) {
+  let maestroSourcePath = 'framework/src/source/maestro';
+  let maestroComponentsPath = 'framework/src/components/maestro';
+
+  ['todoXMLBindings', 'todo'].forEach((sampleName) => {
+    fs.copySync(maestroSourcePath, `samples/${sampleName}/src/source/maestro`);
+    fs.copySync(maestroComponentsPath, `samples/${sampleName}/src/components/maestro`);
+  });
+
+  cb();
+}
+
+exports.build = series(clean, createDirectories, compile, copyToSamples);
 exports.prePublishTests = series(exports.build, prepareTests, addDevLogs)
 exports.runTests = series(exports.prePublishTests, zipTests, deployTests)
-exports.dist = series(exports.build, doc, bundle, bundleNoRLog);
+exports.dist = series(exports.build, doc, bundle, bundleNoRLog, bundleCompiled, bundleNoRLogCompiled);

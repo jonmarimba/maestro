@@ -1,72 +1,56 @@
-'@Namespace TSVM TodoScreenVM
-'@Import BaseViewModel
+import "pkg:/source/maestro/view/viewModel/BaseViewModel.bs"
 
-function TodoScreenVM()
-  return BaseViewModel({
-    name: "todoScreenVM"
-    focusId: "addButton"
+namespace TSVM
+class TodoScreenVM extends BaseViewModel
 
-    'vars
-    focusedIndex: -1
-    focusedItem: invalid
-    items: createObject("roSGNode", "ContentNode")
-    isAutoCreateTimerActive: false
-    currentTitle: "none"
-    hasItems: false
+public name = "todoScreenVM"
+public focusId = "addButton"
+public focusedIndex = -1
+public focusedItem = invalid
+public items = createObject("roSGNode", "ContentNode")
+public isAutoCreateTimerActive = false
+public currentTitle = "none"
+public hasItems = false
 
-    'public
-    addTodo: TSVM_addTodo
-    removeTodo: TSVM_removeTodo
-    onTimerFire: TSVM_onTimerFire
-    focusItemAtIndex: TSVM_focusItemAtIndex
-
-    'lifecycle
-    _initialize: TSVM_init
-
-    'keypresses
-    _onKeyPressDown: TSVM_onKeyPressDown
-    _onKeyPressUp: TSVM_onKeyPressUp
-    _onKeyPressBack: TSVM_onKeyPressBack
-
-    'focusConstants
-    focusIds: [
-      "addButton",
-      "removeButton"
-      "itemList"
-    ]
-  })
+public function new()
+  super("TodoVM")
+  m.focusIds = [
+    "addButton",
+    "removeButton"
+    "itemList"
+  ]
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ Public api
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function TSVM_addTodo(value)
+public function addTodo(value)
   m.logMethod("addTodo")
   currentCount = m.items.getChildCount()
   item = createObject("roSGNode", "ContentNode")
   item.title = "item " + stri(currentCount).trim()
   m.items.appendChild(item)
-  m.focusItemAtIndex(m.items.getChildCount() -1)
+  m.focusItemAtIndex(m.items.getChildCount() - 1)
   m.setField("hasItems", true)
 end function
 
-function TSVM_removeTodo(value)
+public function removeTodo(value)
   m.logMethod("removeTodo")
   if m.items.getChildCount() > 0
-    m.items.removeChildrenIndex(1, m.items.getChildCount() -1)
+    m.items.removeChildrenIndex(1, m.items.getChildCount() - 1)
   else
     m.logWarn("tried to remove todo when items was empty!")
   end if
-  m.focusItemAtIndex(m.items.getChildCount() -1)
+  m.focusItemAtIndex(m.items.getChildCount() - 1)
   m.setField("hasItems", m.items.getChildCount() > 0)
 end function
 
-function TSVM_onTimerFire()
+public function onTimerFire()
   m.logMethod("onTimerFire")
 end function
 
-function TSVM_focusItemAtIndex(newIndex)
+public function focusItemAtIndex(newIndex)
   m.setField("focusedIndex", newIndex)
   m.setField("focusedItem", m.items.getChild(newIndex))
   if m.focusedItem <> invalid
@@ -80,38 +64,44 @@ end function
 '++ Key Handling
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function TSVM_onKeyPressDown() as boolean
+private function onKeyPressDown() as boolean
   m.logVerbose("press down focusId", m.focusId)
+  
   if m.focusId = "addButton"
     m.setField("focusId", "removeButton")
+    return true
   else if m.focusId = "removeButton"
     m.setField("focusId", "itemList")
+    return true
   end if
-  return true
+  
+  return false
 end function
 
-function TSVM_onKeyPressUp() as boolean
+private function onKeyPressUp() as boolean
   m.logVerbose("press up focusId", m.focusId)
+  
   if m.focusId = "itemList"
     m.setField("focusId", "removeButton")
+    return true
   else if m.focusId = "removeButton"
     m.setField("focusId", "addButton")
+    return true
   end if
-  return true
+  
+  return false
 end function
 
-function TSVM_onKeyPressBack() as boolean
+private function onKeyPressBack() as boolean
   m.logVerbose("press back focusId", m.focusId)
+  
   if m.focusId = "itemList"
     m.setField("focusId", "removeButton")
+    return true
   end if
-  return true
+
+  return false
 end function
 
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'++ Lifecycle methods
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-function TSVM_init()
-
-end function
+end class
+end namespace

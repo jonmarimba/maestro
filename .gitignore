@@ -35,3 +35,7 @@ local.properties
 node_modules/
 frameworkTests/source/tests/rooibosDist.brs
 outRun
+samples/todo/src/components/maestro
+samples/todo/src/source/maestro
+samples/todoXMLBindings/src/components/maestro
+samples/todoXMLBindings/src/source/maestro
