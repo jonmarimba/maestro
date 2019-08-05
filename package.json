@@ -29,7 +29,7 @@
     "jsdoc": "3.5.5",
     "maestro-cli-roku": "file:../maestro-cli",
     "minami": "^1.2.3",
-    "rooibos-preprocessor": "^2.1.0",
+    "rooibos-cli": "^1.0.0",
     "typescript": "^3.4.5",
     "vinyl-paths": "^2.1.0"
   },

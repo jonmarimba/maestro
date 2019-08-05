@@ -1,6 +1,6 @@
 import { series } from "gulp";
 import { BurpConfig, BurpProcessor } from "burp-brightscript";
-import { RooibosProcessor } from "rooibos-preprocessor";
+import { RooibosProcessor, createProcessorConfig } from "rooibos-cli";
 import { MaestroProjectProcessor, createMaestroConfig } from 'maestro-cli-roku';
 
 import * as fs from 'fs-extra';
@@ -46,10 +46,21 @@ export function createDirectories() {
 /**
  * This target is used for CI
  */
-export async function prepareTests(cb) {
-  let processor = new RooibosProcessor('build/source/tests', 'build', 'build/source/tests');
+export async function prepareFrameworkTests(cb) {
+  await rokuDeploy.prepublishToStaging(args);
+  
+  let config = createProcessorConfig({
+    "projectPath": "out/.roku-deploy-staging",
+    "testsFilePattern": [
+      "**/tests/**/*.brs",
+      "!**/rooibosDist.brs",
+      "!**/rooibosFunctionMap.brs",
+      "!**/TestsScene.brs"
+    ]
+  });
+  let processor = new RooibosProcessor(config);
   processor.processFiles();
-
+  
   cb();
 }
 
@@ -173,6 +184,6 @@ export function updateVersion(cb) {
 }
 
 exports.build = series(clean, createDirectories, compile, copyToSamples);
-exports.prePublishTests = series(exports.build, prepareTests, addDevLogs)
+exports.prePublishTests = series(exports.build, prepareFrameworkTests, addDevLogs)
 exports.runTests = series(exports.prePublishTests, zipTests, deployTests)
 exports.dist = series(exports.build, doc, bundle, bundleNoRLog, bundleCompiled, bundleNoRLogCompiled, updateVersion);
