@@ -10,7 +10,7 @@ end function
 '@BeforeEach
 function BeforeEach()
   logInfo("beforeEach")
-  MIOC_cleanup()
+  MIOC.cleanup()
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -20,7 +20,17 @@ end function
 '@Test descriptors have not been created
 function namespace_itGroup_testName()
   m.Fail("implement me!")
-  
+  descriptor = {
+      "id": "authModule",
+      "type": "node",
+      "subType": "AuthModule",
+      "dependencies": {
+        "requestModule": "request",
+        "networkModule": "network",
+        "netTimeout": "timeout"
+      }
+    }
+    ? descriptor
 end function
 
 end namespace
