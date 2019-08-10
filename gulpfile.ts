@@ -50,7 +50,8 @@ export async function prepareFrameworkTests(cb) {
   await rokuDeploy.prepublishToStaging(args);
   
   let config = createProcessorConfig({
-    "projectPath": "out/.roku-deploy-staging",
+    "projectPath": "build",
+    "showFailuresOnly": true,
     "testsFilePattern": [
       "**/tests/**/*.brs",
       "!**/rooibosDist.brs",
