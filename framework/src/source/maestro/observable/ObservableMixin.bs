@@ -272,7 +272,7 @@ function unregisterObservable(observable) as boolean
   m._observables.delete(observable.contextId)
   if m._observables.count() = 0
     logInfo("unregistered last observable, cleaning up")
-    cleanup()
+    MOM.cleanup()
   end if
   observable.setContext(invalid, invalid)
   return true
