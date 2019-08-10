@@ -259,7 +259,7 @@ public function bindField(fieldName, targetNode, targetField, properties = inval
   if bindings.doesExist(key)
     logWarn("Binding already existed for key")
     binding = bindings[key]
-    if binding.targetNode.isSameNode(targetNode)
+    if binding.node.isSameNode(targetNode)
       logWarn("is same node - ignoring")
       return true
     else
