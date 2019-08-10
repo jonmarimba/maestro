@@ -8,12 +8,11 @@
 
     <children>
 
-      <!-- Navcontroller that contains all views to be shown in a TabController. Note - this navController does not have
-      autoFocus enabled, becuase we don't want these views to capture focus when moving between tabs -->
+      <!-- Navcontroller that contains all views to be shown in a TabController. -->
       <NavController 
         id="navController" 
         name="tabChildNavController"
         visible="false"
-        isAutoFocusEnabled="false" />
+        isAutoFocusEnabled="true" />
     </children>
 </component>

@@ -66,11 +66,7 @@ end function
 
 function resetNavControllerToRoot()
   logMethod("resetNavControllerToRoot." + m.top.id)
-  if (m.top.navController <> invalid)
-    m.top.navController.callFunc("resetToIndex", 0)
-  else
-    logError("Pop failed - there is no navcontroller on ", m.top)
-  end if
+  resetNavController(invalid, 0)
 end function
 
 function resetNavController(newFirstScreen = invalid)

@@ -145,6 +145,10 @@ function _onKeyPressOK() as boolean
   return false
 end function
 
+function _onKeyPressPlay() as boolean
+  return false
+end function
+
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ Long press callbacks
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
