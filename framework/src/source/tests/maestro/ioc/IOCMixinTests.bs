@@ -1,0 +1,26 @@
+'@Only
+'@TestSuite IOCMT IOCMixinTests
+
+namespace IOCMT
+
+function init()
+  registerLogger("ObservableTests")
+end function
+
+'@BeforeEach
+function BeforeEach()
+  logInfo("beforeEach")
+  MIOC_cleanup()
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'@It tests getInstance
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'@Test descriptors have not been created
+function namespace_itGroup_testName()
+  m.Fail("implement me!")
+  
+end function
+
+end namespace
