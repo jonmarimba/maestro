@@ -1,4 +1,3 @@
-'@Only
 '@TestSuite [MBOT] BaseObservable Tests
 namespace MBOT
 

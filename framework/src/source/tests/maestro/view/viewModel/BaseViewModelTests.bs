@@ -1,4 +1,3 @@
-'@Only
 '@TestSuite [MBVMT] BaseViewModel Tests
 namespace MBVMT
 

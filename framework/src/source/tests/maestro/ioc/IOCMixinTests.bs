@@ -1,4 +1,3 @@
-'@Only
 '@TestSuite IOCMT IOCMixinTests
 
 namespace IOCMT
@@ -21,16 +20,35 @@ end function
 function namespace_itGroup_testName()
   m.Fail("implement me!")
   descriptor = {
-      "id": "authModule",
-      "type": "node",
-      "subType": "AuthModule",
-      "dependencies": {
-        "requestModule": "request",
-        "networkModule": "network",
-        "netTimeout": "timeout"
-      }
+    "id": "authModule"
+    "type": "node"
+    "subType": "AuthModule"
+    "dependencies": {
+      "requestModule": "request"
+      "networkModule": "network"
+      "netTimeout": "timeout"
     }
-    ? descriptor
+  }
+  
+  ' map = {
+  '   "AuthModule": IOCMT_MockAuthModule
+  '   "IOCMixinTests": getFunctions_IOCMixinTests 
+  '   ' "ObservableTests": getFunctions_ObservableTests 
+  '   ' "BaseObservableTests": getFunctions_BaseObservableTests 
+  '   ' "BaseViewModelTests": getFunctions_BaseViewModelTests 
+  '   ' "ObservableMixinTests": getFunctions_ObservableMixinTests 
+  '   ' "TestViewModel": getFunctions_TestViewModel 
+  '   ' "ViewModelMixinTests": getFunctions_ViewModelMixinTests 
+  ' }
+  ' m.foo = IOCMT_MockAuthModule
+  ' m.bar = NOT_THERE
+  ' ? descriptor
 end function
 
 end namespace
+
+function MockAuthModule()
+  return {
+    "class": "authModule"
+  }
+end function
