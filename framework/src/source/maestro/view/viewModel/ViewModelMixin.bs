@@ -51,4 +51,16 @@ function onFocusIdChange(focusId)
   end if
 end function
 
+
+function initializeBindings(isUsingFocusMap)
+  if MU.isFunction(m_initBindings)
+    m_initBindings()
+  end if
+
+  if isUsingFocusMap
+    MVVM.createFocusMap(m.vm)
+    MOM.observeField(m.vm, "focusId", MVVM.onFocusIdChange)
+  end if    
+end function
+
 end namespace
