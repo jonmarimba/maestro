@@ -1,7 +1,7 @@
-import "pkg:/source/rLog/rLogMixin.brs"
-import "../mixin/FocusMixin.brs"
-import "../mixin/KeyMixin.brs"
-
+import "pkg:/source/rLog/rLogMixin.bs"
+import "../mixin/FocusMixin.bs"
+import "../mixin/KeyMixin.bs"
+import "pkg:/source/maestro/lib/Utils.bs"
 
 ' /**
 '  * @module BaseView
@@ -12,6 +12,11 @@ function init() as void
   m.modelLocator = m.global.modelLocator
   focusMixinInit()
   keyPressMixinInit()
+
+  if MU.isFunction(M_createNodeVars)
+    M_createNodeVars()
+  end if
+
   m.wasShown = false
   m.isKeyPressLocked = false
 end function
@@ -126,6 +131,7 @@ end function
 function onHide(args)
   if m.wasShown
     m.top.isShown = false
+    _baseScreenOnHide()
     _onHide()
   else
     logWarn("onHide called before show: ignoring")

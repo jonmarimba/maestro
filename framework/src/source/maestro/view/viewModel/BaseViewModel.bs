@@ -3,6 +3,8 @@ import "pkg:/source/rLog/rLogMixin.brs"
 
 namespace MBVM
 
+class BaseViewModel extends BaseObservable
+
 ' /**
 '  * @member new
 '  * @memberof module:BaseViewModel
@@ -14,7 +16,6 @@ namespace MBVM
 '  *               - wrappers for key navigation methods
 '  * @param {string} name to use in logs, etc
 '  */
-class BaseViewModel extends BaseObservable
 
 public function new(name = "BaseViewModel")
   super()
@@ -24,7 +25,7 @@ end function
 public state = "none"
 public focusId = invalid
 
-private _viewModel = true
+private __viewModel = true
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ public API
@@ -109,19 +110,19 @@ end function
 'Note the following methods are proxies to facilitate testing.
 'All of them will call out to the top level scope
 
-function push(view)
+public function push(view)
   push(view)
 end function
 
-function pop() as object
+public function pop() as object
   return(pop)
 end function
 
-function resetNavControllerToRoot()
+public function resetNavControllerToRoot()
   resetNavControllerToRoot()
 end function
 
-function resetNavController(newFirstScreen = invalid, endIndex = -1)
+public function resetNavController(newFirstScreen = invalid, endIndex = -1)
   resetNavController(newFirstScreen, endIndex)
 end function
 

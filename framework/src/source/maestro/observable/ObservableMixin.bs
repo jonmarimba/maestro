@@ -425,7 +425,7 @@ function bindingCallback(event) as void
         observable.setField(bindingData.targetField, bindingValue, key)
       end if
       if bindingData.unBindOnCall = true
-        unbindNodeField(bindingData.targetNode, event.getField(), observable, observable[bindingData.targetField]) 
+        MOM.unbindNodeField(bindingData.targetNode, event.getField(), observable, bindingData.targetField) 
       end if
     else
       logError("could not find observable with context id ", contextId)

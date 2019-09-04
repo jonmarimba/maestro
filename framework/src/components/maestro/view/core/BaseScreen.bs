@@ -1,3 +1,5 @@
+import "pkg:/source/maestro/view/viewModel/ViewModelMixin.bs"
+
 ' /**
 '  * @module BaseScreen
 '  * @description Base view for all screens.
@@ -6,6 +8,20 @@
 
 function Init()
   'get a reference to your model locator/central message bus/DIP here.
+  ' m.modelLocator = m.global.modelLocator
+  
+  'Track whatever constitutes a reload here, so any visible views can get reloaded
+  ' m.modelLocator.user.observeField("isLoggedIn", "onUserChange")
+end function
+
+function onUserChange()
+  if m.top.isShown
+    m.top.isUserChangePending = false
+    _onUserChange()
+  else
+    logInfo("user is change; but screen is not showing - marked as pending")
+    m.top.isUserChangePending = true
+  end if
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -19,12 +35,21 @@ function _baseScreenOnShow()
     m.top.isUserChangePending = false
     _onUserChange()
   end if
+
+  if MVVM.isVM(m.vm)
+    m.vm.onShow()
+  end if
+end function
+
+function _baseScreenOnHide()
+  if MVVM.isVM(m.vm)
+    m.vm.onHide()
+  end if
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ abstract methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 function _onUserChange()
   'override me
@@ -62,7 +87,7 @@ end function
 function resetNavController(newFirstScreen = invalid, endIndex = -1)
   logMethod("resetNavController." + m.top.id)
   navController = getNavController()
-
+  
   if (navController <> invalid)
     navController.callFunc("reset", newFirstScreen, endIndex)
   else
@@ -125,5 +150,9 @@ end function
 '  * @returns {returnType} returnDescription
 '  */
 function _getTopScreen()
+  return invalid
+end function
+
+function getScreenForContent(content)
   return invalid
 end function
