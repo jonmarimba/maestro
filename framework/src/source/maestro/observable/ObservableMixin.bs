@@ -407,9 +407,16 @@ function bindingCallback(event) as void
   nodeKey = event.getNode() + "_" + event.getField()
   nodeBindings = m._observableNodeBindings[nodeKey]
   value = event.getData()
+  
+  
   for each key in nodeBindings
     bindingData = nodeBindings[key]
     observable = m._observables[bindingData.contextId]
+    
+    if bindingData.unBindOnCall = true
+      MOM.unbindNodeField(bindingData.targetNode, event.getField(), observable, bindingData.targetField) 
+    end if
+    
     if MU.isAACompatible(observable)
       if bindingData.transformFunction <> invalid
         bindingValue = bindingData.transformFunction(value)
@@ -423,9 +430,6 @@ function bindingCallback(event) as void
           logWarn(bindingData.targetField, "was not present on observable when setting value for nodeKey", nodeKey)
         end if
         observable.setField(bindingData.targetField, bindingValue, key)
-      end if
-      if bindingData.unBindOnCall = true
-        MOM.unbindNodeField(bindingData.targetNode, event.getField(), observable, bindingData.targetField) 
       end if
     else
       logError("could not find observable with context id ", contextId)
