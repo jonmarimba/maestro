@@ -1,0 +1,76 @@
+'@Only
+'@TestSuite MessageDispatcherMixinTests
+
+namespace MDMT
+
+'@BeforeEach
+function beforeEach()
+  m.node.modelLocator = createObject("roSGNode", "Node")
+  MDM_initDispatcher(m.node.modelLocator)
+end function
+
+'@AfterEach
+function afterEach()
+  MDM_unobserveMessage()
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'@It tests initDispatcher
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'@Test initDispatcher
+function initDispatcher_ready()
+  m.modelLocator = {}
+  m.assertTrue(MDM_initDispatcher(m.modelLocator))
+  m.assertSubType(m.modelLocator.messageDispatcher, "Node")
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'@It tests isDispatcherReady
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'@Test isDispatcherReady
+function isDispatcherReady_ready()
+  m.assertTrue(MDM_isDispatcherReady())
+end function
+
+
+'@Test notReady
+'@Params[invalid]
+'@Params[{}]
+'@Params[{"messageDispatcher": invalid}]
+function isDispatcherReady_notReady(modelLocator)
+  MDM_unobserveMessage()
+  m.node.modelLocator = modelLocator
+  m.assertFalse(MDM_isDispatcherReady())
+end function
+
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'@It tests send and receive message
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'@Test sendAndReceiveMessage
+function sendAndReceiveMessage()
+  m.modelLocator = {}
+  m.assertTrue(MDM_isDispatcherReady())
+  MDM_observeMessage("name1", MDMT_name1Result)
+  MDM_observeMessage("name2", MDMT_name2Result)
+
+  MDM_postMessage("name1", "data1")
+  MDM_postMessage("name2", "data2")
+
+  m.assertEqual(m.data1, "data1")
+  m.assertEqual(m.data2, "data2")
+end function
+
+function name1Result(value)
+  m.data1 = data1
+end function
+
+function name2Result(value)
+  m.data2 = data2
+end function
+
+
+end namespace

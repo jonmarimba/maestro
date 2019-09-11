@@ -1,4 +1,3 @@
-'@Only
 '@TestSuite [OMT] ObservableMixin Tests
 
 namespace MOMT
@@ -405,7 +404,6 @@ function observeField_valid_sameFunctionMultipleFields()
   m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget1"], 3)
   m.assertEqual(m.node._observableFunctionPointers["callbacktarget1"], callbackTarget1)
 end function
-
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '@It tests MOM_unobserveField
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

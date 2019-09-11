@@ -1,3 +1,5 @@
+import "pkg:/source/maestro/view/viewModel/ViewModelMixin.bs"
+
 ' /**
 '  * @module BaseScreen
 '  * @description Base view for all screens.
@@ -7,7 +9,7 @@
 function Init()
   'get a reference to your model locator/central message bus/DIP here.
   ' m.modelLocator = m.global.modelLocator
-
+  
   'Track whatever constitutes a reload here, so any visible views can get reloaded
   ' m.modelLocator.user.observeField("isLoggedIn", "onUserChange")
 end function
@@ -33,12 +35,21 @@ function _baseScreenOnShow()
     m.top.isUserChangePending = false
     _onUserChange()
   end if
+
+  if MVVM.isVM(m.vm)
+    m.vm.onShow()
+  end if
+end function
+
+function _baseScreenOnHide()
+  if MVVM.isVM(m.vm)
+    m.vm.onHide()
+  end if
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ abstract methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 function _onUserChange()
   'override me
@@ -49,16 +60,20 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function push(view)
-  if (m.top.navController <> invalid)
-    m.top.navController.callFunc("push", view)
+  navController = getNavController()
+  
+  if (navController <> invalid)
+    navController.callFunc("push", view)
   else
     logError("Push failed - there is no navcontroller on ", m.top)
   end if
 end function
 
 function pop() as object
-  if (m.top.navController <> invalid)
-    return m.top.navController.callFunc("pop", invalid)
+  navController = getNavController()
+  
+  if (navController <> invalid)
+    return navController.callFunc("pop", invalid)
   else
     logError("Pop failed - there is no navcontroller on ", m.top)
   end if
@@ -69,13 +84,19 @@ function resetNavControllerToRoot()
   resetNavController(invalid, 0)
 end function
 
-function resetNavController(newFirstScreen = invalid)
+function resetNavController(newFirstScreen = invalid, endIndex = -1)
   logMethod("resetNavController." + m.top.id)
-  if (m.top.navController <> invalid)
-    m.top.navController.callFunc("reset", newFirstScreen)
+  navController = getNavController()
+  
+  if (navController <> invalid)
+    navController.callFunc("reset", newFirstScreen, endIndex)
   else
     logError("Pop failed - there is no navcontroller on ", m.top)
   end if
+end function
+
+function getNavController()
+  return m.top.navController
 end function
 
 function onAddedToAggregateView(navController)
@@ -108,9 +129,10 @@ end function
 function getTopScreen(args = invalid)
   logMethod("getTopScreen")
   topScreen = _getTopScreen()
+  navController = getNavController()
   if topScreen = invalid
-    if m.top.navController <> invalid and m.top.navController.numberOfViews > 0
-      topScreen = m.top.navController.currentView
+    if navController <> invalid and navController.numberOfViews > 0
+      topScreen = navController.currentView
     else
       topScreen = m.top
     end if

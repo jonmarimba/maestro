@@ -1,4 +1,3 @@
-'@Only
 '@TestSuite [MBVMT] BaseViewModel Tests
 namespace MBVMT
 
@@ -28,7 +27,7 @@ end function
 
 '@Test valid
 function testVM()
-  vm = MBVMT_createVM()
+  vm = TestViewModel()
   m.assertEqual(vm.state, "none")
   m.assertEqual(vm.name, "testVM")
 
@@ -41,7 +40,7 @@ end function
 
 '@Test calls abstract methods
 function testVM_abstractMethods()
-  vm = MBVMT_createVM()
+  vm = TestViewModel()
   m.assertEqual(vm.state, "none")
   m.assertEqual(vm.name, "testVM")
 
@@ -61,53 +60,16 @@ end function
 
 '@Test timeConstructor
 function timeConstructor()
-  vm = MBVMT_createVM()
+  vm = TestViewModel()
 end function
 
 '@Test time method calls
 function testVM_time()
-  vm = MBVMT_createVM()
+  vm = TestViewModel()
   vm.initialize()
   vm.onShow()
   vm.onHide()
   vm.destroy()
-end function
-
-function getAge()
-  return m.age
-end function
-
-function setAge(age)
-  return m.setField("age", age)
-end function
-
-function customInitialize()
-  m.isInitCalled = true
-end function
-
-function customOnShow()
-  m.isOnShowCalled = true
-end function
-
-function customOnHide()
-  m.isOnHideCalled = true
-end function
-
-function customDestroy()
-  m.isDestroyCalled = true
-end function
-
-function createVM()
-  subClass = {
-    name: "testVM"
-    getAge: getAge
-    setAge: setAge
-    _initialize: customInitialize
-    _destroy: customDestroy
-    _onShow: customOnShow
-    _onHide: customOnHide
-  }
-  return BaseViewModel(subClass)
 end function
 
 end namespace

@@ -2,7 +2,20 @@ import "../../observable/BaseObservable.bs"
 import "pkg:/source/rLog/rLogMixin.brs"
 
 namespace MBVM
+
 class BaseViewModel extends BaseObservable
+
+' /**
+'  * @member new
+'  * @memberof module:BaseViewModel
+'  * @instance
+'  * @description contsructor for a view model.
+'  *              this class contains the common functions to assist in vm management
+'  *               - KeyMixin integration points
+'  *               - FocusMixin integration points
+'  *               - wrappers for key navigation methods
+'  * @param {string} name to use in logs, etc
+'  */
 
 public function new(name = "BaseViewModel")
   super()
@@ -12,7 +25,7 @@ end function
 public state = "none"
 public focusId = invalid
 
-private _viewModel = true
+private __viewModel = true
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ public API
@@ -89,6 +102,28 @@ public function onKeyEvent(key as string, press as boolean) as boolean
   end if
   
   return result
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ nav support
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'Note the following methods are proxies to facilitate testing.
+'All of them will call out to the top level scope
+
+public function push(view)
+  push(view)
+end function
+
+public function pop() as object
+  return(pop)
+end function
+
+public function resetNavControllerToRoot()
+  resetNavControllerToRoot()
+end function
+
+public function resetNavController(newFirstScreen = invalid, endIndex = -1)
+  resetNavController(newFirstScreen, endIndex)
 end function
 
 end class

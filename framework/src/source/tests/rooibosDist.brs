@@ -1,10 +1,10 @@
 '/**
-' * rooibos - simple, flexible, fun brightscript test framework for roku scenegraph apps
-' * @version v2.3.0
+' * rooibos - simple, flexible, fun brihhtscript test framework for roku scenegraph apps
+' * @version v3.1.1
 ' * @link https://github.com/georgejecook/rooibos#readme
 ' * @license MIT
 ' */
-function Rooibos__Init(preTestSetup = invalid,  testUtilsDecoratorMethodName = invalid, testSceneName = invalid, nodeContext = invalid) as void
+function Rooibos__Init(preTestSetup = invalid, testUtilsDecoratorMethodName = invalid, testSceneName = invalid, nodeContext = invalid) as void
   args = {}
   if createObject("roAPPInfo").IsDev() <> true then
     ? " not running in dev mode! - rooibos tests only support sideloaded builds - aborting"
@@ -23,7 +23,7 @@ function Rooibos__Init(preTestSetup = invalid,  testUtilsDecoratorMethodName = i
   scene.id = "ROOT"
   screen.show()
   m.global = screen.getGlobalNode()
-  m.global.addFields({"testsScene": scene})
+  m.global.addFields({ "testsScene": scene })
   if (preTestSetup <> invalid)
     preTestSetup(screen)
   end if
@@ -35,17 +35,42 @@ function Rooibos__Init(preTestSetup = invalid,  testUtilsDecoratorMethodName = i
   ? "#TEST START : ###" ; testId ; "###"
   args.testScene = scene
   args.global = m.global
-  runner = RBS_TR_TestRunner(args)
-  runner.Run()
-  while(true)
-    msg = wait(0, m.port)
-    msgType = type(msg)
-    if msgType = "roSGScreenEvent"
-      if msg.isScreenClosed()
-        return
+  rooibosVersion = "3.1.1"
+  requiredRooibosPreprocessorVersion = "1.0.0"
+  if not RBS_CMN_isFunction(RBSFM_getPreprocessorVersion)
+    versionError = "You are using a rooibos-preprocessor (i.e. rooibos-cli) version older than 1.0.0 - please update to " + requiredRooibosPreprocessorVersion
+  else 
+    if RBSFM_getPreprocessorVersion() = requiredRooibosPreprocessorVersion
+      versionError = ""
+    else
+      versionError = "Your rooibos-preprocessor (i.e. rooibos-cli) version '" + RBSFM_getPreprocessorVersion() + "' is not compatible with rooibos version " + rooibosVersion + ". Please upgrade your rooibos-cli to version " + requiredRooibosPreprocessorVersion
+    end if 
+  end if
+  if versionError = ""
+    ? "######################################################"
+    ? ""
+    ? "# rooibos framework version: " ; rooibosVersion
+    ? "# tests parsed with rooibosC version: " ; rooibosVersion
+    ? "######################################################"
+    ? ""
+    runner = RBS_TR_TestRunner(args)
+    runner.Run()
+    while(true)
+      msg = wait(0, m.port)
+      msgType = type(msg)
+      if msgType = "roSGScreenEvent"
+        if msg.isScreenClosed()
+          return
+        end if
       end if
-    end if
-  end while
+    end while
+  else
+    ? ""
+    ? "#########################################################"
+    ? "ERROR - VERSION MISMATCH"
+    ? versionError
+    ? "#########################################################"
+  end if
 end function
 function BaseTestSuite() as object
   this = {}
@@ -159,7 +184,7 @@ function RBS_BTS_GetLegacyCompatibleReturnValue(value) as object
 end function
 function RBS_BTS_AssertFalse(expr , msg = "Expression evaluates to true" ) as dynamic
   if (m.currentResult.isFail) then return m.GetLegacyCompatibleReturnValue(false) ' skip test we already failed
-  if not RBS_CMN_isBoolean(expr) or expr
+  if not RBS_CMN_IsBoolean(expr) or expr
     m.currentResult.AddResult(msg)
     return m.fail(msg)
   end if
@@ -168,7 +193,7 @@ function RBS_BTS_AssertFalse(expr , msg = "Expression evaluates to true" ) as dy
 end function
 function RBS_BTS_AssertTrue(expr , msg = "Expression evaluates to false" ) as dynamic
   if (m.currentResult.isFail) then return m.GetLegacyCompatibleReturnValue(false) ' skip test we already failed
-  if not RBS_CMN_isBoolean(expr) or not expr then
+  if not RBS_CMN_IsBoolean(expr) or not expr then
     m.currentResult.AddResult(msg)
     return m.GetLegacyCompatibleReturnValue(false)
   end if
@@ -674,13 +699,15 @@ function RBS_BTS_EqAssocArray(Value1 , Value2 ) as dynamic
     return false
   else
     for each k in Value1
-      if not Value2.DoesExist(k)
-        return false
-      else
-        v1 = Value1[k]
-        v2 = Value2[k]
-        if not RBS_BTS_EqValues(v1, v2)
+      if k <> "__mocks" and k <> "__stubs" 'fix infinite loop/box crash when doing equals on an aa with a mock
+        if not Value2.DoesExist(k)
           return false
+        else
+          v1 = Value1[k]
+          v2 = Value2[k]
+          if not RBS_BTS_EqValues(v1, v2)
+            return false
+          end if
         end if
       end if
     end for
@@ -1251,10 +1278,10 @@ function RBS_BTS_CleanMocks() as void
       if result = invalid then return default
       return result
     end function
-function RBS_CMN_IsXmlElement(value ) as boolean
+function RBS_CMN_IsXmlElement(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifXMLElement") <> invalid
 end function
-function RBS_CMN_IsFunction(value ) as boolean
+function RBS_CMN_IsFunction(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifFunction") <> invalid
 end function
 function RBS_CMN_GetFunction(filename, functionName) as object
@@ -1263,7 +1290,7 @@ function RBS_CMN_GetFunction(filename, functionName) as object
   mapFunction = RBSFM_getFunctionsForFile(filename)
   if mapFunction <> invalid
     map = mapFunction()
-    if (type(map) ="roAssociativeArray")
+    if (type(map) = "roAssociativeArray")
       functionPointer = map[functionName]
       return functionPointer
     else
@@ -1280,7 +1307,7 @@ function RBS_CMN_GetFunctionBruteForce(functionName) as object
     mapFunction = RBSFM_getFunctionsForFile(filename)
     if mapFunction <> invalid
       map = mapFunction()
-      if (type(map) ="roAssociativeArray")
+      if (type(map) = "roAssociativeArray")
         functionPointer = map[functionName]
         if functionPointer <> invalid
           return functionPointer
@@ -1290,69 +1317,69 @@ function RBS_CMN_GetFunctionBruteForce(functionName) as object
   end for
   return invalid
 end function
-function RBS_CMN_isBoolean(value ) as boolean
+function RBS_CMN_IsBoolean(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifBoolean") <> invalid
 end function
-function RBS_CMN_IsInteger(value ) as boolean
+function RBS_CMN_IsInteger(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifInt") <> invalid and (Type(value) = "roInt" or Type(value) = "roInteger" or Type(value) = "Integer")
 end function
-function RBS_CMN_IsFloat(value ) as boolean
+function RBS_CMN_IsFloat(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifFloat") <> invalid
 end function
-function RBS_CMN_IsDouble(value ) as boolean
+function RBS_CMN_IsDouble(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifDouble") <> invalid
 end function
-function RBS_CMN_IsLongInteger(value ) as boolean
+function RBS_CMN_IsLongInteger(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifLongInt") <> invalid
 end function
-function RBS_CMN_IsNumber(value ) as boolean
+function RBS_CMN_IsNumber(value) as boolean
   return RBS_CMN_IsLongInteger(value) or RBS_CMN_IsDouble(value) or RBS_CMN_IsInteger(value) or RBS_CMN_IsFloat(value)
 end function
-function RBS_CMN_IsList(value ) as boolean
+function RBS_CMN_IsList(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifList") <> invalid
 end function
-function RBS_CMN_IsArray(value ) as boolean
+function RBS_CMN_IsArray(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifArray") <> invalid
 end function
-function RBS_CMN_IsAssociativeArray(value ) as boolean
+function RBS_CMN_IsAssociativeArray(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifAssociativeArray") <> invalid
 end function
-function RBS_CMN_IsSGNode(value ) as boolean
+function RBS_CMN_IsSGNode(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifSGNodeChildren") <> invalid
 end function
-function RBS_CMN_IsString(value ) as boolean
+function RBS_CMN_IsString(value) as boolean
   return RBS_CMN_IsValid(value) and GetInterface(value, "ifString") <> invalid
 end function
-function RBS_CMN_IsNotEmptyString(value ) as boolean
+function RBS_CMN_IsNotEmptyString(value) as boolean
   return RBS_CMN_IsString(value) and len(value) > 0
 end function
-function RBS_CMN_IsDateTime(value ) as boolean
+function RBS_CMN_IsDateTime(value) as boolean
   return RBS_CMN_IsValid(value) and (GetInterface(value, "ifDateTime") <> invalid or Type(value) = "roDateTime")
 end function
-function RBS_CMN_IsValid(value ) as boolean
+function RBS_CMN_IsValid(value) as boolean
   return not RBS_CMN_IsUndefined(value) and value <> invalid
 end function
-function RBS_CMN_IsUndefined(value ) as boolean
+function RBS_CMN_IsUndefined(value) as boolean
   return type(value) = "" or Type(value) = "<uninitialized>"
 end function
-function RBS_CMN_ValidStr(obj ) as string
+function RBS_CMN_ValidStr(obj) as string
   if obj <> invalid and GetInterface(obj, "ifString") <> invalid
     return obj
   else
     return ""
   end if
 end function
-function RBS_CMN_AsString(input ) as string
+function RBS_CMN_AsString(input) as string
   if RBS_CMN_IsValid(input) = false
     return ""
   else if RBS_CMN_IsString(input)
     return input
-  else if RBS_CMN_IsInteger(input) or RBS_CMN_IsLongInteger(input) or RBS_CMN_isBoolean(input)
+  else if RBS_CMN_IsInteger(input) or RBS_CMN_IsLongInteger(input) or RBS_CMN_IsBoolean(input)
     return input.ToStr()
   else if RBS_CMN_IsFloat(input) or RBS_CMN_IsDouble(input)
     return Str(input).Trim()
   else if type(input) = "roSGNode"
-    return "Node(" + input.subType() +")"
+    return "Node(" + input.subType() + ")"
   else if type(input) = "roAssociativeArray"
     isFirst = true
     text = "{"
@@ -1361,7 +1388,9 @@ function RBS_CMN_AsString(input ) as string
       isFirst = false
     end if
     for each key in input
-      text += key + ":" + RBS_CMN_AsString(input[key])
+      if key <> "__mocks" and key <> "__stubs"
+        text += key + ":" + RBS_CMN_AsString(input[key])
+      end if
     end for
     text += "}"
     return text
@@ -1369,7 +1398,7 @@ function RBS_CMN_AsString(input ) as string
     return ""
   end if
 end function
-function RBS_CMN_AsInteger(input ) as integer
+function RBS_CMN_AsInteger(input) as integer
   if RBS_CMN_IsValid(input) = false
     return 0
   else if RBS_CMN_IsString(input)
@@ -1382,7 +1411,7 @@ function RBS_CMN_AsInteger(input ) as integer
     return 0
   end if
 end function
-function RBS_CMN_AsLongInteger(input ) as longinteger
+function RBS_CMN_AsLongInteger(input) as longinteger
   if RBS_CMN_IsValid(input) = false
     return 0
   else if RBS_CMN_IsString(input)
@@ -1393,7 +1422,7 @@ function RBS_CMN_AsLongInteger(input ) as longinteger
     return 0
   end if
 end function
-function RBS_CMN_AsFloat(input ) as float
+function RBS_CMN_AsFloat(input) as float
   if RBS_CMN_IsValid(input) = false
     return 0.0
   else if RBS_CMN_IsString(input)
@@ -1406,7 +1435,7 @@ function RBS_CMN_AsFloat(input ) as float
     return 0.0
   end if
 end function
-function RBS_CMN_AsDouble(input ) as double
+function RBS_CMN_AsDouble(input) as double
   if RBS_CMN_IsValid(input) = false
     return 0.0
   else if RBS_CMN_IsString(input)
@@ -1417,20 +1446,20 @@ function RBS_CMN_AsDouble(input ) as double
     return 0.0
   end if
 end function
-function RBS_CMN_AsBoolean(input ) as boolean
+function RBS_CMN_AsBoolean(input) as boolean
   if RBS_CMN_IsValid(input) = false
     return false
   else if RBS_CMN_IsString(input)
     return LCase(input) = "true"
   else if RBS_CMN_IsInteger(input) or RBS_CMN_IsFloat(input)
     return input <> 0
-  else if RBS_CMN_isBoolean(input)
+  else if RBS_CMN_IsBoolean(input)
     return input
   else
     return false
   end if
 end function
-function RBS_CMN_AsArray(value ) as object
+function RBS_CMN_AsArray(value) as object
   if RBS_CMN_IsValid(value)
     if not RBS_CMN_IsArray(value)
       return [value]
@@ -1440,14 +1469,14 @@ function RBS_CMN_AsArray(value ) as object
   end if
   return []
 end function
-function RBS_CMN_IsNullOrEmpty(value ) as boolean
+function RBS_CMN_IsNullOrEmpty(value) as boolean
   if RBS_CMN_IsString(value)
     return Len(value) = 0
   else
     return not RBS_CMN_IsValid(value)
   end if
 end function
-function RBS_CMN_FindElementIndexInArray(array , value , compareAttribute = invalid , caseSensitive = false ) as integer
+function RBS_CMN_FindElementIndexInArray(array , value , compareAttribute = invalid , caseSensitive = false) as integer
   if RBS_CMN_IsArray(array)
     for i = 0 to RBS_CMN_AsArray(array).Count() - 1
       compareValue = array[i]
@@ -1462,10 +1491,10 @@ function RBS_CMN_FindElementIndexInArray(array , value , compareAttribute = inva
   end if
   return -1
 end function
-function RBS_CMN_ArrayContains(array , value , compareAttribute = invalid ) as boolean
+function RBS_CMN_ArrayContains(array , value , compareAttribute = invalid) as boolean
   return (RBS_CMN_FindElementIndexInArray(array, value, compareAttribute) > -1)
 end function
-function RBS_CMN_FindElementIndexInNode(node , value ) as integer
+function RBS_CMN_FindElementIndexInNode(node , value) as integer
   if type(node) = "roSGNode"
     for i = 0 to node.getChildCount() - 1
       compareValue = node.getChild(i)
@@ -1476,7 +1505,7 @@ function RBS_CMN_FindElementIndexInNode(node , value ) as integer
   end if
   return -1
 end function
-function RBS_CMN_NodeContains(node , value ) as boolean
+function RBS_CMN_NodeContains(node , value) as boolean
   return (RBS_CMN_FindElementIndexInNode(node, value) > -1)
 end function
 function RBS_ItG_GetTestCases(group) as object
@@ -1772,10 +1801,17 @@ sub RBS_LOGGER_PrintStatistic(statObj as object)
   end for
   ? ""
   m.PrintEnd()
-  ? "Total  = "; RBS_CMN_AsString(statObj.Total); " ; Passed  = "; statObj.Correct; " ; Failed   = "; statObj.Fail; " ; Ignored   = "; statObj.Ignored
+  ignoredInfo = RBSFM_getIgnoredTestInfo()
+  ? "Total  = "; RBS_CMN_AsString(statObj.Total); " ; Passed  = "; statObj.Correct; " ; Failed   = "; statObj.Fail; " ; Ignored   = "; ignoredInfo.count
   ? " Time spent: "; statObj.Time; "ms"
   ? ""
   ? ""
+  if (ignoredInfo.count > 0)
+    ? "IGNORED TESTS:"
+    for each ignoredItemName in ignoredInfo.items
+      print ignoredItemName
+    end for
+  end if
   if (statObj.ignored > 0)
     ? "IGNORED TESTS:"
     for each ignoredItemName in statObj.IgnoredTestNames
@@ -1808,7 +1844,7 @@ sub RBS_LOGGER_PrintTestStatistic(testCase as object)
     testChar = "|"
     locationLine = StrI(metaTestCase.lineNumber).trim()
   end if
-  locationText = testCase.filePath.trim() + "(" + locationLine + ")"
+  locationText = "pkg:/" + testCase.filePath.trim() + "(" + locationLine + ")"
   insetText = ""
   if (metaTestcase.isParamTest <> true)
     messageLine = RBS_LOGGER_FillText(" " + testChar + " |--" + metaTestCase.Name + " : ", ".", 80)
@@ -1862,7 +1898,7 @@ sub RBS_LOGGER_PrintSuiteSetUp(sName as string)
   end if
 end sub
 sub RBS_LOGGER_PrintMetaSuiteStart(metaTestSuite)
-  ? metaTestSuite.name; " (" ; metaTestSuite.filePath + "(1))"
+  ? metaTestSuite.name; " " ; "pkg:/" ; metaTestSuite.filePath + "(1)"
 end sub
 sub RBS_LOGGER_PrintSuiteStart(sName as string)
   ? " |-" ; sName
@@ -1930,32 +1966,13 @@ function RBS_TR_TestRunner(args = {}) as object
   this = {}
   this.testScene = args.testScene
   this.nodeContext = args.nodeContext
-  fs = CreateObject("roFileSystem")
-  defaultConfig = {
-    logLevel : 1,
-    testsDirectory: "pkg:/source/Tests",
-    testFilePrefix: "Test__",
-    failFast: false,
-    showOnlyFailures: false,
-    maxLinesWithoutSuiteDirective: 100
-  }
-  rawConfig = invalid
-  config = invalid
-  if (args.testConfigPath <> invalid and fs.Exists(args.testConfigPath))
-    ? "Loading test config from " ; args.testConfigPath
-    rawConfig = ReadAsciiFile(args.testConfigPath)
-  else if (fs.Exists("pkg:/source/tests/testconfig.json"))
-    ? "Loading test config from default location : pkg:/source/tests/testconfig.json"
-    rawConfig = ReadAsciiFile("pkg:/source/tests/testconfig.json")
-  else
-    ? "None of the testConfig.json locations existed"
-  end if
-  if (rawConfig <> invalid)
-    config = ParseJson(rawConfig)
-  end if
-  if (config = invalid or not RBS_CMN_IsAssociativeArray(config) or RBS_CMN_IsNotEmptyString(config.rawtestsDirectory))
+  config = RBSFM_getRuntimeConfig()
+  if (config = invalid or not RBS_CMN_IsAssociativeArray(config))
     ? "WARNING : specified config is invalid - using default"
-    config = defaultConfig
+    config = {
+      showOnlyFailures: false
+      failFast: false
+    }
   end if
   if (args.showOnlyFailures <> invalid)
     config.showOnlyFailures = args.showOnlyFailures = "true"
@@ -2032,6 +2049,9 @@ sub RBS_TR_Run()
     skipSuite:
   end for
   m.logger.PrintStatistic(totalStatObj)
+  if RBS_CMN_IsFunction(RBS_ReportCodeCoverage)
+    RBS_ReportCodeCoverage()
+  end if
   RBS_TR_SendHomeKeypress()
 end sub
 sub RBS_RT_RunItGroups(metaTestSuite, totalStatObj, testUtilsDecoratorMethodName, config, runtimeConfig, nodeContext = invalid)
@@ -2112,6 +2132,7 @@ sub RBS_RT_RunTestCases(metaTestSuite, itGroup, testSuite, totalStatObj, config,
   testSuite.global = runtimeConfig.global
   for each testCase in testSuite.testCases
     metaTestCase = itGroup.testCaseLookup[testCase.Name]
+    metaTestCase.time = 0
     if (runtimeConfig.hasSoloTests and not metaTestCase.isSolo)
       goto skipTestCase
     end if

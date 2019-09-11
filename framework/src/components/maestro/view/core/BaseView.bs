@@ -1,7 +1,7 @@
-import "pkg:/source/rLog/rLogMixin.brs"
-import "../mixin/FocusMixin.brs"
-import "../mixin/KeyMixin.brs"
-
+import "pkg:/source/rLog/rLogMixin.bs"
+import "../mixin/FocusMixin.bs"
+import "../mixin/KeyMixin.bs"
+import "pkg:/source/maestro/lib/Utils.bs"
 
 ' /**
 '  * @module BaseView
@@ -12,9 +12,17 @@ function init() as void
   m.modelLocator = m.global.modelLocator
   focusMixinInit()
   keyPressMixinInit()
+  m.top.observeField("_debugM", "onDebugMChange")
+    
   m.wasShown = false
   m.isKeyPressLocked = false
 end function
+
+function onDebugMChange()
+  logInfo("dumping m for debugging purposes")
+  m.top._m = m
+end function
+
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ utils
@@ -58,7 +66,7 @@ end function
 
 function getIndexOfItem(parent, item)
   if item <> invalid
-    for index = 0 to parent.getChildCount() -1
+    for index = 0 to parent.getChildCount() - 1
       node = parent.getChild(index)
       if node.id = item.id
         return index
@@ -116,7 +124,7 @@ function onShow(args) as void
     _onFirstShow()
     m.wasShown = true
   end if
-
+  
   if oldIsShowing <> m.top.isShown
     _baseScreenOnShow()
     _onShow()
@@ -126,6 +134,7 @@ end function
 function onHide(args)
   if m.wasShown
     m.top.isShown = false
+    _baseScreenOnHide()
     _onHide()
   else
     logWarn("onHide called before show: ignoring")

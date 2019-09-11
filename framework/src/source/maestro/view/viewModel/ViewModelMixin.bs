@@ -1,5 +1,6 @@
 import "../../lib/Utils.bs"
 import "pkg:/source/rLog/rLogMixin.brs"
+import "../../observable/BaseObservable.bs"
 
 namespace MVVM
 
@@ -49,6 +50,18 @@ function onFocusIdChange(focusId)
       logError("the focus map contained a focusId that did not exist!", focusId)
     end if
   end if
+end function
+
+
+function initializeBindings(isUsingFocusMap)
+  if MU.isFunction(m_initBindings)
+    m_initBindings()
+  end if
+
+  if isUsingFocusMap
+    MVVM.createFocusMap(m.vm)
+    MOM.observeField(m.vm, "focusId", MVVM.onFocusIdChange)
+  end if    
 end function
 
 end namespace
