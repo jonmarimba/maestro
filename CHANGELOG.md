@@ -1,3 +1,16 @@
+# 0.4.0 
+
+### Added 
+  - adds base view debug helper util
+  - adds Mlabel, and some other fixes
+
+### Changed
+  - order of unbinding when binding a node field in fire-once only mode
+
+### Fixed
+  - various small fixes related to typos in the bindings 
+  - fixes issue that can cause the same observable to fire, when a new observable is created in the callback of a fiew once observable
+
 # 0.3.0 
 
 ### Added
