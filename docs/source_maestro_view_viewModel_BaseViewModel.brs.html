@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>source/maestro/view/viewModel/ViewModelMixin.brs - Documentation</title>
+    <title>source/maestro/view/viewModel/BaseViewModel.brs - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,7 +29,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">source/maestro/view/viewModel/ViewModelMixin.brs</h1>
+    <h1 class="page-title">source/maestro/view/viewModel/BaseViewModel.brs</h1>
     
 
     
@@ -39,73 +39,178 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>'import "../../lib/Utils.bs"
+            <pre class="prettyprint source linenums"><code>'import "../../observable/BaseObservable.bs"
 'import "pkg:/source/rLog/rLogMixin.brs"
-'import "../../observable/BaseObservable.bs"
+
+
 
 
 
 ' /**
-'  * @module ViewModelMixin
-'  * @description Mixin method for helping with ViewModelIntegration. These are all private methods, handled by the framework
+'  * @member new
+'  * @memberof module:BaseViewModel
+'  * @instance
+'  * @description contsructor for a view model.
+'  *              this class contains the common functions to assist in vm management
+'  *               - KeyMixin integration points
+'  *               - FocusMixin integration points
+'  *               - wrappers for key navigation methods
+'  * @param {string} name to use in logs, etc
 '  */
 
-'note - not using namespaces on mixin methods until the IDE supports them, or
-'we won't get symbol definitions
-function MVVM_isVM(vm)
-  return MOM_isObservable(vm) and vm.__viewModel = true
+ function MBVM_new(name = "BaseViewModel")
+ m.__BaseObservable()
+  registerLogger(name, true, m)
 end function
 
-function MVVM_createFocusMap(vm) as boolean
-  focusMap = {}
-  success = false
-  if MVVM_isVM(vm)
-    if MU_isArray(vm.focusIds)
-      for index = 0 to vm.focusIds.count() - 1
-        key = vm.focusIds[index]
-        control = m[key]
-        if type(control) = "roSGNode"
-          focusMap[key] = control
-        else
-          logError("createFocusMap : could not find control for id", key)
-        end if
-      end for
-      success = true
-    else
-      logInfo("no focusMap for vm", vm.name)
+
+
+
+
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ public API
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ function MBVM_initialize()
+  m.logMethod("initialize")
+  if MU_isFunction(m._initialize)
+    m._initialize()
+  end if
+  m.state = "initialized"
+end function
+
+ function MBVM_destroy()
+  m.logMethod("destroy")
+  if MU_isFunction(m._destroy)
+    m._destroy()
+  end if
+  m.state = "destroyed"
+end function
+
+ function MBVM_onShow()
+  m.logMethod("onShow")
+  if MU_isFunction(m._onShow)
+    m._onShow()
+  end if
+end function
+
+ function MBVM_onHide()
+  m.logMethod("onHide")
+  if MU_isFunction(m._onHide)
+    m._onHide()
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ KEY HANDLING
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ function MBVM_onKeyEvent(key as string, press as boolean) as boolean
+  result = false
+  if press
+    if MU_isFunction(m._isAnyKeyPressLocked) and m._isAnyKeyPressLocked()
+      return true
+    end if
+    
+    if key = "down" and MU_isFunction(m._onKeyPressDown)
+      result = m._onKeyPressDown()
+    else if key = "up" and MU_isFunction(m._onKeyPressUp)
+      result = m._onKeyPressUp()
+    else if key = "left" and MU_isFunction(m._onKeyPressLeft)
+      result = m._onKeyPressLeft()
+    else if key = "right" and MU_isFunction(m._onKeyPressRight)
+      result = m._onKeyPressRight()
+    else if key = "OK" and MU_isFunction(m._onKeyPressOK)
+      result = m._onKeyPressOK()
+    else if key = "back" and MU_isFunction(m._onKeyPressBack)
+      result = m._onKeyPressBack()
+    else if key = "options" and MU_isFunction(m._onKeyPressOption)
+      result = m._onKeyPressOption()
+    else if key = "play" and MU_isFunction(m._onKeyPressPlay)
+      result = m._onKeyPressPlay()
     end if
   else
-    logError("unknown vm type!")
+    result = false
   end if
   
-  m._focusMap = focusMap
-  return success
-end function
-
-function MVVM_onFocusIdChange(focusId)
-  if focusId &lt;> invalid and focusId &lt;> "" and m._focusMap &lt;> invalid
-    control = m._focusMap[focusId]
-    if control &lt;> invalid
-      setFocus(control)
-    else
-      logError("the focus map contained a focusId that did not exist!", focusId)
-    end if
+  if (result = invalid)
+    result = false
   end if
-end function
-
-
-function MVVM_initializeBindings(isUsingFocusMap)
-  if MU_isFunction(m_initBindings)
-    m_initBindings()
+  
+  if result = false and MU_isFunction(m._isCapturingAnyKeyPress)
+    result = m._isCapturingAnyKeyPress(key, press)
   end if
-
-  if isUsingFocusMap
-    MVVM_createFocusMap(m.vm)
-    MOM_observeField(m.vm, "focusId", MVVM_onFocusIdChange)
-  end if    
+  
+  return result
 end function
 
-</code></pre>
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ nav support
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'Note the following methods are proxies to facilitate testing.
+'All of them will call out to the top level scope
+
+ function MBVM_push(view)
+  push(view)
+end function
+
+ function MBVM_pop() as object
+  return(pop)
+end function
+
+ function MBVM_resetNavControllerToRoot()
+  resetNavControllerToRoot()
+end function
+
+ function MBVM_resetNavController(newFirstScreen = invalid, endIndex = -1)
+  resetNavController(newFirstScreen, endIndex)
+end function
+
+
+
+
+
+      function __BaseViewModel_builder()
+      instance = __BaseObservable_builder()
+      BaseViewModel_instance = {
+        __className: "BaseViewModel"
+        
+
+         __BaseViewModel: MBVM_new
+        
+
+        initialize: MBVM_initialize
+        destroy: MBVM_destroy
+        onShow: MBVM_onShow
+        onHide: MBVM_onHide
+        onKeyEvent: MBVM_onKeyEvent
+        push: MBVM_push
+        pop: MBVM_pop
+        resetNavControllerToRoot: MBVM_resetNavControllerToRoot
+        resetNavController: MBVM_resetNavController
+        
+
+        state: "none"
+        focusId: invalid
+        
+
+        __viewModel: true
+        
+
+      }
+      instance.append(BaseViewModel_instance)
+      return instance
+      end function
+    
+
+
+      function BaseViewModel(name = "BaseViewModel")
+        instance = __BaseViewModel_builder()
+        instance.__BaseViewModel(name)
+        return instance
+      end function
+    </code></pre>
         </article>
     </section>
 
