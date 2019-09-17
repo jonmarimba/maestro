@@ -113,22 +113,22 @@ end function
       return true
     end if
     
-    if key = "down" and MU_isFunction(m._onKeyPressDown)
-      result = m._onKeyPressDown()
-    else if key = "up" and MU_isFunction(m._onKeyPressUp)
-      result = m._onKeyPressUp()
-    else if key = "left" and MU_isFunction(m._onKeyPressLeft)
-      result = m._onKeyPressLeft()
-    else if key = "right" and MU_isFunction(m._onKeyPressRight)
-      result = m._onKeyPressRight()
-    else if key = "OK" and MU_isFunction(m._onKeyPressOK)
-      result = m._onKeyPressOK()
-    else if key = "back" and MU_isFunction(m._onKeyPressBack)
-      result = m._onKeyPressBack()
-    else if key = "options" and MU_isFunction(m._onKeyPressOption)
-      result = m._onKeyPressOption()
-    else if key = "play" and MU_isFunction(m._onKeyPressPlay)
-      result = m._onKeyPressPlay()
+    if key = "down" and MU_isFunction(m.onKeyPressDown)
+      result = m.onKeyPressDown()
+    else if key = "up" and MU_isFunction(m.onKeyPressUp)
+      result = m.onKeyPressUp()
+    else if key = "left" and MU_isFunction(m.onKeyPressLeft)
+      result = m.onKeyPressLeft()
+    else if key = "right" and MU_isFunction(m.onKeyPressRight)
+      result = m.onKeyPressRight()
+    else if key = "OK" and MU_isFunction(m.onKeyPressOK)
+      result = m.onKeyPressOK()
+    else if key = "back" and MU_isFunction(m.onKeyPressBack)
+      result = m.onKeyPressBack()
+    else if key = "options" and MU_isFunction(m.onKeyPressOption)
+      result = m.onKeyPressOption()
+    else if key = "play" and MU_isFunction(m.onKeyPressPlay)
+      result = m.onKeyPressPlay()
     end if
   else
     result = false

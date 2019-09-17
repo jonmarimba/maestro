@@ -72,22 +72,22 @@ public function onKeyEvent(key as string, press as boolean) as boolean
       return true
     end if
     
-    if key = "down" and MU.isFunction(m._onKeyPressDown)
-      result = m._onKeyPressDown()
-    else if key = "up" and MU.isFunction(m._onKeyPressUp)
-      result = m._onKeyPressUp()
-    else if key = "left" and MU.isFunction(m._onKeyPressLeft)
-      result = m._onKeyPressLeft()
-    else if key = "right" and MU.isFunction(m._onKeyPressRight)
-      result = m._onKeyPressRight()
-    else if key = "OK" and MU.isFunction(m._onKeyPressOK)
-      result = m._onKeyPressOK()
-    else if key = "back" and MU.isFunction(m._onKeyPressBack)
-      result = m._onKeyPressBack()
-    else if key = "options" and MU.isFunction(m._onKeyPressOption)
-      result = m._onKeyPressOption()
-    else if key = "play" and MU.isFunction(m._onKeyPressPlay)
-      result = m._onKeyPressPlay()
+    if key = "down" and MU.isFunction(m.onKeyPressDown)
+      result = m.onKeyPressDown()
+    else if key = "up" and MU.isFunction(m.onKeyPressUp)
+      result = m.onKeyPressUp()
+    else if key = "left" and MU.isFunction(m.onKeyPressLeft)
+      result = m.onKeyPressLeft()
+    else if key = "right" and MU.isFunction(m.onKeyPressRight)
+      result = m.onKeyPressRight()
+    else if key = "OK" and MU.isFunction(m.onKeyPressOK)
+      result = m.onKeyPressOK()
+    else if key = "back" and MU.isFunction(m.onKeyPressBack)
+      result = m.onKeyPressBack()
+    else if key = "options" and MU.isFunction(m.onKeyPressOption)
+      result = m.onKeyPressOption()
+    else if key = "play" and MU.isFunction(m.onKeyPressPlay)
+      result = m.onKeyPressPlay()
     end if
   else
     result = false
