@@ -93,6 +93,7 @@ end function
 '  * @returns {boolean} true if successful
 '  */
 function bindNodeField(targetNode, nodeField, observable, observableField, properties = invalid) as boolean
+
   if not MOM.registerObservable(observable)
     logError("could not bind node field - the observable failed to register")
     return false
@@ -117,8 +118,9 @@ function bindNodeField(targetNode, nodeField, observable, observableField, prope
   key = observable.getNodeFieldBindingKey(targetNode, nodeField, observableField)
   
   if nodeBindings.doesExist(key)
-    logWarn("NodeBinding already existed for key")
+    logWarn("NodeBinding already existed for key", key)
     binding = nodeBindings[key]
+
     if binding.targetNode.isSameNode(targetNode)
       logWarn("is same node - ignoring")
       return true
@@ -224,12 +226,18 @@ function registerObservable(observable) as boolean
     return true
   end if
   
-  logVerbose("this observable has never been registered - creating a new context id")
   if m._observableContextId = invalid
-    m["_observableContextId"] = -1
+    m._observableContextId = -1
   end if
+
+  if m._observableContextId = 0
+    logError("There is already an observable registered with this view! maestro _can_ support more than one observable; but for now that use case is disabled to avoid noobies getting themselves into trouble.")
+    return false
+  end if
+  
   m._observableContextId++
   contextId = str(m._observableContextId).trim()
+  logVerbose("this observable (", observable.name, ") has never been registered - creating a new context id", contextId)
   
   if m._observables = invalid
     m._observables = {}
