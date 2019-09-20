@@ -68,7 +68,7 @@ end function
 public function onKeyEvent(key as string, press as boolean) as boolean
   result = false
   if press
-    if MU.isFunction(m._isAnyKeyPressLocked) and m._isAnyKeyPressLocked()
+    if MU.isFunction(m.isAnyKeyPressLocked) and m.isAnyKeyPressLocked()
       return true
     end if
     
