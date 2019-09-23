@@ -13,15 +13,15 @@ public function initialize()
   m.isInitCalled = true
 end function
 
-private function _onShow()
+private function onShow()
   m.isOnShowCalled = true
 end function
 
-private function _onHide()
+private function onHide()
   m.isOnHideCalled = true
 end function
 
-private function _destroy()
+private function destroy()
   m.isDestroyCalled = true
 end function
 

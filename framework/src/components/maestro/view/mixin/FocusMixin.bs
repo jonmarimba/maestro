@@ -130,9 +130,9 @@ function updateIsFocused(isInFocusChain, isFocused, newNode)
   m.isInFocusChain = isInFocusChain
 
   if (wasInFocusChain and not m.isInFocusChain)
-    _onLostFocus()
+    onLostFocus()
   else if (m.isInFocusChain and not wasInFocusChain)
-    _onGainedFocus(isFocused)
+    onGainedFocus(isFocused)
   end if
 end function
 
@@ -141,10 +141,10 @@ end function
 '++ abstract focus methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _onGainedFocus(isSelfFocused)
+function onGainedFocus(isSelfFocused)
 end function
 
 
-function _onLostFocus()
+function onLostFocus()
 end function
 

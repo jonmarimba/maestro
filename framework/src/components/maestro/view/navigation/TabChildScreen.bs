@@ -32,8 +32,8 @@ end function
 '++ Key handling
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _onKeyPressBack() as boolean
-  logMethod("_onKeyPressBack")
+function onKeyPressBack() as boolean
+  logMethod("onKeyPressBack")
   if m.top.navController.numberOfViews > 1
     pop()
     setFocus(m.top.navController)
@@ -46,8 +46,8 @@ end function
 '++ Lifecycle methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _onShow()
-  logMethod("_onShow")
+function onShow()
+  logMethod("onShow")
   if m.isFirstScreenCreated
     reset()
   else
@@ -56,14 +56,14 @@ function _onShow()
   m.top.navController.visible = true
 end function
 
-function _onHide()
-  logMethod("_onHide")
+function onHide()
+  logMethod("onHide")
   m.top.navController.visible = false
   reset()
 end function
 
-function _onGainedFocus(isSelfFocused)
-  logMethod("_onGainedFocus ", isSelfFocused)
+function onGainedFocus(isSelfFocused)
+  logMethod("onGainedFocus ", isSelfFocused)
   if isSelfFocused
     setFocus(m.top.navController)
   end if

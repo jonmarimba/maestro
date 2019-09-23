@@ -6,13 +6,13 @@ end function
 '++ view management
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _showView(view)
-  logVerbose("_showView")
+function showView(view)
+  logVerbose("showView")
   children = m.top.getChildren(-1, 0)
 
   for each child in children
     if not child.isSameNode(view)
-      _hideView(child)
+      hideView(child)
     end if
   end for
 
@@ -29,7 +29,7 @@ function _showView(view)
   end if
 end function
 
-function _hideView(view)
+function hideView(view)
   if view <> invalid
     if view.isSameNode(m.top.currentView)
       m.top.currentView = invalid
@@ -44,22 +44,22 @@ end function
 '++ Lifecycle methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _onShow()
-  logVerbose("_onShow")
+function onShow()
+  logVerbose("onShow")
   if m.top.currentView <> invalid
     m.top.currentView.visible = true
   end if
 end function
 
-function _onHide()
-  logVerbose("_onHide")
+function onHide()
+  logVerbose("onHide")
   if m.top.currentView <> invalid
     m.top.currentView.visible = false
   end if
 end function
 
-function _onGainedFocus(isSelfFocused)
-  logVerbose("_onGainedFocus")
+function onGainedFocus(isSelfFocused)
+  logVerbose("onGainedFocus")
   if m.top.currentView <> invalid and isSelfFocused
     logVerbose("setting focus to view ", m.top.currentView.id)
     setFocus(m.top.currentView)

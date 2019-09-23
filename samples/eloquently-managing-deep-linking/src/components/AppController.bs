@@ -7,7 +7,7 @@ function Init()
   'get nav items from our tab controller
   findNodes(["tabMenu", "tabController"])
   findNodes(["HomeScreen", "GridScreen", "OptionsScreen"])
-  m.tabController.callFunc("initialize", {})
+  m.tabController.callFunc("_initialize", {})
   
   m.tabMenu.observeField("currentItem", "onTabMenuCurrentItemChange") 
   m.deeplinkingScreen = createObject("roSGNode", "DeepLinkingScreen")
@@ -19,8 +19,8 @@ function Init()
   m.tabMenu.callFunc("setItems", items)
 end function
 
-function _initialize(args = invalid)
-  logInfo("_initialize")
+function initialize(args = invalid)
+  logInfo("initialize")
   
   if isDeeplinkingRequired(m.modelLocator.appArgs)
     logInfo("deep linking is required")
@@ -184,25 +184,25 @@ end function
 '++ Key Handling
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _onKeyPressDown() as boolean
+function onKeyPressDown() as boolean
   if not m.top.isFocusedOnContent
     m.top.isFocusedOnContent = true
   end if
   return true
 end function
 
-function _onKeyPressUp() as boolean
+function onKeyPressUp() as boolean
   m.top.isFocusedOnContent = false
   return true
 end function
 
-function _onKeyPressOption() as boolean
+function onKeyPressOption() as boolean
   m.global.appController.isFocusedOnContent = false
   m.tabMenu.currentItem = m.OptionsScreen.navItem
   return true
 end function
 
-function _onKeyPressBack() as boolean
+function onKeyPressBack() as boolean
   if not m.top.isFocusedOnContent
     m.top.isFocusedOnContent = true
   end if
@@ -213,6 +213,6 @@ end function
 '++ Lifecycle
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _onGainedFocus(isSelfFocused) as void
+function onGainedFocus(isSelfFocused) as void
   onIsFocusedOnContentChange(invalid)
 end function

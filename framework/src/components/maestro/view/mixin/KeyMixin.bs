@@ -20,25 +20,25 @@ end function
 function OnKeyEvent(key as string, press as boolean) as boolean
   result = false
   if press
-    if (_isAnyKeyPressLocked())
+    if (isAnyKeyPressLocked())
       return true
     end if
     if key = "down"
-      result = _onKeyPressDown()
+      result = onKeyPressDown()
     else if key = "up"
-      result = _onKeyPressUp()
+      result = onKeyPressUp()
     else if key = "left"
-      result = _onKeyPressLeft()
+      result = onKeyPressLeft()
     else if key = "right"
-      result = _onKeyPressRight()
+      result = onKeyPressRight()
     else if key = "OK"
-      result = _onKeyPressOK()
+      result = onKeyPressOK()
     else if key = "back"
-      result = _onKeyPressBack()
+      result = onKeyPressBack()
     else if key = "options"
-      result = _onKeyPressOption()
+      result = onKeyPressOption()
     else if key = "play"
-      result = _onKeyPressPlay()
+      result = onKeyPressPlay()
     end if
   else if m.longPressKey <> ""
     toggleLongPressTimer(0)
@@ -50,14 +50,14 @@ function OnKeyEvent(key as string, press as boolean) as boolean
   end if
 
   if result and press
-    longPressInterval = _getLongPressIntervalForKey(key)
+    longPressInterval = getLongPressIntervalForKey(key)
     if longPressInterval > 0
       logInfo("entering long press for key ", key)
       m.longPressKey = key
       toggleLongPressTimer(longPressInterval)
     end if
   else
-    result = _isCapturingAnyKeyPress(key, press)
+    result = isCapturingAnyKeyPress(key, press)
   end if
 
   if result = false and m.vm <> invalid
@@ -82,7 +82,7 @@ function toggleLongPressTimer(interval)
   else if m.longPressKey <> ""
     logInfo("finishing longPress on key ", key)
     if m.isLongPressStarted
-      _onLongPressFinish(m.longPressKey)
+      onLongPressFinish(m.longPressKey)
     end if
     m.longPressKey = ""
     m.isLongPressStarted = false
@@ -91,13 +91,13 @@ end function
 
 function onLongPressTimerFire()
   if m.isLongPressStarted
-    if not _onLongPressUpdate(m.longPressKey)
-      logInfo("long press was cancelled by the _onLongPressUpdate call")
+    if not onLongPressUpdate(m.longPressKey)
+      logInfo("long press was cancelled by the onLongPressUpdate call")
       toggleLongPressTimer(0)
     end if
   else
-    if not _onLongPressStart(m.longPressKey)
-      logInfo("long press was rejected by _onLongPressStart call")
+    if not onLongPressStart(m.longPressKey)
+      logInfo("long press was rejected by onLongPressStart call")
       toggleLongPressTimer(0)
     else
       logInfo("long press is accepted : starting for key ", m.longPressKey )
@@ -106,46 +106,46 @@ function onLongPressTimerFire()
   end if
 end function
 
-function _isAnyKeyPressLocked() as boolean
+function isAnyKeyPressLocked() as boolean
   if m.isKeyPressLocked
     logWarn("All key presses are locked, due to isKeyPressLocked flag on ", m.top.id)
   end if
   return m.isKeyPressLocked
 end function
 
-function _isCapturingAnyKeyPress(key, press) as boolean
+function isCapturingAnyKeyPress(key, press) as boolean
   return false
 end function
 
-function _onKeyPressDown() as boolean
+function onKeyPressDown() as boolean
   return false
 end function
 
-function _onKeyPressUp() as boolean
+function onKeyPressUp() as boolean
   return false
 end function
 
-function _onKeyPressLeft() as boolean
+function onKeyPressLeft() as boolean
   return false
 end function
 
-function _onKeyPressRight() as boolean
+function onKeyPressRight() as boolean
   return false
 end function
 
-function _onKeyPressBack() as boolean
+function onKeyPressBack() as boolean
   return false
 end function
 
-function _onKeyPressOption() as boolean
+function onKeyPressOption() as boolean
   return false
 end function
 
-function _onKeyPressOK() as boolean
+function onKeyPressOK() as boolean
   return false
 end function
 
-function _onKeyPressPlay() as boolean
+function onKeyPressPlay() as boolean
   return false
 end function
 
@@ -153,18 +153,18 @@ end function
 '++ Long press callbacks
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _getLongPressIntervalForKey(key) as float
+function getLongPressIntervalForKey(key) as float
   return 0
 end function
 
-function _onLongPressStart(key) as boolean
+function onLongPressStart(key) as boolean
   return true
 end function
 
-function _onLongPressUpdate(key) as boolean
+function onLongPressUpdate(key) as boolean
   return true
 end function
 
-function _onLongPressFinish(key) as boolean
+function onLongPressFinish(key) as boolean
   return true
 end function

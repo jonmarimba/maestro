@@ -1,0 +1,13 @@
+namespace TU
+
+function loadFile(filename, asJson = true)
+  text = ReadAsciiFile(filename)
+  if asJson
+    return parseJSON(text)
+  else
+    return text
+  end if
+end function
+
+
+end namespace

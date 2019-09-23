@@ -18,7 +18,7 @@
     <field id="isUserChangePending" type="boolean"/>
 
     <!-- return the screen displayed on top of this screen's stack -->
-    <function name="getTopScreen" />
+    <function name="_getTopScreen" />
 
     <!-- NavItem assoicated with this screen
     if you have a special field named navItem  -->

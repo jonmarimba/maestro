@@ -104,21 +104,21 @@ end function
 '++ key presses
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _isCapturingAnyKeyPress(key, press) as boolean
+function isCapturingAnyKeyPress(key, press) as boolean
   return key <> "back" and key <> "down"
 end function
 
-function _onKeyPressLeft() as boolean
+function onKeyPressLeft() as boolean
   selectItem( - 1)
   return true
 end function
 
-function _onKeyPressRight() as boolean
+function onKeyPressRight() as boolean
   selectItem(1)
   return true
 end function
 
-function _onKeyPressOption() as boolean
+function onKeyPressOption() as boolean
   if m.top.supportOptionPressWhenFocused
     if m.top.currentItem.isOptionsItem
       restorePreOptionFocus()

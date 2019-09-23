@@ -13,7 +13,7 @@ end function
 '++ Lifecycle methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _initialize(args)
+function initialize(args)
   m.vm = TodoScreenVM()
   m.vm.initialize()
   noInitialValueProps = MOM.createBindingProperties(false)
@@ -36,7 +36,7 @@ function getFocusTitle(value)
   end if
 end function
 
-function _onGainedFocus(isSelfFocused)
+function onGainedFocus(isSelfFocused)
   if isSelfFocused
     MVVM.onFocusIdChange(m.vm.focusId)
   end if

@@ -107,7 +107,7 @@ end function
 '++ Lifecycle methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function _initialize(args)
-  logMethod("_initialize(args)")
+function initialize(args)
+  logMethod("initialize(args)")
   registerLogger("NC.(" + m.top.getParent().subType() + ")")
 end function

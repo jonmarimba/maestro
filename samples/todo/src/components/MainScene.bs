@@ -38,7 +38,7 @@ function onIsBootstrapTasksComplete()
   m.global.addFields({"appController": m.top.appController})
   m.modelLocator.appController = m.top.appController
   m.top.appendChild(m.top.appController)
-  m.top.appController.callFunc("initialize", invalid)
+  m.top.appController.callFunc("_initialize", invalid)
   m.top.appController.setFocus(true)
 end function
 
