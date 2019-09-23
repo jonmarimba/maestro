@@ -16,7 +16,6 @@ end function
 function _initialize(args)
   m.vm = TodoScreenVM()
   m.vm.initialize()
-  MVVM.createFocusMap(m.vm)
   M_initBindings()
   MOM.observeField(m.vm, "focusId", MVVM.onFocusIdChange)
 end function

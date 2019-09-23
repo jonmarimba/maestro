@@ -340,7 +340,6 @@ Here is an example of some bindings:
 function _initialize(args)
   m.vm = TodoScreenVM()
   m.vm.initialize()
-  MVVM.createFocusMap(m.vm)
   noInitialValueProps = MOM.createBindingProperties(false)
   MOM.bindObservableField(m.vm, "hasItems", m.itemList, "visible")
   MOM.bindObservableField(m.vm, "focusedIndex", m.itemList, "jumpToItem")

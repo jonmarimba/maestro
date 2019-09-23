@@ -123,11 +123,21 @@ function onShow(args) as void
   if not m.wasShown
     _onFirstShow()
     m.wasShown = true
+    
+    if m.vm <> invalid and m.vm.onFirstShow <> invalid
+      m.vm.onFirstShow()
+    end if
+    
   end if
   
   if oldIsShowing <> m.top.isShown
     _baseScreenOnShow()
     _onShow()
+
+    if m.vm <> invalid and m.vm.onShow <> invalid
+      m.vm.onShow()
+    end if
+
   end if
 end function
 
@@ -136,6 +146,11 @@ function onHide(args)
     m.top.isShown = false
     _baseScreenOnHide()
     _onHide()
+
+    if m.vm <> invalid and m.vm.onHide <> invalid
+      m.vm.onHide()
+    end if
+    
   else
     logWarn("onHide called before show: ignoring")
   end if

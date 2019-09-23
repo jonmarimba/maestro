@@ -101,18 +101,18 @@ end function
 
 function onAddedToAggregateView(navController)
   logMethod("onAddedToAggregateView", m.top.id)
-  _onAddedToAggregateView(navController)
+  onAddedToAggregateView(navController)
 end function
 
 function onRemovedFromAggregateView(navController)
   logMethod("onRemovedFromAggregateView", m.top.id)
-  _onRemovedFromAggregateView(navController)
+  onRemovedFromAggregateView(navController)
 end function
 
-function _onAddedToAggregateView(navController)
+function onAddedToAggregateView(navController)
 end function
 
-function _onRemovedFromAggregateView(navController)
+function onRemovedFromAggregateView(navController)
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

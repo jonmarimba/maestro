@@ -9,59 +9,35 @@ namespace MVVM
 '  * @description Mixin method for helping with ViewModelIntegration. These are all private methods, handled by the framework
 '  */
 
-'note - not using namespaces on mixin methods until the IDE supports them, or
-'we won't get symbol definitions
 function isVM(vm)
   return MOM_isObservable(vm) and vm.__viewModel = true
 end function
 
-function createFocusMap(vm) as boolean
-  focusMap = {}
-  success = false
-  if MVVM.isVM(vm)
-    if MU.isArray(vm.focusIds)
-      for index = 0 to vm.focusIds.count() - 1
-        key = vm.focusIds[index]
-        control = m[key]
-        if type(control) = "roSGNode"
-          focusMap[key] = control
-        else
-          logError("createFocusMap : could not find control for id", key)
-        end if
-      end for
-      success = true
-    else
-      logInfo("no focusMap for vm", vm.name)
-    end if
-  else
-    logError("unknown vm type!")
-  end if
-  
-  m._focusMap = focusMap
-  return success
-end function
-
 function onFocusIdChange(focusId)
-  if focusId <> invalid and focusId <> "" and m._focusMap <> invalid
-    control = m._focusMap[focusId]
+  logVerbose("onFocusIdChange", focusId, m.top.isShown)
+
+  if focusId <> invalid and focusId <> "" and m.top.isShown
+    control = m[focusId]
+  
     if control <> invalid
       setFocus(control)
     else
       logError("the focus map contained a focusId that did not exist!", focusId)
     end if
+
   end if
 end function
 
 
-function initializeBindings(isUsingFocusMap)
+function initializeBindings(isUsingViewModelFocusId)
   if MU.isFunction(m_initBindings)
     m_initBindings()
   end if
 
-  if isUsingFocusMap
-    MVVM.createFocusMap(m.vm)
+  if isUsingViewModelFocusId
     MOM.observeField(m.vm, "focusId", MVVM.onFocusIdChange)
-  end if    
+  end if
+    
 end function
 
 end namespace
