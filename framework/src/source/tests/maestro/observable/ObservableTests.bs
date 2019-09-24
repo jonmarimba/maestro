@@ -4,11 +4,8 @@
   
 import "pkg:/source/rLog/rLogMixin.brs"
 import "pkg:/source/tests/rooibosDist.brs"
-import "pkg:/source/tests/rooibosFunctionMap.brs"
-import "pkg:/source/maestro/lib/Utils.brs"
-
-import "pkg:/source/maestro/observable/BaseObservable.brs"
-import "pkg:/source/maestro/observable/ObservableMixin.brs"
+import "pkg:/source/maestro/observable/ObservableMixin.bs"
+import "pkg:/source/maestro/observable/BaseObservable.bs"
 
 namespace MOT
 
@@ -40,7 +37,7 @@ function ObserverCallback_registered()
   o1 = BaseObservable()
   o1.id = "o1"
 
-  MOM_observeField(o1, "f1", callbackTarget1)
+  MOM_observeField(o1, "f1", MOT.callbackTarget1)
 
   o1.setField("f1", true)
 
@@ -58,8 +55,8 @@ function ObserverCallback_multipleFields()
   m.assertInvalid(m.node._observerCallbackValue1)
   m.assertInvalid(m.node._observerCallbackValue2)
 
-  MOM_observeField(o1, "f1", callbackTarget1)
-  MOM_observeField(o1, "f2", callbackTarget2)
+  MOM_observeField(o1, "f1", MOT.callbackTarget1)
+  MOM_observeField(o1, "f2", MOT.callbackTarget2)
 
   m.assertFalse(m.node._observerCallbackValue1, "observeField should set value by default")
   m.assertFalse(m.node._observerCallbackValue2, "observeField should set value by default")
@@ -93,7 +90,7 @@ function ObserverCallback_inverseBoolean()
   o1.id = "o1"
   o1.f1 = false
 
-  MOM_observeField(o1, "f1", callbackTarget1, properties)
+  MOM_observeField(o1, "f1", MOT.callbackTarget1, properties)
 
   m.assertTrue(m.node._observerCallbackValue1)
   o1.setField("f1", true)
@@ -265,7 +262,7 @@ end function
 function BindingCallback_oneFunction()
   o1 = BaseObservable()
   o1.id = "o1"
-  o1.f1 = callbackTarget1
+  o1.f1 = MOT.callbackTarget1
   n1 = createObject("roSGNode", "ContentNode")
   n1.id = "n1"
   n1.title = "title"
@@ -282,7 +279,7 @@ end function
 function BindingCallback_oneFunction_100times()
   o1 = BaseObservable()
   o1.id = "o1"
-  o1.f1 = callbackTarget1
+  o1.f1 = MOT.callbackTarget1
   n1 = createObject("roSGNode", "ContentNode")
   n1.id = "n1"
 

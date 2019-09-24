@@ -144,7 +144,6 @@ end function
 function _onHide(args)
   if m.wasShown
     m.top.isShown = false
-    baseScreenOnHide()
     onHide()
 
     if m.vm <> invalid and m.vm.onHide <> invalid
@@ -164,7 +163,7 @@ function _initialize(args = invalid)
     applyStyle()
     m.top.observeField("visible", "onVisibleChange")
     if m.top.visible and not m.top.isShown
-      onShow(invalid)
+      _onShow(invalid)
     end if
   else
     logWarn("View was already initialized. Ignoring subsequent call ", m.top)

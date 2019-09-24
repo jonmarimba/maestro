@@ -28,12 +28,18 @@ function push(view) as void
   m.viewStack.Push(view)
   updatePublicFields()
   view.navController = m.top
-  _showView(view)
+  showView(view)
   view.callFunc("onAddedToAggregateView", m.top)
   if m.top.isAutoFocusEnabled and m.top.isInFocusChain()
     setFocus(view)
   end if
   logInfo(view.subType(), " #views in stack", m.top.numberOfViews)
+    
+  'weird bug is causing the visible state to get shot
+  if m.top.isShown
+    view.visible = true
+  end if
+
 end function
 
 function reset(newFirstScreen = invalid, endIndex = -1)
@@ -47,7 +53,7 @@ function reset(newFirstScreen = invalid, endIndex = -1)
     logInfo("resetting index ", index)
     view = m.viewStack.Pop()
     if view <> invalid
-      _hideView(view)
+      hideView(view)
       view.navController = invalid
       view.callFunc("onRemovedFromAggregateView", m.top)
     else
@@ -63,7 +69,7 @@ function reset(newFirstScreen = invalid, endIndex = -1)
     push(newFirstScreen)
   else if m.top.numberOfViews > 0
     logInfo("there were views left on the stack after resetting ")
-    _showView(m.viewStack[m.top.numberOfViews - 1])
+    showView(m.viewStack[m.top.numberOfViews - 1])
   end if
 
 end function
@@ -73,13 +79,13 @@ function pop(args) as object
   previousView = m.top.currentView
   if (previousView <> invalid)
     m.viewStack.Pop()
-    _hideView(previousView)
+    hideView(previousView)
     previousView.callFunc("onRemovedFromAggregateView", m.top)
     previousView.navController = invalid
 
     previousView = m.viewStack.Peek()
     if previousView <> invalid
-      _showView(previousView)
+      showView(previousView)
       if m.top.isAutoFocusEnabled
         setFocus(previousView)
       end if

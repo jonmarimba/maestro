@@ -3,6 +3,7 @@
 
   <interface>
     <field id="numberOfViews" type="integer" alwaysNotify="true"/>
+    <field id="viewStack" type="array"/>
     
     <!-- events  -->
       <field id="isLastViewPopped" type="bool" alwaysNotify="true"/>

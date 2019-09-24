@@ -10,24 +10,6 @@ function Init()
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'++ Overridden methods
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-function baseScreenOnShow()
-  logMethod("baseScreenOnShow")
-
-  if MVVM.isVM(m.vm)
-    m.vm.onShow()
-  end if
-end function
-
-function baseScreenOnHide()
-  if MVVM.isVM(m.vm)
-    m.vm.onHide()
-  end if
-end function
-
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ nav support
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

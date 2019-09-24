@@ -25,7 +25,7 @@ function initialize(args)
   MOM.bindNodeField(m.itemList, "itemFocused", m.vm, "focusItemAtIndex", noInitialValueProps)
   MOM.bindNodeField(m.addButton, "buttonSelected", m.vm, "addTodo", noInitialValueProps)
   MOM.bindNodeField(m.removeButton, "buttonSelected", m.vm, "removeTodo", noInitialValueProps)
-  MOM.observeField(m.vm, "focusId", MVVM.onFocusIdChange)
+  MOM.observeField(m.vm, "focusId", MVMM.onFocusIdChange)
 end function
 
 function getFocusTitle(value)
@@ -38,6 +38,6 @@ end function
 
 function onGainedFocus(isSelfFocused)
   if isSelfFocused
-    MVVM.onFocusIdChange(m.vm.focusId)
+    MVMM.onFocusIdChange(m.vm.focusId)
   end if
 end function

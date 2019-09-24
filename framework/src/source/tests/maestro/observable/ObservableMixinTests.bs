@@ -1,3 +1,4 @@
+'@SGNode ObservableMixinTests
 '@TestSuite [OMT] ObservableMixin Tests
 
 namespace MOMT
@@ -127,15 +128,18 @@ function registerObservable_multiple()
   o3 = BaseObservable()
   o3.id = "o3"
   setContextMock3 = m.expectOnce(o3, "setContext", ["2", m.ignoreValue])
-  m.assertTrue(MOM_registerObservable(o1))
-  m.assertTrue(MOM_registerObservable(o2))
-  m.assertTrue(MOM_registerObservable(o3))
+  m.assertTrue(MOM.registerObservable(o1))
+  m.assertTrue(MOM.registerObservable(o2))
+  m.assertTrue(MOM.registerObservable(o3))
   m.assertEqual(setContextMock1.invokedArgs[1], m.node._observableContext)
   m.assertEqual(setContextMock2.invokedArgs[1], m.node._observableContext)
   m.assertEqual(setContextMock3.invokedArgs[1], m.node._observableContext)
   m.assertEqual(m.node._observables["0"].id, "o1")
-  m.assertEqual(m.node._observables["1"].id, "o2")
-  m.assertEqual(m.node._observables["2"].id, "o3")
+  m.assertInvalid(m.node._observables["1"])
+
+  'note - multi observables are disabled
+  ' m.assertEqual(m.node._observables["1"].id, "o2")
+  ' m.assertEqual(m.node._observables["2"].id, "o3")
   m.assertEmpty(m.node._observableFunctionPointers)
   m.assertEmpty(m.node._observableNodeBindings)
 end function
@@ -155,6 +159,7 @@ function unregisterObservable(observable)
   m.assertFalse(MOM_unregisterObservable(observable))
 end function
 
+'@Ignore - multiple is not supported right now
 '@Test multiple
 function unregisterObservable_multiple()
   o1 = BaseObservable()
@@ -164,17 +169,17 @@ function unregisterObservable_multiple()
   o3 = BaseObservable()
   o3.id = "o3"
   m.assertTrue(MOM_registerObservable(o1))
-  m.assertTrue(MOM_registerObservable(o2))
-  m.assertTrue(MOM_registerObservable(o3))
+  m.assertFalse(MOM_registerObservable(o2))
+  m.assertFalse(MOM_registerObservable(o3))
   m.assertEqual(m.node._observables["0"].id, "o1")
-  m.assertEqual(m.node._observables["1"].id, "o2")
-  m.assertEqual(m.node._observables["2"].id, "o3")
-  m.assertEmpty(m.node._observableFunctionPointers)
+  ' m.assertEqual(m.node._observables["1"].id, "o2")
+  ' m.assertEqual(m.node._observables["2"].id, "o3")
+  ' m.assertEmpty(m.node._observableFunctionPointers)
   m.assertEmpty(m.node._observableNodeBindings)
 
   m.expectOnce(o1, "setContext", [invalid, invalid])
-  m.expectOnce(o2, "setContext", [invalid, invalid])
-  m.expectOnce(o3, "setContext", [invalid, invalid])
+  ' m.expectOnce(o2, "setContext", [invalid, invalid])
+  ' m.expectOnce(o3, "setContext", [invalid, invalid])
 
   m.assertTrue(MOM_unregisterObservable(o1))
   m.assertInvalid(m.node._observables["0"])

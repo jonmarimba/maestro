@@ -39,28 +39,6 @@ public function initialize()
   m.state = "initialized"
 end function
 
-public function destroy()
-  m.logMethod("destroy")
-  if MU.isFunction(m.destroy)
-    m.destroy()
-  end if
-  m.state = "destroyed"
-end function
-
-public function onShow()
-  m.logMethod("onShow")
-  if MU.isFunction(m.onShow)
-    m.onShow()
-  end if
-end function
-
-public function onHide()
-  m.logMethod("onHide")
-  if MU.isFunction(m.onHide)
-    m.onHide()
-  end if
-end function
-
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ KEY HANDLING
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

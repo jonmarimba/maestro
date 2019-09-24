@@ -111,14 +111,14 @@ async function compile(cb) {
       'components/rLogComponents/**/*.*',
       'source/rLog/**/*.*',
       'source/tests/rooibosDist.brs',
-      'source/tests/rooibosFunctionMap.brs'
+      'source/rooibosFunctionMap.brs'
     ],
     "sourcePath": "/Users/georgecook/Documents/h7ci/hope/maestro/framework/src",
     "outputPath": "build",
     "logLevel": 4,
     "nonCheckedImports": ['source/rLog/rLogMixin.brs',
       'source/tests/rooibosDist.brs',
-      'source/tests/rooibosFunctionMap.brs'
+      'source/rooibosFunctionMap.brs'
     ]
   });
   let processor = new MaestroProjectProcessor(config);

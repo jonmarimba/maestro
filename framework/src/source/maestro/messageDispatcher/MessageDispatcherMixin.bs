@@ -75,7 +75,7 @@ function onMessageChanged(event)
       
       if message.vmName <> invalid
         
-        if MVVM.isVM(m[message.vmName])
+        if MVMM.isVM(m[message.vmName])
           
           if MU.isFunction(m[message.vmName])
             m[message.vmName][message.handler](message.data)

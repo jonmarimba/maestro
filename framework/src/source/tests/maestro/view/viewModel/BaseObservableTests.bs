@@ -11,6 +11,7 @@ end function
 '@It tests constructor
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+'@Test
 function constructor()
   m.assertTrue(m.observable.__observableObject)
   m.assertTrue(m.observable.isBindingNotificationEnabled)

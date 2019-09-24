@@ -32,7 +32,7 @@ function changeCurrentItem(item)
       if not view.isInitialized
         initializeView(view)
       end if
-      _showView(view)
+      showView(view)
     else
       logError("no view for item", m.top.currentItem)
     end if
@@ -70,30 +70,48 @@ function addExistingView(existingView)
   existingView.visible = false
 end function
 
-function createView(menuItemContent)
+function _createView(menuItemContent)
   logMethod("createView menuItemContent.screenType", menuItemContent.screenType)
-  if menuItemContent.screenType <> "none"
-    view = createObject("roSGNode", menuItemContent.screenType)
-    containerView = createObject("roSGNode", "TabChildScreen")
-    containerView.content = view
-    containerView.id = menuItemContent.id
-    view.navController = containerView.navController
+  childView = createView(menuItemContent)
 
-    view.menuItemContent = menuItemContent
+  if childView <> invalid
+    containerView = createObject("roSGNode", "TabChildScreen")
+    containerView.content = childView
+    containerView.id = menuItemContent.id
+    childView.navController = containerView.navController
+
     m.viewsByMenuItemId[menuItemContent.id] = containerView
-    view.id = menuItemContent.id
     'we want to clear out the view's vis, so the initialize
     'won't trigger show callbacks prematurely
-    view.visible = false
-    view.isShown = false
+    childView.visible = false
+    childView.isShown = false
 
-    initializeView(view)
+    ' initializeView(view)
+    initializeView(containerView)
     containerView.visible = false
     return containerView
   else
-    logError("menu item ", menuItemContent.id, " has no screenType - a call to registerExistingView should've been made first")
+    logError("menu item ", menuItemContent.id, " resulted in invalid view from createView. Was this view inteded to be added via addExistingView?")
     return invalid
   end if
+end function
+
+' /**
+'  * @member createView
+'  * @memberof module:TabController
+'  * @instance
+'  * @description override point for providing your own view, based on a menuitem content
+'  * @param {node} a selected menu item
+'  * @returns {BaseScreen} a screen to display in a TabChildScreen
+'  */
+function createView(menuItemContent)
+
+  if menuItemContent.screenType <> "none"
+    view = createObject("roSGNode", menuItemContent.screenType)
+    view.id = menuItemContent.id
+  end if
+
+  return view
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

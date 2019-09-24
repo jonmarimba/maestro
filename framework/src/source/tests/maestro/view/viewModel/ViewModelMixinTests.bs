@@ -21,74 +21,15 @@ end function
 '@Params[{"prop":invalid}]
 '@Params[{"name":""}]
 function isVM_invalid(vm)
-  m.assertFalse(VMM_isVM(vm))
+  m.assertFalse(MVMM.isVM(vm))
 end function
 
 function isVM_bogusVM()
-  m.assertFalse(VMM_isVM({"__viewModel": true}))
+  m.assertFalse(MVMM.isVM({"__viewModel": true}))
 end function
 
 function isVM_valid()
-  m.assertTrue(VMM_isVM(BVMT_createVM()))
-end function
-
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'@It tests createFocusMap
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-'@Test invalid
-'@Params[invalid]
-'@Params[{}]
-'@Params["wrong"]
-'@Params[[]]
-'@Params[{"prop":invalid}]
-'@Params[{"name":""}]
-function createFocusMap_invalid(subClass)
-  m.assertFalse(VMM_createFocusMap(subClass))
-end function
-
-'@Test valid - no ids
-function createFocusMap_valid_noIds()
-  vm = MBVMT_createVM()
-  m.assertFalse(VMM_createFocusMap(vm))
-  m.assertEmpty(m.node._focusMap)
-end function
-
-'@Test valid - empty ids
-function createFocusMap_valid_emptyIds()
-  vm = MBVMT_createVM()
-  vm.focusIds = []
-  m.assertTrue(VMM_createFocusMap(vm))
-  m.assertEmpty(m.node._focusMap)
-end function
-
-'@Test valid ids - no controls
-function createFocusMap_valid_ids_noControls()
-  vm = MBVMT_createVM()
-  vm.focusIds = [
-    "one"
-    "two"
-    "three"
-  ]
-  m.assertTrue(VMM_createFocusMap(vm))
-  m.assertEmpty(m.node._focusMap)
-end function
-
-'@Test valid
-function createFocusMap_valid()
-  vm = MBVMT_createVM()
-  m.node.one = createObject("roSGNode", "Node")
-  m.node.two = createObject("roSGNode", "Node")
-  m.node.three = createObject("roSGNode", "Node")
-  vm.focusIds = [
-    "one"
-    "two"
-    "three"
-  ]
-  m.assertTrue(VMM_createFocusMap(vm))
-  m.assertEqual(m.node._focusMap["one"], m.node.one)
-  m.assertEqual(m.node._focusMap["two"], m.node.two)
-  m.assertEqual(m.node._focusMap["three"], m.node.three)
+  m.assertTrue(MVMM.isVM(BVMT_createVM()))
 end function
 
 end namespace

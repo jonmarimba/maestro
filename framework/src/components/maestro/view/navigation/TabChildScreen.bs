@@ -11,6 +11,23 @@ function init()
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Public API
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function reset(args = invalid)
+  logMethod("reset")
+  resetNavControllerToRoot()
+  
+  if m.top.navController.currentView <> invalid
+    m.top.navController.currentView.callFunc("reset", invalid)
+  end if
+
+  if m.top.hasFocus()
+    setFocus(m.top.navController)
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ Private impl
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

@@ -104,7 +104,7 @@ function bindNodeField(targetNode, nodeField, observable, observableField, prope
   end if
   
   if properties = invalid
-    properties = createBindingProperties()
+    properties = MOM.createBindingProperties()
   end if
   
   nodeKey = targetNode.id + "_" + nodeField
@@ -363,7 +363,7 @@ end function
 '  */
 function bindFieldTwoWay(observable, observableField, targetNode, nodeField, properties = invalid) as void
   MOM.bindObservableField(observable, observableField, targetNode, nodeField, invalid)
-  MOM.bindNodeField(targetNode, nodeField, observable, observableField, { isSettingInitialValue: false })
+  MOM.bindNodeField(targetNode, nodeField, observable, observableField, [false, invalid, false])
 end function
 
 ' /**
