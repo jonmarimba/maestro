@@ -113,7 +113,7 @@ async function compile(cb) {
       'source/tests/rooibosDist.brs',
       'source/rooibosFunctionMap.brs'
     ],
-    "sourcePath": "/Users/georgecook/Documents/h7ci/hope/maestro/framework/src",
+    "sourcePath": "framework/src",
     "outputPath": "build",
     "logLevel": 4,
     "nonCheckedImports": ['source/rLog/rLogMixin.brs',

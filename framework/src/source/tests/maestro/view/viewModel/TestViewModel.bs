@@ -1,15 +1,19 @@
 namespace TVM
 class TestViewModel extends BaseViewModel
 
+public function new(name)
+  super(name)
+end function
+
 public function getAge()
-  return m.ate
+  return m.age
 end function
 
 public function setAge(age)
   return m.setField("age", age)
 end function
 
-public function initialize()
+public function _initialize()
   m.isInitCalled = true
 end function
 
