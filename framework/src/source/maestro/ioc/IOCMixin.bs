@@ -1,18 +1,24 @@
+import "pkg:/source/maestro/lib/Utils.bs"
+
 namespace MIOC
 
-function createContainer(json)
+function createContainer(json, validate = true)
   MIOC.cleanup()
   
-  'TODO verify json
-  m.global.addFields({
-    "_mioc_descriptors": json
-    "_mioc_instances": {}
-  })
+  if MU.isAACompatible(json) and MU.isAACompatible(json.resources)
+    'TODO validate json
+    m.global.addFields({
+      "_mioc_descriptors": json.resources
+      "_mioc_instances": {}
+    })
+  else
+    logError("was passed invalid container json")
+  end if
 end function
 
 function getInstance(id)
   '1. get descriptor for id - that's store on global
-  descriptor = MIOC._getDescriptor(id)
+  descriptor = MIOC.getDescriptor(id)
   if descriptor <> invalid
     '2. is it stored locally, or globally
     store = MIOC._getStore(descriptor)
@@ -43,7 +49,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-function _getDescriptor(id)
+function getDescriptor(id)
   if m.global._mioc_descriptors <> invalid
     return m.global._mioc_descriptors[id]
   else
@@ -56,7 +62,7 @@ end function
 '  * @param {asssocarray} descriptor - descriptor to get store for
 '  * @returns {assocarray} the store, for the given descriptor 
 '  */
-function _getStore(descriptor)
+function getStore(descriptor)
   
   if descriptor.scope = invalid or descriptor.scope = "global"
     store = m.global._mioc_instances
@@ -70,7 +76,7 @@ function _getStore(descriptor)
   return store
 end function
 
-function _updateStore(store, isLocal)
+function updateStore(store, isLocal)
   if isLocal
     m._mioc_instances = store
   else 

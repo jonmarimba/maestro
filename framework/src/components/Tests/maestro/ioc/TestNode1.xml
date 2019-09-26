@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="TestNode1" extends="ContentNode" >
+
+  <interface>
+     <field id="TestNode2" type="node"/>
+     <field id="someJson" type="assocarray"/>
+  </interface>
+
+</component>

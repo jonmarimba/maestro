@@ -1,0 +1,14 @@
+namespace IOCTC3
+
+class TestClass3
+
+public testClass1
+public testClass2
+
+public function printMeOut()
+  ? "testClass"; testClass1
+  ? "testClass2"; testClass2
+end function
+
+end class
+end namespace 

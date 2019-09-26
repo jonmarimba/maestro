@@ -1,0 +1,46 @@
+{
+  "resources": {
+    "authManager": {
+      "type": "node",
+      "subType": "TestNode1",
+      "dependencies": {
+        "testNode2": "netManager",
+        "someJson": "authJson"
+      }
+    },
+    "netManager": {
+      "type": "node",
+      "subType": "TestNode2",
+      "dependencies": {}
+    },
+    "requestManager": {
+      "type": "class",
+      "subType": "TestClass1",
+      "dependencies": {
+        "testClass2": "bookmarkManager"
+      }
+    },
+    "bookmarkManager": {
+      "type": "class",
+      "subType": "TestClass2",
+      "dependencies": {
+        "testClass3": "bookmarkManager"
+      }
+    },
+    "entitlementsManager": {
+      "type": "class",
+      "subType": "TestClass3",
+      "dependencies": {
+        "testClass": "bookmarkManager",
+        "testClass2": "requestManager"
+      }
+    },
+    "authJson": {
+      "type": "assocarray",
+      "value": {
+        "id": "someId",
+        "clientKey": "someKey"
+      }
+    }
+  }
+}
