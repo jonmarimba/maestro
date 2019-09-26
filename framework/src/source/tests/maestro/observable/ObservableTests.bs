@@ -221,6 +221,7 @@ function BindingCallback_multipleNodes()
   m.assertEqual(o1.f3, "SDPosterUrlChanged_n2")
 end function
 
+'@Ignore - multiple observers are disabled
 '@Test multiple observables
 function BindingCallback_multipleObservables()
   o1 = BaseObservable()

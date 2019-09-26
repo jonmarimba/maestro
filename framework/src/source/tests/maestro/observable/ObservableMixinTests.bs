@@ -1,3 +1,10 @@
+import "pkg:/source/rLog/rLogMixin.brs" 
+import "pkg:/source/tests/rooibosDist.brs" 
+import "pkg:/source/maestro/lib/Utils.bs"
+import "pkg:/source/maestro/lib/Utils.bs"
+import "pkg:/source/maestro/view/viewModel/BaseViewModel.brs"
+import "pkg:/source/maestro/observable/ObservableMixin.bs"
+
 '@SGNode ObservableMixinTests
 '@TestSuite [OMT] ObservableMixin Tests
 
@@ -117,6 +124,7 @@ function registerObservable_one_multipleTimes()
   m.assertEmpty(m.node._observableNodeBindings)
 end function
 
+'@Ignore - multiple observers are not allowed right now
 '@Test register multiple
 function registerObservable_multiple()
   o1 = BaseObservable()
@@ -252,7 +260,7 @@ function ObserverCallback_registered()
   o1.id = "o1"
   o1.f1 = true
   m.assertTrue(MOM_registerObservable(o1))
-  MOM_observeField(o1, "f1", callbackTarget1)
+  MOM_observeField(o1, "f1", MOMT.callbackTarget1)
 
   'we need to manually call the MOM_observerCallback - this test is not in a node scope, so
   'the observer callback will not fire
@@ -270,7 +278,7 @@ function ObserverCallback_inverseBoolean()
   o1.id = "o1"
   o1.f1 = true
   m.assertTrue(MOM_registerObservable(o1))
-  MOM_observeField(o1, "f1", callbackTarget1, properties)
+  MOM_observeField(o1, "f1", MOMT.callbackTarget1, properties)
 
   'we need to manually call the MOM_observerCallback - this test is not in a node scope, so
   'the observer callback will not fire
@@ -363,7 +371,7 @@ function observeField_unregistered()
   o1.id = "o1"
   m.expectNone(o1, "unobserveField")
 
-  m.assertFalse(MOM_observeField(invalid, "fieldName", callbackTarget1))
+  m.assertFalse(MOM_observeField(invalid, "fieldName", MOMT.callbackTarget1))
 end function
 
 '@Test invalid observables
@@ -386,28 +394,28 @@ end function
 function observeField_valid()
   o1 = BaseObservable()
   o1.id = "o1"
-  m.expectOnce(o1, "observeField", ["fieldName", "callbacktarget1", invalid], true)
+  m.expectOnce(o1, "observeField", ["fieldName", "momt_callbacktarget1", invalid], true)
 
-  m.assertTrue(MOM_observeField(o1, "fieldName", callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "fieldName", MOMT.callbackTarget1))
 
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget1"], 1)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget1"], callbackTarget1)
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget1"], 1)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget1"], MOMT.callbackTarget1)
 end function
 
 '@Test multiple function different fields
 function observeField_valid_sameFunctionMultipleFields()
   o1 = BaseObservable()
   o1.id = "o1"
-  m.expectOnce(o1, "observeField", ["f1", "callbacktarget1", invalid], true)
-  m.expectOnce(o1, "observeField", ["f2", "callbacktarget1", invalid], true)
-  m.expectOnce(o1, "observeField", ["f3", "callbacktarget1", invalid], true)
+  m.expectOnce(o1, "observeField", ["f1", "momt_callbacktarget1", invalid], true)
+  m.expectOnce(o1, "observeField", ["f2", "momt_callbacktarget1", invalid], true)
+  m.expectOnce(o1, "observeField", ["f3", "momt_callbacktarget1", invalid], true)
 
-  m.assertTrue(MOM_observeField(o1, "f1", callbackTarget1))
-  m.assertTrue(MOM_observeField(o1, "f2", callbackTarget1))
-  m.assertTrue(MOM_observeField(o1, "f3", callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "f1", MOMT.callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "f2", MOMT.callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "f3", MOMT.callbackTarget1))
 
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget1"], 3)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget1"], callbackTarget1)
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget1"], 3)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget1"], MOMT.callbackTarget1)
 end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '@It tests MOM_unobserveField
@@ -419,7 +427,7 @@ function unobserveField_unregistered()
   o1.id = "o1"
   m.expectNone(o1, "unobserveField")
 
-  m.assertFalse(MOM_unobserveField(o1, "fieldName", callbackTarget1))
+  m.assertFalse(MOM_unobserveField(o1, "fieldName", MOMT.callbackTarget1))
 end function
 
 '@Test invalid observables
@@ -442,77 +450,77 @@ end function
 function unobserveField_valid()
   o1 = BaseObservable()
   o1.id = "o1"
-  m.expectOnce(o1, "unobserveField", ["fieldName", "callbacktarget1"], true)
+  m.expectOnce(o1, "unobserveField", ["fieldName", "momt_callbacktarget1"], true)
 
-  m.assertTrue(MOM_observeField(o1, "fieldName", callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "fieldName", MOMT.callbackTarget1))
 
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget1"], 1)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget1"], callbackTarget1)
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget1"], 1)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget1"], MOMT.callbackTarget1)
 
-  m.assertTrue(MOM_unobserveField(o1, "fieldName", callbackTarget1))
+  m.assertTrue(MOM_unobserveField(o1, "fieldName", MOMT.callbackTarget1))
 
-  m.assertInvalid(m.node._observableFunctionPointerCounts["callbacktarget1"])
-  m.assertInvalid(m.node._observableFunctionPointers["callbacktarget1"])
+  m.assertInvalid(m.node._observableFunctionPointerCounts["momt_callbacktarget1"])
+  m.assertInvalid(m.node._observableFunctionPointers["momt_callbacktarget1"])
 end function
 
 '@Test multiple function different fields
 function unobserveField_valid_sameFunctionMultipleFields()
   o1 = BaseObservable()
   o1.id = "o1"
-  m.expectOnce(o1, "unobserveField", ["f1", "callbacktarget1"], true)
-  m.expectOnce(o1, "unobserveField", ["f2", "callbacktarget1"], true)
-  m.expectOnce(o1, "unobserveField", ["f3", "callbacktarget1"], true)
+  m.expectOnce(o1, "unobserveField", ["f1", "momt_callbacktarget1"], true)
+  m.expectOnce(o1, "unobserveField", ["f2", "momt_callbacktarget1"], true)
+  m.expectOnce(o1, "unobserveField", ["f3", "momt_callbacktarget1"], true)
 
-  m.assertTrue(MOM_observeField(o1, "f1", callbackTarget1))
-  m.assertTrue(MOM_observeField(o1, "f2", callbackTarget1))
-  m.assertTrue(MOM_observeField(o1, "f3", callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "f1", MOMT.callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "f2", MOMT.callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "f3", MOMT.callbackTarget1))
 
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget1"], 3)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget1"], callbackTarget1)
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget1"], 3)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget1"], MOMT.callbackTarget1)
 
-  m.assertTrue(MOM_unobserveField(o1, "f1", callbackTarget1))
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget1"], 2)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget1"], callbackTarget1)
+  m.assertTrue(MOM_unobserveField(o1, "f1", MOMT.callbackTarget1))
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget1"], 2)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget1"], MOMT.callbackTarget1)
 
-  m.assertTrue(MOM_unobserveField(o1, "f2", callbackTarget1))
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget1"], 1)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget1"], callbackTarget1)
+  m.assertTrue(MOM_unobserveField(o1, "f2", MOMT.callbackTarget1))
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget1"], 1)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget1"], MOMT.callbackTarget1)
 
-  m.assertTrue(MOM_unobserveField(o1, "f3", callbackTarget1))
-  m.assertInvalid(m.node._observableFunctionPointerCounts["callbacktarget1"])
-  m.assertInvalid(m.node._observableFunctionPointers["callbacktarget1"])
+  m.assertTrue(MOM_unobserveField(o1, "f3", MOMT.callbackTarget1))
+  m.assertInvalid(m.node._observableFunctionPointerCounts["momt_callbacktarget1"])
+  m.assertInvalid(m.node._observableFunctionPointers["momt_callbacktarget1"])
 end function
 
 '@Test multiple functions different fields
 function unobserveField_valid_multiFunctionMultipleFields()
   o1 = BaseObservable()
   o1.id = "o1"
-  m.expectOnce(o1, "unobserveField", ["f1", "callbacktarget1"], true)
-  m.expectOnce(o1, "unobserveField", ["f2", "callbacktarget1"], true)
-  m.expectOnce(o1, "unobserveField", ["f3", "callbacktarget2"], true)
+  m.expectOnce(o1, "unobserveField", ["f1", "momt_callbacktarget1"], true)
+  m.expectOnce(o1, "unobserveField", ["f2", "momt_callbacktarget1"], true)
+  m.expectOnce(o1, "unobserveField", ["f3", "momt_callbacktarget2"], true)
 
-  m.assertTrue(MOM_observeField(o1, "f1", callbackTarget1))
-  m.assertTrue(MOM_observeField(o1, "f2", callbackTarget1))
-  m.assertTrue(MOM_observeField(o1, "f3", callbackTarget2))
+  m.assertTrue(MOM_observeField(o1, "f1", MOMT.callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "f2", MOMT.callbackTarget1))
+  m.assertTrue(MOM_observeField(o1, "f3", MOMT.callbackTarget2))
 
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget1"], 2)
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget2"], 1)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget1"], callbackTarget1)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget2"], callbackTarget2)
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget1"], 2)
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget2"], 1)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget1"], MOMT.callbackTarget1)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget2"], MOMT.callbackTarget2)
 
-  m.assertTrue(MOM_unobserveField(o1, "f1", callbackTarget1))
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget1"], 1)
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget2"], 1)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget1"], callbackTarget1)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget2"], callbackTarget2)
+  m.assertTrue(MOM_unobserveField(o1, "f1", MOMT.callbackTarget1))
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget1"], 1)
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget2"], 1)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget1"], MOMT.callbackTarget1)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget2"], MOMT.callbackTarget2)
 
-  m.assertTrue(MOM_unobserveField(o1, "f2", callbackTarget1))
-  m.assertInvalid(m.node._observableFunctionPointerCounts["callbacktarget1"])
-  m.assertInvalid(m.node._observableFunctionPointers["callbacktarget1"])
-  m.assertEqual(m.node._observableFunctionPointerCounts["callbacktarget2"], 1)
-  m.assertEqual(m.node._observableFunctionPointers["callbacktarget2"], callbackTarget2)
+  m.assertTrue(MOM_unobserveField(o1, "f2", MOMT.callbackTarget1))
+  m.assertInvalid(m.node._observableFunctionPointerCounts["momt_callbacktarget1"])
+  m.assertInvalid(m.node._observableFunctionPointers["momt_callbacktarget1"])
+  m.assertEqual(m.node._observableFunctionPointerCounts["momt_callbacktarget2"], 1)
+  m.assertEqual(m.node._observableFunctionPointers["momt_callbacktarget2"], MOMT.callbackTarget2)
 
-  m.assertTrue(MOM_unobserveField(o1, "f3", callbackTarget2))
+  m.assertTrue(MOM_unobserveField(o1, "f3", MOMT.callbackTarget2))
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

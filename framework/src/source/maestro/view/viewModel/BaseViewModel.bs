@@ -19,11 +19,13 @@ class BaseViewModel extends BaseObservable
 
 public function new(name = "BaseViewModel")
   super()
+  m.name = name
   registerLogger(name, true, m)
 end function
 
 public state = "none"
 public focusId = invalid
+public name = ""
 
 private __viewModel = true
 
