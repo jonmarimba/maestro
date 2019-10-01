@@ -18,6 +18,7 @@ function push(view)
   
   if (navController <> invalid)
     navController.callFunc("push", view)
+    setFocus(view)
   else
     logError("Push failed - there is no navcontroller on ", m.top)
   end if
@@ -44,6 +45,7 @@ function resetNavController(newFirstScreen = invalid, endIndex = -1)
   
   if (navController <> invalid)
     navController.callFunc("reset", newFirstScreen, endIndex)
+    setFocus(newFirstScreen)
   else
     logError("Pop failed - there is no navcontroller on ", m.top)
   end if
