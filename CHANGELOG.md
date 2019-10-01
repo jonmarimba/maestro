@@ -1,3 +1,14 @@
+#### 0.4.2 (2019-10-01)
+
+##### Chores
+
+*  docs update ([4b185645](https://github.com/georgejecook/maestro/commit/4b1856456c4456079ed570c539861c2252e786c9))
+
+##### Bug Fixes
+
+*  fixes focus issues when pushing tab views ([cc853271](https://github.com/georgejecook/maestro/commit/cc8532711516b520467c4e1dcb2227eead6b7da7))
+*  fixes issue that prevents screens being created ([e1c6e880](https://github.com/georgejecook/maestro/commit/e1c6e880cd79cdcf5bba9f9745c95df8e8829ef0))
+
 #### 0.4.1 (2019-09-30)
 
 ##### Chores
