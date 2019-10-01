@@ -1,0 +1,95 @@
+import "pkg:/source/maestro/lib/Utils.bs"
+
+namespace MIOC
+
+function createContainer(json, validate = true)
+  MIOC.cleanup()
+  
+  if MU.isAACompatible(json) and MU.isAACompatible(json.resources)
+    'TODO validate json
+    m.global.addFields({
+      "_mioc_descriptors": json.resources
+      "_mioc_instances": {}
+    })
+  else
+    logError("was passed invalid container json")
+  end if
+end function
+
+function getInstance(id)
+  '1. get descriptor for id - that's store on global
+  descriptor = MIOC.getDescriptor(id)
+  if descriptor <> invalid
+    '2. is it stored locally, or globally
+    store = MIOC._getStore(descriptor)
+    if store[id] <> invalid
+      return store[id]
+    else
+      return createInstance(descriptor)
+    end if
+  else
+    return invalid
+  end if
+end function
+
+function setInstance(id, instance)
+end function
+
+function createInstance(descriptor)
+end function
+
+function cleanup()
+  m.global.delete("_mioc_descriptors")
+  m.global.delete("_mioc_instances")
+  m.delete("_mioc_instances")
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ private impl
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+function getDescriptor(id)
+  if m.global._mioc_descriptors <> invalid
+    return m.global._mioc_descriptors[id]
+  else
+    logError("descriptors have not been defined. Call createContainer before calling getInstance")
+  end if
+end function
+
+' /**
+'  * @description get's the store for the passed in descriptor
+'  * @param {asssocarray} descriptor - descriptor to get store for
+'  * @returns {assocarray} the store, for the given descriptor 
+'  */
+function getStore(descriptor)
+  
+  if descriptor.scope = invalid or descriptor.scope = "global"
+    store = m.global._mioc_instances
+  else
+    if m._mioc_local_instances = invalid
+      m._mioc_local_instances = {}
+    end if
+    store = m._mioc_local_instances
+  end if
+  
+  return store
+end function
+
+function updateStore(store, isLocal)
+  if isLocal
+    m._mioc_instances = store
+  else 
+    m.global._mioc_instances = store
+  end if
+end function
+
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ test functions
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function setIntanceOverride(id, instance)
+end function
+
+end namespace

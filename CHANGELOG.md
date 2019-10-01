@@ -1,3 +1,21 @@
+#### 0.4.1 (2019-09-30)
+
+##### Chores
+
+*  update gulpfile to get rid of absolute path ([ea84aa87](https://github.com/georgejecook/maestro/commit/ea84aa878b0e197ac91905cfd21db844e7d4c552))
+*  normalize all naming with underscores, which goes across all base classes, not just the vm ones. ([04b8cc46](https://github.com/georgejecook/maestro/commit/04b8cc46fe5785c325cd1247d6d7e216e0e47929))
+*  remove vm view map ([6c271273](https://github.com/georgejecook/maestro/commit/6c2712733db663d86d3df155751551ac11098653))
+*  removes underscores for vm onkey methods ([157cfa4b](https://github.com/georgejecook/maestro/commit/157cfa4b6774dd77fad3f1f9e3c1b6aef6ae199b))
+
+##### New Features
+
+*  disable multiple observables per view, so that noobies can't cause themselves debugging nightmares ([6555f2c2](https://github.com/georgejecook/maestro/commit/6555f2c29a1591ca09fba3504f46691fbb585c11))
+
+##### Bug Fixes
+
+*  minor fixes to ObservableMixin and BaseViewModels ([6dac2735](https://github.com/georgejecook/maestro/commit/6dac27352bbc26a16f93777aa737aed2b0ae4acc))
+*  clutch of small tweaks to naming/fixes ([d9cc6ef6](https://github.com/georgejecook/maestro/commit/d9cc6ef648bd0073b330cb5e81108e3e1c93c67f))
+
 # 0.4.0 
 
 ### Added 

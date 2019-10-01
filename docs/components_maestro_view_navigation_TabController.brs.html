@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>components/maestro/view/navigation/TabController.brs - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseObservable.html">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#BaseObservable">BaseObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#bindField">bindField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#notifyBinding">notifyBinding</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setContext">setContext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#setField">setField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-BaseObservable.html#unbindField">unbindField</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseScreen.html">BaseScreen</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-BaseView.html">BaseView</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-FocusMixin.html">FocusMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-KeyMixin.html">KeyMixin</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MaestroUtils.html">MaestroUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-MTU%2520MaestroThreadUtils.html">MTU MaestroThreadUtils</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ObservableMixin.html">ObservableMixin</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindFieldTwoWay">bindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindingCallback">bindingCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindNodeField">bindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.bindObservableField">bindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.checkValidInputs">checkValidInputs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.cleanup">cleanup</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.createBindingProperties">createBindingProperties</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observeField">observeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.observerCallback">observerCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.registerObservable">registerObservable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindFieldTwoWay">unbindFieldTwoWay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindNodeField">unbindNodeField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unbindObservableField">unbindObservableField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unobserveField">unobserveField</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ObservableMixin.html#.unregisterObservable">unregisterObservable</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ViewModelMixin.html">ViewModelMixin</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">components/maestro/view/navigation/TabController.brs</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>function init()
+  registerLogger("TabController")
+  logMethod("init")
+  m.top.currentItem = invalid
+  m.viewsByMenuItemId = {}
+end function
+
+function addChildViews()
+  children = m.top.getChildren(-1, 0)
+  for each child in children
+    addExistingView(child)
+  end for
+  m.top.removeChildren(children)
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ public api
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function changeCurrentItem(item)
+  logInfo("changeCurrentItem", item)
+
+  if m.top.currentItem = invalid or not m.top.currentItem.isSameNode(item)
+    m.top.currentItem = item
+    view = getViewForMenuItemContent(m.top.currentItem)
+    if view &lt;> invalid
+      'we want to clear out the view's vis, so the initialize
+      'won't trigger show callbacks prematurely
+      view.visible = false
+      view.isShown = false
+
+      if not view.isInitialized
+        initializeView(view)
+      end if
+      showView(view)
+    else
+      logError("no view for item", m.top.currentItem)
+    end if
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ View management
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function getViewForMenuItemContent(menuItemContent)
+  if menuItemContent = invalid
+    return invalid
+  end if
+
+  view = m.viewsByMenuItemId[menuItemContent.id]
+
+  if view = invalid
+    view = createView(menuItemContent)
+  end if
+
+  return view
+end function
+
+function getViews()
+  views = []
+  for each id in m.viewsByMenuItemId
+    views.push(m.viewsByMenuItemId[id])
+  end for
+  return views
+end function
+
+function addExistingView(existingView)
+  m.viewsByMenuItemId[existingView.id] = existingView
+  existingView.visible = false
+end function
+
+function _createView(menuItemContent)
+  logMethod("createView menuItemContent.screenType", menuItemContent.screenType)
+  childView = createView(menuItemContent)
+
+  if childView &lt;> invalid
+    containerView = createObject("roSGNode", "TabChildScreen")
+    containerView.content = childView
+    containerView.id = menuItemContent.id
+    childView.navController = containerView.navController
+
+    m.viewsByMenuItemId[menuItemContent.id] = containerView
+    'we want to clear out the view's vis, so the initialize
+    'won't trigger show callbacks prematurely
+    childView.visible = false
+    childView.isShown = false
+
+    ' initializeView(view)
+    initializeView(containerView)
+    containerView.visible = false
+    return containerView
+  else
+    logError("menu item ", menuItemContent.id, " resulted in invalid view from createView. Was this view inteded to be added via addExistingView?")
+    return invalid
+  end if
+end function
+
+' /**
+'  * @member createView
+'  * @memberof module:TabController
+'  * @instance
+'  * @description override point for providing your own view, based on a menuitem content
+'  * @param {node} a selected menu item
+'  * @returns {BaseScreen} a screen to display in a TabChildScreen
+'  */
+function createView(menuItemContent)
+
+  if menuItemContent.screenType &lt;> "none"
+    view = createObject("roSGNode", menuItemContent.screenType)
+    view.id = menuItemContent.id
+  end if
+
+  return view
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Lifecycle
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function initialize(args)
+  addChildViews()
+end function</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Oct 01 2019 17:19:00 GMT-0500 (-05) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
