@@ -51,7 +51,7 @@ function getViewForMenuItemContent(menuItemContent)
   view = m.viewsByMenuItemId[menuItemContent.id]
 
   if view = invalid
-    view = createView(menuItemContent)
+    view = _createView(menuItemContent)
   end if
 
   return view
