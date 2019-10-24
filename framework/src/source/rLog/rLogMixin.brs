@@ -1,31 +1,21 @@
 '@Namespace rLogM rLogMixin
 
 ' /**
-'  * @module rLogMixin
-'  * @description Mixin method for rLog - this is the main entry point for integrating with the rLog framework
-'  */
-
-' /**
 '  * @member initializeRLog
-'  * @memberof module:rLogMixin
+'  * @memberof module:RLogMixin
 '  * @instance
 '  * @description creates rLog, and places it on global
 '  *              expects to have access to globalNode on m.global (i.e. from within an SG control)
 '  *              to disable logging, simply never call initializeRLog - and your app will
 '  *              not incur any logging costs beyond the initial method invocation
-'  * @param {boolean} isForcedOff - if true, rLog will noop all log invocations
-'  * @param {boolean} isLightForcedOn - if true, rLog will for light mode on for all loggers
-'  * @param {boolean} isLightForcedOff - if true, rLog will for light mode off for all loggers
-'  * @param {boolean} isPrintingName - if true, rLog will for print out the name. For best results - use burp-brightscript, and leave this as false
 '  * @returns {RLog} RLog instance for further configuration
 '  */
-function initializeRLog(isForcedOff = false, isLightForcedOn = false, isLightForcedOff = false, isPrintingName = false) as object
+function initializeRLog(isForcedOff = false, isLightForcedOn = false, isLightForcedOff = false) as object
   rLog = CreateObject("roSGNode", "rLog")
   m.global.addFields({"rLog": rLog})
   rLog.isLightForcedOff = isLightForcedOff
   rLog.isLightForcedOn = isLightForcedOn
   rLog.isForcedOff = isForcedOff
-  rLog.isPrintingName = isPrintingName
   return rLog
 end function
 
@@ -39,7 +29,7 @@ end function
 '  *              note - filtering of levels is not yet supported
 '  * @param {string} name of the logger
 '  * @param {boolean} isLight - if true, then a cheap print logger is used for performance reasons
-'  * @returns {object} target object which had log applied to it
+'  * @returns {object} object which had log applied to it
 '  *                   (target, or m if target was invalid and using a light logger)
 '  */
 function registerLogger(name = "general", isLight = false, target = invalid) as object
@@ -50,11 +40,12 @@ function registerLogger(name = "general", isLight = false, target = invalid) as 
     isSettingOnModule = true
   end if
 
-  target.rLog_name = " " + name + " "
-  target.rLog_levelTexts = ["[ERROR]","[WARN]","[INFO]","[VERBOSE]","[DEBUG]"]
+  target.rLog_name = name
+  target.rLog_levelTexts = ["ERROR","WARN","INFO","VERBOSE","DEBUG"]
   target.rLog_isLight = isLight
-  target.rLog_instance = m.global.rLog
-  target.isPrintingName = target.rLog_instance.isPrintingName
+  if m.global <> invalid
+    target.rLog_instance = m.global.rLog
+  end if
   target.logImpl = logImpl
   if isSettingOnModule = true
     target.logDebug = logDebug
@@ -99,14 +90,10 @@ end function
 
 function logImpl(level, message, value = "#RLN#", value2 = "#RLN#", value3 = "#RLN#", value4 = "#RLN#", value5 = "#RLN#", value6 = "#RLN#", value7 = "#RLN#", value8 = "#RLN#", value9 = "#RLN#", isMethod = false) as void
   if m.rLog_instance = invalid or m.rLog_instance.isForcedOff = true then return
-  if m.isPrintingName = true
-    if m.rLog_name <> invalid
-      name = m.rLog_name
-    else
-      name = " General "
-    end if
+  if m.rLog_name <> invalid
+    name = m.rLog_name
   else
-    name = ""
+    name = "General"
   end if
 
   if m.rLog_instance.isLightForcedOn = true
@@ -119,18 +106,18 @@ function logImpl(level, message, value = "#RLN#", value2 = "#RLN#", value3 = "#R
 
   if isLight = true
     if isMethod = true
-      print "*[METHOD]" ; name ; message ; " " ; rLog_ToString(value) ; " " ; rLog_ToString(value2) ; " " ; rLog_ToString(value3) ; " " ; rLog_ToString(value4) ;
+      print "*METHOD " ; message ; " " ; rLog_ToString(value) ; " " ; rLog_ToString(value2) ; " " ; rLog_ToString(value3) ; " " ; rLog_ToString(value4) ;
       print " " ; rLog_ToString(value5) ; " " ; rLog_ToString(value6) ; " " ; rLog_ToString(value7) ; " " ; rLog_ToString(value8) ; " " ; rLog_ToString(value9)
     else
-      print "*"; m.rLog_levelTexts[level] ; name ; message ; " " ; rLog_ToString(value) ; " " ; rLog_ToString(value2) ; " " ; rLog_ToString(value3) ; " " ; rLog_ToString(value4) ;
+      print "*"; m.rLog_levelTexts[level] ; " " ; message ; " " ; rLog_ToString(value) ; " " ; rLog_ToString(value2) ; " " ; rLog_ToString(value3) ; " " ; rLog_ToString(value4) ;
       print " " ; rLog_ToString(value5) ; " " ; rLog_ToString(value6) ; " " ; rLog_ToString(value7) ; " " ; rLog_ToString(value8) ; " " ; rLog_ToString(value9)
     end if
     return
   else
     if isMethod = true
-      text = "[METHOD]" + name + rLog_ToString(message) + " " + rLog_ToString(value) + " " + rLog_ToString(value2) + " " + rLog_ToString(value3) + " " + rLog_ToString(value4) + " " + rLog_ToString(value5) + " " + rLog_ToString(value6) + " " + rLog_ToString(value7) + " " + rLog_ToString(value8) + " " + rLog_ToString(value9)
+      text = "[METHOD] " + rLog_ToString(message) + " " + rLog_ToString(value) + " " + rLog_ToString(value2) + " " + rLog_ToString(value3) + " " + rLog_ToString(value4) + " " + rLog_ToString(value5) + " " + rLog_ToString(value6) + " " + rLog_ToString(value7) + " " + rLog_ToString(value8) + " " + rLog_ToString(value9)
     else
-      text = m.rLog_levelTexts[level] + name + rLog_ToString(message) + " " + rLog_ToString(value) + " " + rLog_ToString(value2) + " " + rLog_ToString(value3) + " " + rLog_ToString(value4) + " " + rLog_ToString(value5) + " " + rLog_ToString(value6) + " " + rLog_ToString(value7) + " " + rLog_ToString(value8) + " " + rLog_ToString(value9)
+      text = m.rLog_levelTexts[level] + " " + rLog_ToString(message) + " " + rLog_ToString(value) + " " + rLog_ToString(value2) + " " + rLog_ToString(value3) + " " + rLog_ToString(value4) + " " + rLog_ToString(value5) + " " + rLog_ToString(value6) + " " + rLog_ToString(value7) + " " + rLog_ToString(value8) + " " + rLog_ToString(value9)
     end if
 
     logEntry = {
@@ -139,13 +126,11 @@ function logImpl(level, message, value = "#RLN#", value2 = "#RLN#", value3 = "#R
       "text" : text
     }
     m.rLog_instance.callFunc("logItem", logEntry)
-    ' m.rLog_instance.logEntry = arglogEntry
   end if
 end function
 
 function rLog_ToString(value as dynamic) as string
   valueType = type(value)
-
   if valueType = "<uninitialized>"
     return "UNINIT"
   else if value = invalid

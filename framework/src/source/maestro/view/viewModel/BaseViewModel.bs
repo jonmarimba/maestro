@@ -18,7 +18,7 @@ class BaseViewModel extends BaseObservable
 '  */
 
 public function new(name = "BaseViewModel")
-  super()
+  m.super()
   m.name = name
   registerLogger(name, true, m)
 end function
@@ -95,7 +95,7 @@ public function push(view)
 end function
 
 public function pop() as object
-  return(pop)
+  return(pop())
 end function
 
 public function resetNavControllerToRoot()

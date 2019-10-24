@@ -99,7 +99,7 @@ function bindNodeField(targetNode, nodeField, observable, observableField, prope
     return false
   end if
   
-  if not MOM.checkValidInputs(nodeField, targetNode, nodeField)
+  if not MOM.checkValidInputs(observable, observableField, targetNode, nodeField)
     return false
   end if
   
@@ -172,7 +172,7 @@ end function
 '  * @returns {boolean} true if successful
 '  */
 function unbindNodeField(targetNode, nodeField, observable, observableField) as boolean
-  if not MOM.checkValidInputs(observableField, targetNode, nodeField)
+  if not MOM.checkValidInputs(observable, observableField, targetNode, nodeField)
     return false
   end if
   
@@ -489,12 +489,13 @@ end function
 '  * @function
 '  * @description checks the given inputs are valid for binding uses, such as
 '  *              generating binding keys
+'  * @param {Observable} targetObservable - instance that is observing
 '  * @param {string} observableField - name of source field
 '  * @param {node} targetNode - the target node - must have an id!
 '  * @param {string} nodeField  - name of target field
 '  * @returns {boolean} true if valid
 '  */
-function checkValidInputs(observableField, targetNode, nodeField) as boolean
+function checkValidInputs(targetObservable, observableField, targetNode, nodeField) as boolean
   if not MU.isString(observableField) or observableField.trim() = ""
     logError("illegal observableField", observableField)
     return false
@@ -510,8 +511,18 @@ function checkValidInputs(observableField, targetNode, nodeField) as boolean
     return false
   end if
   
+  if not MOM.isObservable(targetObservable)
+    logError("targetObservable is not observable")
+    return false
+  end if
+  
   if not targetNode.doesExist(nodeField)
     logError("nodeField doesn't exist", nodeField)
+    return false
+  end if
+  
+  if not targetObservable.doesExist(observableField)
+    logError("observable field doesn't exist", observableField)
     return false
   end if
   
@@ -575,4 +586,4 @@ function transform_invertBoolean(value)
   end if
 end function
 
-end namespace
+end namespaceBase
