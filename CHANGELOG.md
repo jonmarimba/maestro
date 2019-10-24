@@ -1,3 +1,9 @@
+#### 0.4/3 (2019-10-24)
+
+##### Bug Fixes
+
+*  fixes issues with super call in BaseViewModel and some vm observer bindings which were faling ([3bc74e80](https://github.com/georgejecook/maestro/commit/3bc74e8042ef26ef6008f8b8989d8960f89bffdf))
+
 #### 0.4.2 (2019-10-01)
 
 ##### Chores
