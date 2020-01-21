@@ -171,7 +171,7 @@ export function copyToSamples(cb) {
   let maestroSourcePath = 'framework/src/source/maestro';
   let maestroComponentsPath = 'framework/src/components/maestro';
 
-  ['todoXMLBindings', 'todo', 'eloquently-managing-deep-linking'].forEach((sampleName) => {
+  ['todoXMLBindings', 'todo', 'eloquently-managing-deep-linking', 'controls'].forEach((sampleName) => {
     fs.copySync(maestroSourcePath, `samples/${sampleName}/src/source/maestro`);
     fs.copySync(maestroComponentsPath, `samples/${sampleName}/src/components/maestro`);
   });

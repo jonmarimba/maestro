@@ -1,0 +1,9 @@
+function init()
+  m.top.observeField("itemContent", "onItemContentChange")
+  m.label = m.top.findNode("label")
+end function
+
+function onItemContentChange()
+  m.label.text = m.top.itemContent.title
+end function
+

@@ -1,0 +1,95 @@
+import "pkg:/source/maestro/view/viewModel/BaseViewModel.bs"
+
+namespace MCSVM
+class MultiControlScreenVM extends BaseViewModel
+
+public focusId = "toggleButton"
+public index = 0
+public isAnimated = false
+public buttonText = "animated: off"
+
+public function new()
+  m.super("MultiControlScreenVM")
+  m.setField("rowListContent", m.makeContent(1))
+  m.setField("rowListContent2", m.makeContent(3))
+end function
+
+private function makeContent(numRows)
+  rows = []
+  for i = 0 to numRows - 1
+    rows.push(m.makeRow(10, i))
+  end for
+  
+  content = createObject("roSGNode", "ContentNode")
+  content.appendChildren(rows)
+  return content
+end function
+
+private function makeRow(numItems, index)
+  row = createObject("roSGNode", "ContentNode")
+  row["TITLE"] = "some title " + stri(index)
+  items = []
+  
+  for i = 0 to numItems - 1 
+    item = createObject("roSGNode", "ContentNode")
+    item["TITLE"] = "item " + stri(i)
+    items.push(item)
+    
+  end for
+  row.appendChildren(items)
+  
+  return row
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Public api
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+public function onToggleIsAnimated(value)
+  m.setField("isAnimated", not m.isAnimated)
+  if m.isAnimated
+    m.setField("buttonText", "animated: on")
+  else
+    m.setField("buttonText", "animated: off")
+  end if
+end function
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Private impl
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Key Handling
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+public function onKeyPressUp()
+  m.logDebug("up! m.index", m.index, "m.focusId", m.focusId)
+  if m.index > 0
+    m.logInfo("moving index down - animated:", m.isAnimated)
+    m.setField("index", m.index - 1)
+    return true
+  else 
+    m.logInfo("focusing on toggle button")
+    m.setField("focusId", "toggleButton")
+    return true
+  end if
+  
+end function
+
+public function onKeyPressDown()
+  m.logDebug("down! m.index", m.index, "m.focusId", m.focusId)
+  
+  if m.focusId = "toggleButton"
+    m.setField("focusId", "multiContainer")
+    return true
+  else
+    m.logInfo("moving index up - animated:", m.isAnimated)
+    m.setField("index", m.index + 1)
+    return true
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Lifecycle methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+end class
+end namespace

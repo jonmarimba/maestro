@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<component
+    name="MultiControlScreen"
+    extends="BaseScreen">
+  <interface></interface>
+
+  <children>
+    <Button
+        id="toggleButton"
+        translation="[500,50.0]"
+        text="@{vm.buttonText}"
+        buttonSelected="@(vm.onToggleIsAnimated)" />
+
+    <MultiContainer
+        id="multiContainer"
+        translation="[0,100.0]"
+        index="@{vm.index}"
+        isAnimated="@{vm.isAnimated}">
+      <Rectangle
+          id="rect1"
+          color="#0000ff"
+          height="400"
+          width="200" />
+      <Rectangle
+          id="rect2"
+          color="#ff0000"
+          height="200"
+          width="200" />
+      <Rectangle
+          id="rect3"
+          color="#00ff00"
+          height="350"
+          width="200" />
+
+      <RowList
+          id="rowList1"
+          content="@{vm.rowListContent}"
+          itemComponentName="CustomItem"
+          itemSize="[1920,200]"
+          numRows="1"
+          rowItemSize="[[435,200]]"
+          rowHeights="[200]"
+          showRowLabel="[false]"
+          rowLabelColor="#FFFFFF"
+          showRowCounter="[false]"
+          rowFocusAnimationStyle="fixedFocusWrap"
+          drawFocusFeedback="true"
+           />
+      <Rectangle
+          id="rect4"
+          color="#ff00ff"
+          height="500"
+          width="200" />
+      <RowList
+          id="rowList2"
+          content="@{vm.rowListContent2}"
+          itemComponentName="CustomItem"
+          itemSize="[1920,200]"
+          numRows="3"
+          rowItemSize="[[435,200]]"
+          rowHeights="[200]"
+          showRowLabel="[false]"
+          rowLabelColor="#FFFFFF"
+          showRowCounter="[false]"
+          rowFocusAnimationStyle="fixedFocusWrap"
+          vertFocusAnimationStyle="floatingFocus"
+          drawFocusFeedback="true"
+           />
+      <Rectangle
+          id="rect5"
+          color="#00ffff"
+          height="200"
+          width="200" />
+      <RowList
+          id="rowList3"
+          content="@{vm.rowListContent}"
+          itemComponentName="CustomItem"
+          itemSize="[1920,200]"
+          numRows="1"
+          rowItemSize="[[435,200]]"
+          rowHeights="[200]"
+          showRowLabel="[false]"
+          rowLabelColor="#FFFFFF"
+          showRowCounter="[false]"
+          rowFocusAnimationStyle="fixedFocusWrap"
+          drawFocusFeedback="true"
+           />
+      <RowList
+          id="rowList4"
+          content="@{vm.rowListContent}"
+          itemComponentName="CustomItem"
+          itemSize="[1920,200]"
+          numRows="1"
+          rowItemSize="[[435,200]]"
+          rowHeights="[200]"
+          showRowLabel="[false]"
+          rowLabelColor="#FFFFFF"
+          showRowCounter="[false]"
+          rowFocusAnimationStyle="fixedFocusWrap"
+          drawFocusFeedback="true"
+           />
+      <RowList
+          id="rowList5"
+          content="@{vm.rowListContent}"
+          itemComponentName="CustomItem"
+          itemSize="[1920,200]"
+          numRows="1"
+          rowItemSize="[[435,200]]"
+          rowHeights="[200]"
+          showRowLabel="[false]"
+          rowLabelColor="#FFFFFF"
+          showRowCounter="[false]"
+          rowFocusAnimationStyle="fixedFocusWrap"
+          drawFocusFeedback="true"
+           />
+      <RowList
+          id="rowList6"
+          content="@{vm.rowListContent}"
+          itemComponentName="CustomItem"
+          itemSize="[1920,200]"
+          numRows="1"
+          rowItemSize="[[435,200]]"
+          rowHeights="[200]"
+          showRowLabel="[false]"
+          rowLabelColor="#FFFFFF"
+          showRowCounter="[false]"
+          rowFocusAnimationStyle="fixedFocusWrap"
+          drawFocusFeedback="true"
+           />
+      <Rectangle
+          id="rect6"
+          color="#0000ff"
+          height="400"
+          width="200" />
+    </MultiContainer>
+  </children>
+
+</component>

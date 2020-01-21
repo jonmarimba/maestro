@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component
+    name="MultiContainer"
+    extends="BaseView">
+  <interface>
+    <field
+        id="index"
+        type="integer"
+        alwaysNotify="true"
+        value="0" />
+    <field
+        id="isAnimated"
+        type="boolean"
+        value="false" />
+
+  </interface>
+  <children>
+    <LayoutGroup
+        id="container_layoutGroup"
+        layoutDirection="vert" />
+    <Animation
+        id="container_animation"
+        duration="0.1"
+        repeat="false"
+        control="stop"
+        easeFunction="linear">
+      <Vector2DFieldInterpolator
+          id="container_interpolator"
+          key="[0.0, 1.0]"
+          keyValue="[ [0, 0],[0, 0] ]"
+          fieldToInterp="container_layoutGroup.translation" />
+    </Animation>
+
+  </children>
+</component>

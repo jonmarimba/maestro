@@ -1,0 +1,38 @@
+
+import "pkg:/source/rLog/rLogMixin.bs"
+import "pkg:/source/maestro/observable/ObservableMixin.bs"
+import "pkg:/source/maestro/view/viewModel/ViewModelMixin.bs"
+import "pkg:/source/view/viewModels/MultiControlScreenVM.bs"
+
+function Init()
+  registerLogger("MultiControlScreen")
+  M_createNodeVars() 
+  m.rowList1.addFields({ "height": 200 })
+  m.rowList2.addFields({ "height": 650 })
+  m.rowList3.addFields({ "height": 200 })
+  m.rowList4.addFields({ "height": 200 })
+  m.rowList5.addFields({ "height": 200 })
+  m.rowList6.addFields({ "height": 200 })
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ binding callbacks
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Lifecycle methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function initialize(args)
+  m.vm = MultiControlScreenVM()
+  m.vm.initialize()
+  initializeView(m.multiContainer)
+  MVMM.initializeBindings(true)
+end function
+
+function onGainedFocus(isSelfFocused)
+  if isSelfFocused
+    MVMM.onFocusIdChange(m.vm.focusId)
+  end if
+end function

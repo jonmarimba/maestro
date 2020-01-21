@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<component name="CustomItem" extends="Group">
+
+  <interface>
+    <field id="itemContent" type="node" />
+  </interface>
+
+  <children>
+    <Label 
+      id="label"
+      width="435"
+      height="200"
+      vertAlign="center"
+      horizAlign="center">
+    </Label>
+  </children>
+</component>

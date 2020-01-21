@@ -1,0 +1,14 @@
+'@TestSuite MultiControlScreenVMTests
+import "pkg:/source/maestro/view/viewModel/BaseViewModel.bs"
+
+namespace MCSVMT
+
+'@BeforeEach
+function beforeEach()
+end function
+
+'@AfterEach
+function afterEach()
+end function
+
+end namespace

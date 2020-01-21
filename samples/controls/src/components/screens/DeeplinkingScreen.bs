@@ -1,0 +1,74 @@
+import "../mixin/AppServices.bs"
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Initialization
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function init()
+  registerLogger("DeeplinkingScreen")
+  logMethod("init")
+  m.top.navController = m.top.findNode("navController")
+  initializeView(m.top.navController)
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Private impl
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function applyDeeplinking()
+  logMethod("applyDeeplinking")
+  deeplinkingData = m.modelLocator.deeplinkingData
+  
+  isGridPresent = deeplinkingData.mediaType <> "vod"
+  
+  if isGridPresent
+    gridScreen = createObject("roSGNode", "GridScreen")
+    gridScreen.selection = deeplinkingData.selection
+    push(gridScreen)
+  end if
+  
+  if deeplinkingData.action = "play"
+    AppServices.playSelection(deeplinkingData.selection)
+  end if
+  
+  if isGridPresent or deeplinkingData.action = "play"
+    setFocus(m.top.navController)
+  else
+    logInfo("No Grid present, and no played content, so we will not enter deep linking")
+    AppServices.exitFromDeepLinking()
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Key handling
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function onKeyPressBack() as boolean
+  logMethod("onKeyPressBack")
+  pop()
+  setFocus(m.top.navController)
+  if m.top.navController.numberOfViews = 0
+    AppServices.exitFromDeepLinking()
+  end if
+  return m.top.navController.numberOfViews > 0
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Lifecycle methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function onShow()
+  logMethod("onShow")
+  applyDeeplinking()
+end function
+
+function onHide()
+  logMethod("onHide")
+end function
+
+function onGainedFocus(isSelfFocused)
+  logMethod("onGainedFocus ", isSelfFocused)
+  if isSelfFocused
+    setFocus(m.top.navController)
+  end if
+end function
