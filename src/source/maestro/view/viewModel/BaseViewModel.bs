@@ -3,12 +3,17 @@ import "pkg:/source/rLog/rLogMixin.brs"
 
 namespace MBVM
 
+' /**
+'  * @module BaseViewModel
+'  * @description Base class for all ViewModels
+'  */
 class BaseViewModel extends BaseObservable
 
 ' /**
 '  * @member new
 '  * @memberof module:BaseViewModel
 '  * @instance
+'  * @function
 '  * @description contsructor for a view model.
 '  *              this class contains the common functions to assist in vm management
 '  *               - KeyMixin integration points
@@ -18,7 +23,7 @@ class BaseViewModel extends BaseObservable
 '  */
 
 public function new(name = "BaseViewModel")
-  super()
+  m.super()
   registerLogger(name, true, m)
 end function
 

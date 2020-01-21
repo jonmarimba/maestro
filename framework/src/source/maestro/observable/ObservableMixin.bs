@@ -586,4 +586,4 @@ function transform_invertBoolean(value)
   end if
 end function
 
-end namespaceBase
+end namespace
