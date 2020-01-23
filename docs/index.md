@@ -183,31 +183,73 @@ This view is intended to be extended by Components, which in turn are aggregates
 
 You can override these methods to safely drive your application behaviour
 
-- `_applyStyle(styles, localizations, assets)` - will be called when the view is initialized, so it can apply required styles, etc
-- `_initialize(args)` - called when the view has been initialized
-- `_onFirstShow` - called the first time a view is shown
-- `_onShow` - called when a view is shown - note a view cannot be shown if it is not initialized. This method will be called immediately for a visible view, when `initialize` is invoked
-- `_onHide` - called when a view is hidden
+- `applyStyle(styles, localizations, assets)` - will be called when the view is initialized, so it can apply required styles, etc
+- `initialize(args)` - called when the view has been initialized
+- `onFirstShow` - called the first time a view is shown
+- `onShow` - called when a view is shown - note a view cannot be shown if it is not initialized. This method will be called immediately for a visible view, when `initialize` is invoked
+- `onHide` - called when a view is hidden
  
 In addition you can override the methods in KeyMixin:
 
- -  `_isAnyKeyPressLocked()` - returns true if any keypress is locked - defualt impl is to return the value of `m.isKeyPressLocked`
- -  `_isCapturingAnyKeyPress(key)`, return true if the key `key` is captured
+ -  `isAnyKeyPressLocked()` - returns true if any keypress is locked - defualt impl is to return the value of `m.isKeyPressLocked`
+ -  `isCapturingAnyKeyPress(key)`, return true if the key `key` is captured
 
 Override the following, to return true, if the applicable key is captured
 
- -  `_onKeyPressDown()`
- -  `_onKeyPressUp()`
- -  `_onKeyPressLeft()`
- -  `_onKeyPressRight()`
- -  `_onKeyPressBack()`
- -  `_onKeyPressOption()`
- -  `_onKeyPressOK()`
+ -  `onKeyPressDown()`
+ -  `onKeyPressUp()`
+ -  `onKeyPressLeft()`
+ -  `onKeyPressRight()`
+ -  `onKeyPressBack()`
+ -  `onKeyPressOption()`
+ -  `onKeyPressOK()`
 
 Also, BaseView allows entry points for overriding abstract methods from `FocusMixin`
 
- - `_onGainedFocus(isSelfFocused)`
- - `_onLostFocus()`
+ - `onGainedFocus(isSelfFocused)`
+ - `onLostFocus()`
+
+### FocusMixin
+
+The FocusMixin leverages the `FocusManager` node, to allow you to get accurate callbacks. If you use the `FocusMixin` methods for setting focus, you will be able to more easily debug your applications and have more confidence in the focus state of your app, as everything is encapsulated in a well tested mechanism, with accurate events to allow you to make correct assumptions about your app's state
+
+#### FocusMixin methods
+
+- refer to the [api docuementation](https://georgejecook.github.io/maestro/module-FocusMixin.html)
+- but in nutshell, use `setFocus(node)` and never use `node.setFocus(true)` again! :)
+
+#### FocusMixin callbacks
+  You can override the following methods: 
+
+ - `onGainedFocus` called when your control get's the focus -the `isSelfFocused` boolean parameter indicates if this control has the focus, or one of it's children has the focus.
+ - `onLostFocus` called when a control loses focus.
+
+#### using the FocusMixin/FocusManager
+
+You must initialize the focusManger, by using the `initializeFocusManager`
+  method, e.g. `initializeFocusManager(m.global)`. You will typically do this in an app controller.
+
+ALWAYS use the FocusMixin's `setFocus` method, so you have a predictable experience with focus management.
+
+#### If you extend BaseView
+
+  - simply override the methods `onGainedFocus` and `onLostFocus`, they will be called at the appropriate times.
+
+#### If you do not extend BaseView
+If you do not extend BaseScreen, and want focus callbacks, then:
+
+ - import the FocusMixin into your control
+ - initialize your control with `focusMixinInit()`
+ - ensure your control has the fields `isFocused` and `isChildFocused`
+ i.e.
+
+ ```
+     <!-- focus support -->
+    <field id="isFocused"  type="boolean" value="false" alwaysNotify="false"/>
+    <field id="isChildFocused"  type="boolean" value="false" alwaysNotify="false"/>
+ ```
+
+ - override the methods `onGainedFocus` and `onLostFocus`
 
 ### BaseScreen
 
@@ -233,9 +275,9 @@ Extends Baseview and adds additional awareness for selections, loading state, if
 
 BaseScreen provides the same lifecycle methods as Baseview; but also provides
 
- - `_getTopScreen ` - tempalte method used by `getTopScreen`
- - `_baseScreenOnShow` - special hook used to overcome needing more `onShow` overrides (SceneGraph has a limit to super method calls)
- - `_onUserChange` - called when the user changes, so the view can update itself with the latest data
+ - `getTopScreen ` - tempalte method used by `getTopScreen`
+ - `baseScreenOnShow` - special hook used to overcome needing more `onShow` overrides (SceneGraph has a limit to super method calls)
+ - `onUserChange` - called when the user changes, so the view can update itself with the latest data
 
  
 ### BaseAggregateView
@@ -282,13 +324,13 @@ NavController controls a stack of views stacked one up on the other. When a Base
 
 To make development easier, and remove boilerplate, a lifecycle is provided, so that all views and screens can override a few methods to get accurate access to their perceived state on screen. the lifecycle methods are invoked as follows:
 
- - `_initialize` - invoked once, when `initializeView` is called for the view, or the view is created by a TabController, or added to a NavController
- - `_onFirstShow` - invoked once, when the view first becomes visible
- - `_onShow` - can be invoked multiple times
- - `_onHide` - can be invoked multiple times
- - `_onUserChange` - can be invoked multiple times
- - `_onGainedFocus` - called whenever the view or one of it's children gains focus
- - `_onLostFocus` - called whenever the view loses focus
+ - `initialize` - invoked once, when `_initializeView` is called for the view, or the view is created by a TabController, or added to a NavController
+ - `onFirstShow` - invoked once, when the view first becomes visible
+ - `onShow` - can be invoked multiple times
+ - `onHide` - can be invoked multiple times
+ - `onUserChange` - can be invoked multiple times
+ - `onGainedFocus` - called whenever the view or one of it's children gains focus
+ - `onLostFocus` - called whenever the view loses focus
 
  
 # MVVM and observable base classes
@@ -355,7 +397,7 @@ end function
 
 Note that we use [brighterscript](https://github.com/TwitchBronBron/brighterscript/) in maestro, so the above calls `MOM.functionName` are _namespace invocations_ on the `MOM` _namespace_ and can just as well be written `MOM_functionName`
 
-It is best to refer to the API docs for a full explanation; but it's worth noting that each binding supports various properties, which can be created via the `MOM.createBindingProperties` helper.
+It is best to refer to the [API docs](https://georgejecook.github.io/maestro/index.html) for a full explanation; but it's worth noting that each binding supports various properties, which can be created via the `MOM.createBindingProperties` helper.
 
 ### Wiring up bindings in code is discouraged
 
@@ -425,6 +467,10 @@ a binding is as follows:
 
 # Brighterscript support
 
+Brighterscript is baked into the `maestro-cli-roku` package, and can be invoked from `maestro-cli`. Development on the official brighterscript project is underway, and once it has feature parity, we will use the official compiler inside of `maestro-cli`.
+
+To get the most out of brighterscript, use the [brighterscript enabled vscode plugin](brightscript-2.2.0-bs.vsix), which will give you language support.
+
 Maestro supports the following brighterscript features (with some limitations):
 
  - classes
@@ -449,11 +495,13 @@ Only one namespace per file. All your functions in the file will become namespac
   - you can extend other classes - `EXTENDS_NAME` must be a valid `.bs` class
   - declare class functions and subs with `public function`, `private function`, `public sub`, `private sub`. These will be merged into your class.
   - declare your constructor with `public function new(args...)`
-    - you can call your super constructor (if extending) with `super(args...)`
+    - you can call your super constructor (if extending) with `m.super(args...)`
     - if you do not create a constructor, then a zero arg constructor is declared for you
   - declare class fields with `public fieldName = value`
     - you can also use `as` keyword to declare the type: e.g `public name as string` or `public selectedItem as dynamic = invalid`
   - classes must be contained in `.bs` files to be compiled
+  - instantiate a class with `new CLASSNAME(args)` - note, classnames are NEVER affected by the namespace of the file they are in.
+  - be sure to use the `override` keyword, if you override a base class's function or sub. Note, if you are overriding, you can choose whether to call super or not with `m.super`, the compiler will log warnings if you don't call super; but these are verbose, and can be easily quitened by changing your logging level.
 
 ### limitations
 

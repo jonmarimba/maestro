@@ -10,32 +10,40 @@
 '++ FOCUS
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+' /**
+'  * @member initializeFocusManager
+'  * @memberof module:FocusMixin
+'  * @instance
+'  * @function
+'  * @description creates the FocusManager, used by the FocusMixin. This method should be called early on in your app initializatoin (e.g in the init method of your AppController, or similar class)
+'  * @param {global} - globalNode pointer to globalNode (i.e. m.global)
+'  */
 function initializeFocusManager(globalNode)
   globalNode.addFields({"focusManager": createObject("roSGNode", "FocusManager")})
 end function
 
+' /**
+'  * @member focusMixinInit
+'  * @memberof module:FocusMixin
+'  * @instance
+'  * @function
+'  * @description creates required observers for a view. Call this from any view that uses FocusMixin (which does not extend `BaseView`)
+'  */
 function focusMixinInit()
   m.top.observeField("isFocused", "onIsFocusedChange")
   m.top.observeField("isChildFocused", "onIsChildFocusedChange")
-
-  ' m.globalNode.addFields({
-  '   "isFocusLocked": false
-  '   "focusLockReason": ""
-  ' })
-  
-  ' m.global.addField("focusedNode", "node", false)
-  ' logVerbose(" focusMixinInit ", m.top.subType())
-  ' m.currentFocusedControl = invalid
-  ' m.isInFocusChain = false
 end function
 
-'*************************************************************
-'** setFocus
-'** abstracts focus setting to make it easier to debug
-'** @param node as roSGNode - to set focus to
-'** @param isSaving as boolean - whether to save the focus so it later can be restored
-'** @param forceSet as boolean - this will override situations where the focus is locked, like when showing a dialog
-'*************************************************************
+' /**
+'  * @member setFocus
+'  * @memberof module:FocusMixin
+'  * @instance
+'  * @function
+'  * @description sets focus on the passed in node. Will do nothing if the node is invalid, undefined, or not currently on the scene.
+'  * @param {roSGNode} node - node to set focus on
+'  * @param {boolean} isSaving - not currently used
+'  * @param {boolean} forceSet - will set focus, even if the focus lock is on
+'  */
 function setFocus(node, isSaving = true, forceSet = false)
   m.global.focusManager.callFunc("setFocusOn", node, forceSet)
 end function
@@ -45,17 +53,27 @@ end function
 '** abstracts focus un setting to make it easier to debug
 '** @param node as roSGNode - to set focus to
 '*************************************************************
+' /**
+'  * @member unsetFocus
+'  * @memberof module:FocusMixin
+'  * @instance
+'  * @function
+'  * @description there are rare; but valid occasions where one might call node.setFocus. This method is provided as a abstratoin, to facilitate better debugging
+'  * @param {roSGNode} node - node to unsset focus on
+'  */
 function unsetFocus(node)
   m.global.focusManager.callFunc("unsetFocusOn", node)
 end function
 
-'*************************************************************
-'** setFocusLocked
-'** Toggles if the focus is locked to a particular control. If so, only calls to setFocus
-'** with an override flag will set the focus
-'** @param isLocked as boolean toggles locked mode on or off
-'** @param focusLockReason as string helps identify what locked the focus for debugging purposes
-'*************************************************************
+' /**
+'  * @member setFocusLocked
+'  * @memberof module:FocusMixin
+'  * @instance
+'  * @function
+'  * @description toggles if the focus is locked. If the focus is locked, then any call to setFocus will not work.
+'  * @param {boolean} - isLocked
+'  * @param {string} - focusLockReason - the reason for locking - this will appear in logging output
+'  */
 function setFocusLocked(isLocked, focusLockReason = "")
   m.global.focusManager.callFunc("setFocuseLocked", isLocked, focusLockReason)
 end function
@@ -80,10 +98,24 @@ end function
 '++ abstract focus methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+' /**
+'  * @member onGainedFocus
+'  * @memberof module:FocusMixin
+'  * @instance
+'  * @function
+'  * @description invoked when a control, or a parent of a focused control, gains focus
+'  * @param {boolean} isSelfFocused - if true, then this is the control that is focused, if false, then it is one of the control's parents
+'  */
 function onGainedFocus(isSelfFocused)
 end function
 
-
+' /**
+'  * @member onGainedFocus
+'  * @memberof module:FocusMixin
+'  * @instance
+'  * @function
+'  * @description invoked when a control, loses focus
+'  */
 function onLostFocus()
 end function
 
