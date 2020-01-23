@@ -3,7 +3,7 @@
 
 ' /**
 '  * @module KeyMixin
-'  * @description Mixin method for helping with managing keypresses. Intended to be included in a base class, so that the super class can override the methods. Supports standard presses and long press gestures too.
+'  * @description Mixin method for helping with managing keypresses. Intended to be included in a base class, so that the m.super class can override the methods. Supports standard presses and long press gestures too.
 '  */
 
 

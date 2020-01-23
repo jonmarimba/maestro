@@ -30,8 +30,8 @@
     "vinyl-paths": "^2.1.0"
   },
   "scripts": {
-    "use-live-cli": "npm install maestro-cli-roku --save-dev",
-    "use-local-cli": "npm install ../../../maestro-cli --save-dev"
+    "use-live-cli": "rm -rf node_modules/maestro-cli-roku && npm install maestro-cli-roku --save-dev",
+    "use-local-cli": "rm -rf node_modules/maestro-cli-roku && npm install ../../../maestro-cli --save-dev"
   },
   "repository": {
     "type": "git",

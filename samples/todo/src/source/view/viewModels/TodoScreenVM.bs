@@ -13,7 +13,7 @@ public currentTitle = "none"
 public hasItems = false
 
 public function new()
-  super("TodoVM")
+  m.super("TodoVM")
   m.focusIds = [
     "addButton",
     "removeButton"
@@ -98,6 +98,8 @@ private function onKeyPressBack() as boolean
   if m.focusId = "itemList"
     m.setField("focusId", "removeButton")
     return true
+  else 
+    m.onKeyPressUp()
   end if
 
   return false

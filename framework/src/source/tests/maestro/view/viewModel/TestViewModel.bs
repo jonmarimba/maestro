@@ -2,7 +2,7 @@ namespace TVM
 class TestViewModel extends BaseViewModel
 
 public function new(name)
-  super(name)
+  m.super(name)
 end function
 
 public function getAge()
@@ -17,15 +17,15 @@ public function _initialize()
   m.isInitCalled = true
 end function
 
-private function onShow()
+override private function onShow()
   m.isOnShowCalled = true
 end function
 
-private function onHide()
+override private function onHide()
   m.isOnHideCalled = true
 end function
 
-private function destroy()
+override private function destroy()
   m.isDestroyCalled = true
 end function
 

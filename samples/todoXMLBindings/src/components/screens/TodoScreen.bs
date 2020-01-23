@@ -14,7 +14,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function initialize(args)
-  m.vm = TodoScreenVM()
+  m.vm = new TodoScreenVM()
   m.vm.initialize()
   M_initBindings()
   MOM.observeField(m.vm, "focusId", MVMM.onFocusIdChange)
@@ -29,7 +29,9 @@ function getFocusTitle(value)
 end function
 
 function onGainedFocus(isSelfFocused)
+
   if isSelfFocused
     MVMM.onFocusIdChange(m.vm.focusId)
   end if
+
 end function

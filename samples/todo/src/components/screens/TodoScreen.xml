@@ -1,40 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <component
-	name="TodoScreen"
-	extends="BaseScreen"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	
->
-	<interface>
-	</interface>
+    name="TodoScreen"
+    extends="BaseScreen"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <interface></interface>
 
-	<children>
-    
-		<LayoutGroup>
-			<Label text="Home view" />
-      <Rectangle 
-      height="200"/>
-      <Button 
-        id="addButton" 
-        text="add"
-        />
-      <Button 
-        id="removeButton" 
-        text="remove"
-        />
-			<Label 
-        id="titleLabel" 
-        />
-			<Label 
-        id="noItemLabel" 
-        text="there are no items"
-        />
-      <LabelList 
-        id="itemList"
-        content="@{vm.content}" 
-      />
-		</LayoutGroup>
+  <children>
 
-	</children>
+    <LayoutGroup>
+      <Label text="Home view" />
+      <Rectangle height="200" />
+      <Button
+          id="addButton"
+          text="add" />
+      <Button
+          id="removeButton"
+          text="remove" />
+      <Label id="titleLabel" />
+      <Label
+          id="noItemLabel"
+          text="there are no items" />
+      <LabelList
+          id="itemList"
+          content="@{vm.content}" />
+    </LayoutGroup>
+
+  </children>
 
 </component>

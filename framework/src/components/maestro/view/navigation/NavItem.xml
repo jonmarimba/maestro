@@ -8,7 +8,10 @@
         <field id="iconUri" type="string"/>
         <field id="isFocused" type="boolean"/>
 
+        <!-- type of screen to create -->
+        <field id="screenType" type="string"/>
+
         <!-- if true, then this item is the special options menu item, toggled by the * key -->
-        <field id="isOptionsItem" type="boolean" onChange="testThis"/>
+        <field id="isOptionsItem" type="boolean" />
     </interface>
 </component>

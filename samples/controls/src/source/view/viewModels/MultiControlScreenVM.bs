@@ -3,15 +3,25 @@ import "pkg:/source/maestro/view/viewModel/BaseViewModel.bs"
 namespace MCSVM
 class MultiControlScreenVM extends BaseViewModel
 
+'outgoing
 public focusId = "toggleButton"
 public index = 0
-public isAnimated = false
-public buttonText = "animated: off"
+public isAnimated = true
+public alternateChildren = invalid
+public childrenText = "inline children"
+public buttonText = "animated: on"
 
-public function new()
+'Incoming
+public numContainerChildren = 0
+
+private isUsingGroup1 = false
+
+public function new(group1, group2)
   m.super("MultiControlScreenVM")
   m.setField("rowListContent", m.makeContent(1))
   m.setField("rowListContent2", m.makeContent(3))
+  m.group1 = group1
+  m.group2 = group2
 end function
 
 private function makeContent(numRows)
@@ -45,6 +55,8 @@ end function
 '++ Public api
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 public function onToggleIsAnimated(value)
+  m.logInfo("onToggleIsAnimated", value)
+
   m.setField("isAnimated", not m.isAnimated)
   if m.isAnimated
     m.setField("buttonText", "animated: on")
@@ -52,6 +64,23 @@ public function onToggleIsAnimated(value)
     m.setField("buttonText", "animated: off")
   end if
 end function
+
+public function onToggleGroup(value)
+  m.logInfo("onToggleGroup", value)
+
+  m.isUsingGroup1 = not m.isUsingGroup1
+  
+  if m.isUsingGroup1
+    m.setField("alternateChildren", m.group1)
+    m.setField("childrenText", "group 1")
+
+  else
+    m.setField("alternateChildren", m.group2)
+    m.setField("childrenText", "group 2")
+  end if
+
+end function
+
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ Private impl
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -61,7 +90,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 public function onKeyPressUp()
-  m.logDebug("up! m.index", m.index, "m.focusId", m.focusId)
+  
   if m.index > 0
     m.logInfo("moving index down - animated:", m.isAnimated)
     m.setField("index", m.index - 1)
@@ -75,14 +104,31 @@ public function onKeyPressUp()
 end function
 
 public function onKeyPressDown()
-  m.logDebug("down! m.index", m.index, "m.focusId", m.focusId)
   
-  if m.focusId = "toggleButton"
+  if m.focusId = "toggleButton" or m.focusId = "groupButton"
     m.setField("focusId", "multiContainer")
     return true
   else
     m.logInfo("moving index up - animated:", m.isAnimated)
-    m.setField("index", m.index + 1)
+    
+    if m.index < m.numContainerChildren - 1
+      m.setField("index", m.index + 1)
+    end if
+    return true
+  end if
+  
+end function
+
+public function onKeyPressRight()
+  if m.focusId = "toggleButton"
+    m.setField("focusId", "groupButton")
+    return true
+  end if
+end function
+
+public function onKeyPressLeft()
+  if m.focusId = "groupButton"
+    m.setField("focusId", "toggleButton")
     return true
   end if
 end function

@@ -236,7 +236,7 @@ end function
 '  * @returns {boolean} true if successful
 '  */
 public function bindField(fieldName, targetNode, targetField, properties = invalid) as boolean
-  if not m.checkValidInputs(fieldName, targetNode, targetField)
+  if not m.checkValidInputs(m, fieldName, targetNode, targetField)
     return false
   end if
   
@@ -296,7 +296,7 @@ end function
 '  * @returns {boolean} true if successful
 '  */
 public function unbindField(fieldName, targetNode, targetField) as boolean
-  if not m.checkValidInputs(fieldName, targetNode, targetField)
+  if not m.checkValidInputs(m, fieldName, targetNode, targetField)
     return false
   end if
   

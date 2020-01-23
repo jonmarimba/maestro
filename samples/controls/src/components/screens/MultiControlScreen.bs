@@ -25,14 +25,19 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function initialize(args)
-  m.vm = MultiControlScreenVM()
+  children1 = m.alternateChildren1.getChildren(-1, 0)
+  children2 = m.alternateChildren2.getChildren(-1, 0)
+  
+  m.vm = new MultiControlScreenVM(children1, children2)
   m.vm.initialize()
   initializeView(m.multiContainer)
   MVMM.initializeBindings(true)
 end function
 
 function onGainedFocus(isSelfFocused)
+
   if isSelfFocused
     MVMM.onFocusIdChange(m.vm.focusId)
   end if
+
 end function

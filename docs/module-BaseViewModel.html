@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>source/maestro/view/viewModel/BaseViewModel.brs - Documentation</title>
+    <title>BaseViewModel - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,187 +29,271 @@
 
 <div id="main">
     
-    <h1 class="page-title">source/maestro/view/viewModel/BaseViewModel.brs</h1>
+    <h1 class="page-title">BaseViewModel</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'import "../../observable/BaseObservable.bs"
-'import "pkg:/source/rLog/rLogMixin.brs"
-
-
-
-' /**
-'  * @module BaseViewModel
-'  * @description Base class for all ViewModels
-'  */
-
-
-' /**
-'  * @member new
-'  * @memberof module:BaseViewModel
-'  * @instance
-'  * @function
-'  * @description contsructor for a view model.
-'  *              this class contains the common functions to assist in vm management
-'  *               - KeyMixin integration points
-'  *               - FocusMixin integration points
-'  *               - wrappers for key navigation methods
-'  * @param {string} name to use in logs, etc
-'  */
-
- function MBVM_new(name = "BaseViewModel")
- m.__BaseObservable()
-  m.name = name
-  registerLogger(name, true, m)
-end function
-
-
-
-
-
-
-
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'++ public API
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
- function MBVM_initialize()
-  m.logMethod("initialize")
-  if  MU_isFunction(m._initialize)
-    m._initialize()
-  end if
-  m.state = "initialized"
-end function
-
- function MBVM_destroy()
- m.destroy_BaseObservable()
-  m.state = "destroyed"
-end function
-
- function MBVM_onShow()
-end function
-
- function MBVM_onHide()
-end function
-
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'++ KEY HANDLING
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
- function MBVM_onKeyEvent(key as string, press as boolean) as boolean
-  result = false
-  if press
-    if  MU_isFunction(m.isAnyKeyPressLocked) and m.isAnyKeyPressLocked()
-      return true
-    end if
+        
+            
+        
     
-    if key = "down" and  MU_isFunction(m.onKeyPressDown)
-      result = m.onKeyPressDown()
-    else if key = "up" and  MU_isFunction(m.onKeyPressUp)
-      result = m.onKeyPressUp()
-    else if key = "left" and  MU_isFunction(m.onKeyPressLeft)
-      result = m.onKeyPressLeft()
-    else if key = "right" and  MU_isFunction(m.onKeyPressRight)
-      result = m.onKeyPressRight()
-    else if key = "OK" and  MU_isFunction(m.onKeyPressOK)
-      result = m.onKeyPressOK()
-    else if key = "back" and  MU_isFunction(m.onKeyPressBack)
-      result = m.onKeyPressBack()
-    else if key = "options" and  MU_isFunction(m.onKeyPressOption)
-      result = m.onKeyPressOption()
-    else if key = "play" and  MU_isFunction(m.onKeyPressPlay)
-      result = m.onKeyPressPlay()
-    end if
-  else
-    result = false
-  end if
-  
-  if (result = invalid)
-    result = false
-  end if
-  
-  if result = false and  MU_isFunction(m.isCapturingAnyKeyPress)
-    result = m.isCapturingAnyKeyPress(key, press)
-  end if
-  
-  return result
-end function
+</header>
 
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'++ nav support
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'Note the following methods are proxies to facilitate testing.
-'All of them will call out to the top level scope
-
- function MBVM_push(view)
-  push(view)
-end function
-
- function MBVM_pop() as object
-  return(pop())
-end function
-
- function MBVM_resetNavControllerToRoot()
-  resetNavControllerToRoot()
-end function
-
- function MBVM_resetNavController(newFirstScreen = invalid, endIndex = -1)
-  resetNavController(newFirstScreen, endIndex)
-end function
-
-
-
-
-
-
-      function __BaseViewModel_builder()
-      instance = __BaseObservable_builder()
-      BaseViewModel_instance = {
-        __className: "BaseViewModel"
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Base class for all ViewModels</p></div>
         
 
-        initialize: MBVM_initialize
-        destroy_BaseObservable: MBO_destroy
-        destroy: MBVM_destroy
-        onShow: MBVM_onShow
-        onHide: MBVM_onHide
-        onKeyEvent: MBVM_onKeyEvent
-        push: MBVM_push
-        pop: MBVM_pop
-        resetNavControllerToRoot: MBVM_resetNavControllerToRoot
-        resetNavController: MBVM_resetNavController
         
+            
+<div class="section-method">
 
-        state: "none"
-        focusId: invalid
-        name: ""
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="source_maestro_view_viewModel_BaseViewModel.brs.html">source/maestro/view/viewModel/BaseViewModel.brs</a>, <a href="source_maestro_view_viewModel_BaseViewModel.brs.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
         
+    
+    </div>
 
-        __viewModel: true
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
         
+            
+<div class="section-method">
 
-         __BaseViewModel: MBVM_new
-      }
-      instance.append(BaseViewModel_instance)
-      return instance
-      end function
+    
+
+    <h4 class="name" id="new"><span class="type-signature"></span>new<span class="signature">(name)</span><span class="type-signature"></span></h4>
+
     
 
 
-      function BaseViewModel(name = "BaseViewModel")
-        instance = __BaseViewModel_builder()
-        instance.__BaseViewModel(name)
-        return instance
-      end function
-    </code></pre>
-        </article>
-    </section>
+
+<div class="description">
+    <p>contsructor for a view model.
+             this class contains the common functions to assist in vm management</p>
+<pre class="prettyprint source"><code>          - KeyMixin integration points
+          - FocusMixin integration points
+          - wrappers for key navigation methods</code></pre>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="source_maestro_view_viewModel_BaseViewModel.brs.html">source/maestro/view/viewModel/BaseViewModel.brs</a>, <a href="source_maestro_view_viewModel_BaseViewModel.brs.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>string</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>to use in logs, etc</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

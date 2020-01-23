@@ -4,7 +4,7 @@ namespace MBOT
 '@BeforeEach
 function BeforeEach()
   m.defaultBindableProperties = MOM_createBindingProperties()
-  m.observable = BaseObservable()
+  m.observable = new BaseObservable()
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -110,7 +110,7 @@ end function
 '@Params["valid", {}, "", false]
 '@Params["valid", {}, "valid", false]
 function checkValidInputs(fieldName, targetNode, targetField, expected)
-  value = m.observable.checkValidInputs(fieldName, targetNode, targetField)
+  value = m.observable.checkValidInputs(m.observable, fieldName, targetNode, targetField)
 
   m.assertEqual(value, expected)
 end function
@@ -122,7 +122,7 @@ function checkValidInputs_invalid_nodeIds(nodeId)
   targetNode = createObject("roSGNode", "ContentNode")
   targetNode.id = nodeId
 
-  value = m.observable.checkValidInputs("_fieldName", targetNode, "targetField")
+  value = m.observable.checkValidInputs(m.observable, "_fieldName", targetNode, "targetField")
 
   m.assertFalse(value)
 end function
@@ -134,8 +134,9 @@ function checkValidInputs_valid_nodeIds(nodeId)
   targetNode = createObject("roSGNode", "ContentNode")
   targetNode.addField("targetField", "string", false)
   targetNode.id = nodeId
+  m.observable._fieldName = "exists"
 
-  value = m.observable.checkValidInputs("_fieldName", targetNode, "targetField")
+  value = m.observable.checkValidInputs(m.observable, "_fieldName", targetNode, "targetField")
 
   m.assertTrue(value)
 end function

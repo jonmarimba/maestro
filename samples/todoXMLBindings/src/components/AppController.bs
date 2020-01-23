@@ -7,6 +7,8 @@ function Init()
   'get nav items from our tab controller
   findNodes(["tabMenu", "tabController"])
   findNodes(["TodoScreen", "GridScreen", "OptionsScreen"])
+  initializeFocusManager(m.global)
+  
   m.tabController.callFunc("_initialize", {})
   
   m.tabMenu.observeField("currentItem", "onTabMenuCurrentItemChange") 
@@ -214,5 +216,9 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function onGainedFocus(isSelfFocused) as void
-  onIsFocusedOnContentChange(invalid)
+  
+  if isSelfFocused
+    onIsFocusedOnContentChange(invalid)
+  end if
+  
 end function

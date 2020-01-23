@@ -14,7 +14,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function initialize(args)
-  m.vm = TodoScreenVM()
+  m.vm = new TodoScreenVM()
   m.vm.initialize()
   noInitialValueProps = MOM.createBindingProperties(false)
   MOM.bindObservableField(m.vm, "hasItems", m.itemList, "visible")

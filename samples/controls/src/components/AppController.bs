@@ -5,6 +5,7 @@
 function Init()
   registerLogger("AppController")
   M_createNodeVars() 
+  initializeFocusManager(m.global)
   
   'get nav items from our tab controller
   m.tabController.callFunc("_initialize", {})
@@ -208,5 +209,9 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function onGainedFocus(isSelfFocused) as void
-  onIsFocusedOnContentChange(invalid)
+
+  if isSelfFocused
+    onIsFocusedOnContentChange(invalid)
+  end if
+
 end function

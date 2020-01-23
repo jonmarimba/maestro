@@ -1,5 +1,0 @@
-import "pkg:/source/rLog/rLogMixin.brs"
-
-function init()
-  registerLogger("Selection", true)
-end function
