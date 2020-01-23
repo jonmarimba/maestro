@@ -1,3 +1,23 @@
+#### 0.5.0 (2020-01-23)
+
+##### Chores
+
+* **docs:**
+  *  doc update ([780ac70b](https://github.com/georgejecook/maestro/commit/780ac70be0fcb7b2b13f5092b1ce49cf7bdf9966))
+  *  updates docs, and adds vsix for debugging ([51a78f86](https://github.com/georgejecook/maestro/commit/51a78f86fad1f6057aebd6838c1a3d75ec3b8ba0))
+* **build:**  attempts to remove jsdoc footer (didnt' work though :()) ([0e9f77f3](https://github.com/georgejecook/maestro/commit/0e9f77f3aa21968705fa5821b93592db9306fdb5))
+*  update version txt ([c94fc1a9](https://github.com/georgejecook/maestro/commit/c94fc1a962b19b352befc533f1d591418ae2a880))
+
+##### New Features
+
+* **MultiContainer:**  adds fields for size, and mechanism to change children after initial creation, and new field for controlling animation speed ([117c3c12](https://github.com/georgejecook/maestro/commit/117c3c122a1adc8b5f3d6f654735e309e2358572))
+* **core:**  improves focus management, by creating a new node called FocusManager, and changing the focus api. We now simply set isFocused, and isChildrenFocused on a node, and the mixing observes these values. this stops the seriously chatty focus mangement situation we had when relying on the SG framework for focus guidance. As long as you use focusMixin's setFocus method, you are going to have a good time, and know what is going on :) ([8de1b5f5](https://github.com/georgejecook/maestro/commit/8de1b5f542b9678f08e020f14aed2840d01d74ad))
+* **controls:**  adds multi container component, which allows for one to stack multiple controls in one view, and navigate via an index property ([d93e4142](https://github.com/georgejecook/maestro/commit/d93e4142e4eb48b674bebe228ca2a03b40d47ab9))
+
+##### Bug Fixes
+
+* **bindings:**  minor fixes for run time errors ([73c17bbf](https://github.com/georgejecook/maestro/commit/73c17bbf96340b7ea656e046faeca03d5639aae4))
+
 #### 0.4/3 (2019-10-24)
 
 ##### Bug Fixes
