@@ -6,8 +6,10 @@ function init()
   m.animation = m.top.findNode("container_animation")
   m.interpolator = m.top.findNode("container_interpolator")
   m.previousY = 0
-  m.top.clippingRect = [0, 0, 1920, 1080]
   m.top.observeField("index", "onIndexChange")
+  m.top.observeField("size", "onSizeChange")
+  m.top.observeField("children", "onChildrenChange")
+  onSizeChange()
 end function
 
 function initialize(args)
@@ -24,6 +26,19 @@ function updateChildren()
   end for
   
   m.layoutGroup.appendChildren(children)
+  m.top.numChildren = children.count()
+  m.top.index = 0
+end function
+
+function onSizeChange()
+  m.top.clippingRect = [0, 0, m.top.size[0], m.top.size[1]]
+end function
+
+function onChildrenChange()
+  m.layoutGroup.removeChildren(m.layoutGroup.getChildren( - 1, 0))
+  m.layoutGroup.appendChildren(m.top.children)
+  m.top.numChildren = m.top.children.count()
+  m.top.index = 0
 end function
 
 function onIndexChange()
