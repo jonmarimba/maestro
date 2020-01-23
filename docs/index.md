@@ -69,6 +69,10 @@ Simply install the `maestro-cli-roku` npm package and use that to install the fr
 
 You can even use `maestro-cli` from your npm-compatible build tools, such as gulp.
 
+`maestro-cli` can download and install the maestro framework brighterscript (or brightscript) files for you, or generate classes
+
+Run `maestro-cli --help` for more documentation
+
 ### installing maestro framework
 
    ```
