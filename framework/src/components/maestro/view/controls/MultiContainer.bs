@@ -77,11 +77,7 @@ function getYOfIndex(index)
   for i = 0 to index - 1
     child = m.layoutGroup.getChild(i)
     if child <> invalid
-      if child.height <> invalid
-        y += child.height
-      else
-        logWarn("child of MultiContainer with index", i, "id", child.id, "does not have height property")
-      end if
+      y += child.boundingRect().height
     else
       logWarn("child of MultiContainer with index", i, "is invalid")
     end if
