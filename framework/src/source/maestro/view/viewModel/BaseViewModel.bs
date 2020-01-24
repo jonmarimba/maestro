@@ -106,12 +106,35 @@ end function
 'Note the following methods are proxies to facilitate testing.
 'All of them will call out to the top level scope
 
+' /**
+'  * @member push
+'  * @memberof module:BaseViewModel
+'  * @instance
+'  * @function
+'  * @description wrapper for push
+'  * @param {view} the view to push, if this is a string, then it is looked up on m - so you can push views by their id, as well as actual views
+'  */
 public function push(view)
+  
+  if MU.isString(view)
+    view = MVMM.findViewWithId(view)
+  end if
+  
   push(view)
 end function
 
 public function pop() as object
   return(pop())
+end function
+
+public function getViewById(id)
+  view = MVMM.findViewWithId(id)
+  
+  if view = invalid
+    m.logError("could not find view with name ", id)
+  end if
+  
+  return view
 end function
 
 public function resetNavControllerToRoot()

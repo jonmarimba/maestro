@@ -14,6 +14,7 @@
     <field id="_debugM"  type="boolean" alwaysNotify="true"/>
     
     <!-- focus support -->
+    <field id="isFocusable"  type="boolean" value="true" />
     <field id="isFocused"  type="boolean" value="false" alwaysNotify="false"/>
     <field id="isChildFocused"  type="boolean" value="false" alwaysNotify="false"/>
     
@@ -22,6 +23,9 @@
     to get itself ready. A view can use the args of this to do things like initial data setup
     etc, distinct from init, which is handy for runtime non-xml view creation -->
     <function name = "_initialize" />
+
+    <!-- specialist function to allow external communication with the view model of a component -->
+    <function name = "callVMFunc" />
   </interface>
 
 </component>

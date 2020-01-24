@@ -8,6 +8,7 @@
     <field id="focusedNode"  type="node" value="invalid"/>
     <field id="isLocked"  type="boolean" value="false"/>
     <field id="lockReason"  type="string" value=""/>
+    <field id="isLogging"  type="boolean" value="true" />
     
     <!-- debug fields -->
     <field id="_m"  type="assocarray"/>

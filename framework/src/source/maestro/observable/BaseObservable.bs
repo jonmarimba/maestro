@@ -115,12 +115,12 @@ end function
 '  */
 public function setField(fieldName, value, originKey = invalid) as boolean
   if not MU.isString(fieldName) or fieldName.trim() = ""
-    logError("Tried to setField with illegal field name")
+    m.logError("Tried to setField with illegal field name")
     return false
   end if
   
   if type(value) = "<uninitialized>"
-    logError("Tried to set a value to uninitialized! interpreting as invalid")
+    m.logError("Tried to set a value to uninitialized! interpreting as invalid")
     value = invalid
   end if
   
@@ -142,19 +142,20 @@ end function
 '  * @returns {boolean} true if successful
 '  */
 public function observeField(fieldName, functionName, properties = invalid) as boolean
+  
   'TODO - I think we will want a mixin method for this, that provides a prepackaged node, with a context callback we can invoke
   if not MU.isString(fieldName) or fieldName.trim() = ""
-    logError("Tried to observe field with illegal field name")
+    m.logError("Tried to observe field with illegal field name")
     return false
   end if
   
   if not MU.isString(functionName) or functionName.trim() = ""
-    logError("Tried to observe field with illegal function")
+    m.logError("Tried to observe field with illegal function")
     return false
   end if
   
   if properties = invalid
-    properties = MOM_createBindingProperties()
+    properties = MOM.createBindingProperties()
   end if
   
   observers = m.observers[fieldName]
@@ -172,12 +173,12 @@ end function
 
 public function unobserveField(fieldName, functionName) as boolean
   if not MU.isString(fieldName)
-    logError("Tried to unobserve field with illegal field name")
+    m.logError("Tried to unobserve field with illegal field name")
     return false
   end if
   
   if not MU.isString(functionName)
-    logError("Tried to unobserve field with illegal functionName")
+    m.logError("Tried to unobserve field with illegal functionName")
     return false
   end if
   
@@ -207,7 +208,7 @@ public function notify(fieldName) as void
   
   value = m[fieldName]
   if MU.isUndefined(value)
-    logError("Tried notify about uninitialized value! interpreting as invalid")
+    m.logError("Tried notify about uninitialized value! interpreting as invalid")
     value = invalid
   end if
   
@@ -245,7 +246,7 @@ public function bindField(fieldName, targetNode, targetField, properties = inval
   end if
   
   if not m.isContextValid
-    logError("tried to bind a field when a context was not set. Be sure to use the mixin methods to configure bindings on your observable")
+    m.logError("tried to bind a field when a context was not set. Be sure to use the mixin methods to configure bindings on your observable")
     return false
   end if
   
@@ -257,13 +258,13 @@ public function bindField(fieldName, targetNode, targetField, properties = inval
   key = m.getNodeFieldBindingKey(targetNode, fieldName, targetField)
   
   if bindings.doesExist(key)
-    logWarn("Binding already existed for key")
+    m.logWarn("Binding already existed for key")
     binding = bindings[key]
     if binding.node.isSameNode(targetNode)
-      logWarn("is same node - ignoring")
+      m.logWarn("is same node - ignoring")
       return true
     else
-      logError("was a different node - ignoring")
+      m.logError("was a different node - ignoring")
       return false
     end if
   end if
@@ -301,7 +302,7 @@ public function unbindField(fieldName, targetNode, targetField) as boolean
   end if
   
   if not m.isContextValid
-    logError("tried to unbind a field when a context was not set. Be sure to use the mixin methods to configure bindings on your observable")
+    m.logError("tried to unbind a field when a context was not set. Be sure to use the mixin methods to configure bindings on your observable")
     return false
   end if
   
@@ -312,7 +313,7 @@ public function unbindField(fieldName, targetNode, targetField) as boolean
   
   key = m.getNodeFieldBindingKey(targetNode, fieldName, targetField)
   if not bindings.doesExist(key)
-    logError("tried to unbind unknown field/node/target field with id of", key)
+    m.logError("tried to unbind unknown field/node/target field with id of", key)
   end if
   bindings.delete(key)
   if bindings.count() > 0
@@ -341,7 +342,7 @@ public function notifyBinding(fieldName, specificKey = invalid, excludeKey = inv
   end if
   value = m[fieldName]
   if MU.isUndefined(value)
-    logError("Tried notify about uninitialized value! interpreting as invalid")
+    m.logError("Tried notify about uninitialized value! interpreting as invalid")
     value = invalid
   end if
   if m.isBindingNotificationEnabled
@@ -355,15 +356,20 @@ public function notifyBinding(fieldName, specificKey = invalid, excludeKey = inv
             else
               bindingValue = value
             end if
-            binding.node.setField(binding.targetField, bindingValue)
+            if binding.node.doesExist(binding.targetField)
+              binding.node.setField(binding.targetField, bindingValue)
+            else 
+              'attempt to call func
+              binding.node.callFunc(binding.targetField, bindingValue)
+            end if
             if binding.unBindOnCall = true
               'unbind 
             end if
           else
-            logError("target field did not exist for binding ", key)
+            m.logError("target field did not exist for binding ", key)
           end if 
         else
-          logError("Skipping illegal node for field binding: ", key)
+          m.logError("Skipping illegal node for field binding: ", key)
         end if
       end if
     end for

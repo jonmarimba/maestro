@@ -32,4 +32,48 @@ function isInteger(value)
   return type(value) <> "<uninitialized>" and GetInterface(value, "ifInt") <> invalid and (Type(value) = "roInt" or Type(value) = "roInteger" or Type(value) = "Integer")
 end function
 
+function dv(view)
+  if type(view) = "roSGNode"
+    return view.subtype() + "." + view.id
+  else
+    return "#INVALID#"
+  end if
+end function
+
+' /**
+'  * @member callAAFunc
+'  * @memberof module:Utils
+'  * @instance
+'  * @function
+'  * @description allows for easy calling of a method with variargs, on an aa
+'  * @param {class} target
+'  * @param {funcName} name of func to call
+'  * @param {Any} p1 param 1, can leave blank to skip
+'  * @param {Any} p2 param 2, can leave blank to skip 
+'  * @param {Any} p3 param 3, can leave blank to skip
+'  * @returns {any} whatever the func returns, or invald if not found
+'  */
+function callAAFunc(target, funcName, p1 = "#M_NONE#", p2 = "#M_NONE#", p3 = "#M_NONE#")
+  
+  if target <> invalid
+    if MU.isFunction(target[funcName])
+      if not MU.isString(p3) or p3 <> "#M_NONE#"
+        return target[funcName](p1, p2, p3)
+      else if not MU.isString(p2) or p2 <> "#M_NONE#"
+        return target[funcName](p1, p2)
+      else if not MU.isString(p1) or p1 <> "#M_NONE#"
+        return target[funcName](p1)
+      else
+        return target[funcName]()
+      end if
+    else
+      logError("target did not have function named", funcName)
+    end if
+  else
+    logError("tried to call AAFunc; with empty target")
+  end if
+  
+  return invalid
+end function
+
 end namespace

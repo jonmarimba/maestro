@@ -1,4 +1,5 @@
 import "pkg:/source/maestro/view/viewModel/ViewModelMixin.bs"
+import "pkg:/source/mixin/AppService.bs"
 
 ' /**
 '  * @module BaseScreen
@@ -18,7 +19,6 @@ function push(view)
   
   if (navController <> invalid)
     navController.callFunc("push", view)
-    setFocus(view)
   else
     logError("Push failed - there is no navcontroller on ", m.top)
   end if
@@ -45,7 +45,6 @@ function resetNavController(newFirstScreen = invalid, endIndex = -1)
   
   if (navController <> invalid)
     navController.callFunc("reset", newFirstScreen, endIndex)
-    setFocus(newFirstScreen)
   else
     logError("Pop failed - there is no navcontroller on ", m.top)
   end if
@@ -66,14 +65,15 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ' /**
-'  * @member getTopScreen
+'  * @member _getTopScreen
 '  * @memberof module:BaseScreen
 '  * @instance
+'  * @function
 '  * @description gets the screen at the top of this screen's sceneGraph.
 '  * @returns {BaseScreen} a screen considered as the top of this graph
 '  */
 function _getTopScreen(args = invalid)
-  logMethod("getTopScreen")
+  logMethod("_getTopScreen")
   topScreen = getTopScreen()
   navController = getNavController()
   if topScreen = invalid
@@ -90,6 +90,7 @@ end function
 '  * @member getTopScreen
 '  * @memberof module:BaseScreen
 '  * @instance
+'  * @function
 '  * @description override point, for a screen to provide it's own means
 '  * of looking up a screen at the top of it's stack
 '  * @param {paramType} paramDescription

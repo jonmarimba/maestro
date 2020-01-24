@@ -40,4 +40,8 @@ function initializeBindings(isUsingViewModelFocusId)
     
 end function
 
+function findViewWithId(id)
+  return m[id]
+end function
+
 end namespace

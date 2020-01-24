@@ -80,7 +80,7 @@ function onHide()
 end function
 
 function onGainedFocus(isSelfFocused)
-  logMethod("onGainedFocus ", isSelfFocused)
+  ' logMethod("onGainedFocus ", isSelfFocused)
   if isSelfFocused
     setFocus(m.top.navController)
   end if

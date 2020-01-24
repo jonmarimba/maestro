@@ -1,3 +1,8 @@
+' /**
+'  * @module TabController
+'  * @description IOS style tab controller component for managing tabbed views
+'  */
+
 function init()
   registerLogger("TabController")
   logMethod("init")

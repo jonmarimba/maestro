@@ -93,7 +93,6 @@ end function
 '  * @returns {boolean} true if successful
 '  */
 function bindNodeField(targetNode, nodeField, observable, observableField, properties = invalid) as boolean
-
   if not MOM.registerObservable(observable)
     logError("could not bind node field - the observable failed to register")
     return false
@@ -218,7 +217,7 @@ function registerObservable(observable) as boolean
     logError("the passed in object is not an Observable subclass")
     return false
   end if
-  
+
   if observable.doesExist("contextId") and m._observables <> invalid and m._observables.doesExist(observable.contextId)
     'we don't need to reregister this observable
     'TODO - check if it's the same observable; but that will require

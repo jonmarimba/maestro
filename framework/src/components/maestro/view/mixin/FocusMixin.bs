@@ -41,10 +41,9 @@ end function
 '  * @function
 '  * @description sets focus on the passed in node. Will do nothing if the node is invalid, undefined, or not currently on the scene.
 '  * @param {roSGNode} node - node to set focus on
-'  * @param {boolean} isSaving - not currently used
 '  * @param {boolean} forceSet - will set focus, even if the focus lock is on
 '  */
-function setFocus(node, isSaving = true, forceSet = false)
+function setFocus(node, forceSet = false)
   m.global.focusManager.callFunc("setFocusOn", node, forceSet)
 end function
 
@@ -75,10 +74,12 @@ end function
 '  * @param {string} - focusLockReason - the reason for locking - this will appear in logging output
 '  */
 function setFocusLocked(isLocked, focusLockReason = "")
-  m.global.focusManager.callFunc("setFocuseLocked", isLocked, focusLockReason)
+  m.global.focusManager.callFunc("setFocusLocked", isLocked, focusLockReason)
 end function
 
 function onIsFocusedChange()
+  ' logInfo("m.top.isFocused", m.top.isFocused, MU.dv(m.top))
+
   if m.top.isFocused
     onGainedFocus(true)
   else
@@ -87,6 +88,8 @@ function onIsFocusedChange()
 end function
 
 function onIsChildFocusedChange()
+  ' logInfo("m.top.isChildFocused", m.top.isChildFocused, MU.dv(m.top))
+
   if m.top.isChildFocused
     onGainedFocus(false)
   else
@@ -107,6 +110,11 @@ end function
 '  * @param {boolean} isSelfFocused - if true, then this is the control that is focused, if false, then it is one of the control's parents
 '  */
 function onGainedFocus(isSelfFocused)
+  ' logInfo("onGainedFocus", isSelfFocused)
+  
+  if isSelfFocused and m.vm <> invalid and MVMM.onFocusIdChange <> invalid
+    MVMM.onFocusIdChange(m.vm.focusId) 
+  end if
 end function
 
 ' /**
@@ -117,5 +125,6 @@ end function
 '  * @description invoked when a control, loses focus
 '  */
 function onLostFocus()
+  logInfo("lost focus:", m.top.subType(), ".", m.top.id)
 end function
 

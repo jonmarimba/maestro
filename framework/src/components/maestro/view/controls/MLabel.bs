@@ -1,9 +1,16 @@
+import "pkg:/source/rLog/rLogMixin.brs" 
+
 function init()
+  ' registerLogger("MLabel")
+
   m.top.observeField("systemFont", "onSystemFontChange")
+  m.top.observeField("style", "onStyleChange")
   onSystemFontChange()
 end function
 
 function onSystemFontChange()
+  logMethod("onSystemFontChange")
+
   parts = m.top.systemFont.split(",")
   if parts.count() > 0
     m.top.font = "font:" + parts[0] + "SystemFont"
@@ -12,4 +19,10 @@ function onSystemFontChange()
   if parts.count() > 1
     m.top.font.size = parts[1].toInt()
   end if
+end function
+
+function onStyleChange()
+  logMethod("onStyleChange")
+  
+  m.top.setFields(m.top.style)
 end function

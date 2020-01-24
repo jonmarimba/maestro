@@ -2,6 +2,7 @@ import "pkg:/source/rLog/rLogMixin.bs"
 import "../mixin/FocusMixin.bs"
 import "../mixin/KeyMixin.bs"
 import "pkg:/source/maestro/lib/Utils.bs"
+import "pkg:/source/lib/ViewUtils.bs"
 
 ' /**
 '  * @module BaseView
@@ -13,7 +14,7 @@ function init() as void
   focusMixinInit()
   keyPressMixinInit()
   m.top.observeField("_debugM", "onDebugMChange")
-    
+  
   m.wasShown = false
   m.isKeyPressLocked = false
 end function
@@ -80,6 +81,7 @@ end function
 '  * @member intializeView
 '  * @memberof module:BaseView
 '  * @instance
+'  * @function
 '  * @description initializes the passed in View
 '  * @param {BaseView} the view to initialize
 '  */
@@ -113,7 +115,7 @@ function applyStyle()
 end function
 
 function _onShow(args) as void
-  ' ? ">> base VIEW ONSHOW " ; m.top.id ; " isShown " ; m.top.isShown
+  ' ? ">> base VIEW _ONSHOW " ; m.top.id ; " isShown " ; m.top.isShown
   oldIsShowing = m.top.isShown
   if not m.top.isInitialized
     return
@@ -131,13 +133,12 @@ function _onShow(args) as void
   end if
   
   if oldIsShowing <> m.top.isShown
-    baseScreenOnShow()
     onShow()
-
+    
     if m.vm <> invalid and m.vm.onShow <> invalid
       m.vm.onShow()
     end if
-
+    
   end if
 end function
 
@@ -145,7 +146,7 @@ function _onHide(args)
   if m.wasShown
     m.top.isShown = false
     onHide()
-
+    
     if m.vm <> invalid and m.vm.onHide <> invalid
       m.vm.onHide()
     end if
@@ -170,6 +171,9 @@ function _initialize(args = invalid)
   end if
 end function
 
+function callVMFunc(funcName, p1 = "#M_NONE#", p2 = "#M_NONE#", p3 = "#M_NONE#")
+  return MU.callAAFunc(m.vm, funcName, p1, p2, p3)  
+end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ abstract lifecycle methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -183,12 +187,6 @@ function _applyStyle(styles, localizations, assets)
 end function
 
 function onFirstShow()
-end function
-
-'SG has a limit to how many times you can override a method
-'this function allows us to wire in extra show driven behavior in screens.
-'It's a hack; but it's better than having to duplicate behavior
-function baseScreenOnShow()
 end function
 
 function onShow()

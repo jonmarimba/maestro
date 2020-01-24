@@ -17,7 +17,7 @@ function showView(view)
   end for
   
   if view <> invalid
-    logVerbose("view is valid. isShown", m.top.isShown, "view", view.id)
+    logMethod("view is valid. isShown", m.top.isShown, "view", view.id)
     
     m.top.AppendChild(view)
     m.top.currentView = view
@@ -46,7 +46,6 @@ end function
 
 function onShow()
   logVerbose("onShow")
-
   if m.top.currentView <> invalid
     m.top.currentView.visible = true
   end if
@@ -54,23 +53,21 @@ end function
 
 function onHide()
   logVerbose("onHide")
-
   if m.top.currentView <> invalid
     m.top.currentView.visible = false
   end if
 end function
 
 function onGainedFocus(isSelfFocused)
+  ' logVerbose("onGainedFocus", isSelfFocused)
+  
   if isSelfFocused
-    logVerbose("onGainedFocus")
-
     if m.top.currentView <> invalid
-      logVerbose("setting focus to view ", m.top.currentView.id)
+      logDebug("setting focus to view ", m.top.currentView.id)
       setFocus(m.top.currentView)
     else
-      logVerbose("no current view when gaining focus")
+      logDebug("no current view when gaining focus")
     end if
-
   end if
 end function
 
