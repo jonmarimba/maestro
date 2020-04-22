@@ -1,0 +1,27 @@
+'@TestSuite [MUT] Utils Tests
+namespace MUT
+
+'@BeforeEach
+function BeforeEach()
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'@It tests constructor
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'@It tests getContentField
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'@Test 
+'@Params[{id: "c1", c: {id: "c2"}}, "id", "c1"]
+'@Params[{id: "c1", c: {id: "c2"}}, "c.id", "c2"]
+'@Params[{id: "c1", c: {id: "c2"}}, "c.c.notthere", invalid]
+'@Params[{id: "c1", c: {id: "c2"}}, "notthere", invaild]
+'@Params[{id: "c1", c: {id: "c2"}}, "c.notthere.id", invaild]
+'@Params[{id: "c1", c: {id: "c2", c: {"id": "c3"}}}, "c.c.id", "c3"]
+function getContentField(content, path, expected)
+  m.assertEqual(MU.getContentField(content, path), expected)  
+end function
+
+end namespace

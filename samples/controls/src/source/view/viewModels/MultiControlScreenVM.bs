@@ -6,79 +6,108 @@ class MultiControlScreenVM extends BaseViewModel
 'outgoing
 public focusId = "toggleButton"
 public index = 0
-public isAnimated = true
+public content = invalid
+public rowHeights = []
+public focusXOffset = []
+public rowItemSize = []
 public alternateChildren = invalid
 public childrenText = "inline children"
 public buttonText = "animated: on"
+public isAnimated = true
+public needsRecalulating = false
 
 'Incoming
 public numContainerChildren = 0
 
 private isUsingGroup1 = false
 
-public function new(group1, group2)
+public function new()
   m.super("MultiControlScreenVM")
-  m.setField("rowListContent", m.makeContent(1))
-  m.setField("rowListContent2", m.makeContent(3))
-  m.group1 = group1
-  m.group2 = group2
+  m.setField("content", m.makeContent([
+    m.makeRow("ZPowerCell", 10, [300, 200], 100, false)
+    ' m.makeRow("ZHeader", 1, [1920, 600], - 10, false)
+    m.makeRow("ZPowerCell", 20, [300, 200], 100, true)
+    m.makeRow("ZPowerCell", 30, [600, 500], 100, true)
+    m.makeRow("ZPowerCell", 20, [450, 600], 100, true)
+    ' m.makeRow("ZHeader", 1, [1920, 600], - 10, false)
+    m.makeRow("ZPowerCell", 10, [650, 300], 100, true)
+    m.makeRow("ZPowerCell", 10, [300, 300], 100, true)
+    m.makeRow("ZPowerCell", 10, [300, 300], 100, true)
+    m.makeRow("ZPowerCell", 10, [300, 300], 100, true)
+  ]))
+  m.setField("needsRecalulating", true)
 end function
 
-private function makeContent(numRows)
-  rows = []
-  for i = 0 to numRows - 1
-    rows.push(m.makeRow(10, i))
-  end for
-  
+private function makeContent(rows)
+  i = 0
+  rowItemSize = []
+  rowHeights = []
+  focusXOffsets = []
   content = createObject("roSGNode", "ContentNode")
   content.appendChildren(rows)
+  
+  for each row in rows
+    rowItemSize.push(row.size)
+    rowHeights.push(row.size[1])
+    focusXOffsets.push(row.focusXOffset)
+  end for
+  
+  m.setField("rowItemSize", rowItemSize)
+  m.setField("rowHeights", rowHeights)
+  m.setField("focusXOffset", focusXOffset)
   return content
 end function
 
-private function makeRow(numItems, index)
+private function makeRow(compName, count, size, focusXOffset, focusable)
   row = createObject("roSGNode", "ContentNode")
-  row["TITLE"] = "some title " + stri(index)
-  items = []
-  
-  for i = 0 to numItems - 1 
-    item = createObject("roSGNode", "ContentNode")
-    item["TITLE"] = "item " + stri(i)
-    items.push(item)
-    
+  row.addFields({ "size": size, "focusXOffset": focusXOffset, "isHeader": not focusable })
+  ' row.focusable = focusable
+  rowItems = []
+  for i = 0 to count - 1
+    rowItems.push(m.makeItem(compName))
   end for
-  row.appendChildren(items)
+  
+  row.appendChildren(rowItems)
   
   return row
+end function
+
+function makeItem(compName)
+  item = createObject("roSGNode", "ContentNode")
+  
+  item.addFields({ "compName": compName })
+  return item
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ Public api
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-public function onToggleIsAnimated(value)
-  m.logInfo("onToggleIsAnimated", value)
 
+public function onToggleIsAnimated(value)
   m.setField("isAnimated", not m.isAnimated)
+
   if m.isAnimated
     m.setField("buttonText", "animated: on")
   else
     m.setField("buttonText", "animated: off")
   end if
+  
 end function
 
 public function onToggleGroup(value)
   m.logInfo("onToggleGroup", value)
-
+  
   m.isUsingGroup1 = not m.isUsingGroup1
   
   if m.isUsingGroup1
     m.setField("alternateChildren", m.group1)
     m.setField("childrenText", "group 1")
-
+    
   else
     m.setField("alternateChildren", m.group2)
     m.setField("childrenText", "group 2")
   end if
-
+  
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -90,6 +119,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 public function onKeyPressUp()
+  m.logInfo("onKeypressUp")
   
   if m.index > 0
     m.logInfo("moving index down - animated:", m.isAnimated)
@@ -101,12 +131,14 @@ public function onKeyPressUp()
     return true
   end if
   
+  return true
 end function
 
 public function onKeyPressDown()
+  m.logInfo("onKeypressDown")
   
   if m.focusId = "toggleButton" or m.focusId = "groupButton"
-    m.setField("focusId", "multiContainer")
+    m.setField("focusId", "parentContainer")
     return true
   else
     m.logInfo("moving index up - animated:", m.isAnimated)
@@ -114,12 +146,16 @@ public function onKeyPressDown()
     if m.index < m.numContainerChildren - 1
       m.setField("index", m.index + 1)
     end if
+    
+    m.logInfo("index is now", m.index)
     return true
   end if
   
 end function
 
 public function onKeyPressRight()
+  m.logInfo("onKeypressLeft")
+  
   if m.focusId = "toggleButton"
     m.setField("focusId", "groupButton")
     return true
@@ -127,6 +163,8 @@ public function onKeyPressRight()
 end function
 
 public function onKeyPressLeft()
+  m.logInfo("onKeypressRight")
+  
   if m.focusId = "groupButton"
     m.setField("focusId", "toggleButton")
     return true

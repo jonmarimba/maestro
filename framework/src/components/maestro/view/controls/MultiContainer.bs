@@ -74,10 +74,19 @@ end function
 
 function getYOfIndex(index)
   y = 0
+  currentOffset = 0
+  
+  if index < m.top.yOffsets.count()
+    currentOffset = m.top.yOffsets[index]
+  end if
+
   for i = 0 to index - 1
+    ? ">>> " ; index ; " currentOffset " ; currentOffset
+    
     child = m.layoutGroup.getChild(i)
+    
     if child <> invalid
-      y += child.boundingRect().height
+      y += child.boundingRect().height + currentOffset
     else
       logWarn("child of MultiContainer with index", i, "is invalid")
     end if

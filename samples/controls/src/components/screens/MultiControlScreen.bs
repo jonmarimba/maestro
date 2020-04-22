@@ -7,12 +7,6 @@ import "pkg:/source/view/viewModels/MultiControlScreenVM.bs"
 function Init()
   registerLogger("MultiControlScreen")
   M_createNodeVars() 
-  m.rowList1.addFields({ "height": 200 })
-  m.rowList2.addFields({ "height": 650 })
-  m.rowList3.addFields({ "height": 200 })
-  m.rowList4.addFields({ "height": 200 })
-  m.rowList5.addFields({ "height": 200 })
-  m.rowList6.addFields({ "height": 200 })
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -25,13 +19,12 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function initialize(args)
-  children1 = m.alternateChildren1.getChildren(-1, 0)
-  children2 = m.alternateChildren2.getChildren(-1, 0)
-  
-  m.vm = new MultiControlScreenVM(children1, children2)
+  m.vm = new MultiControlScreenVM()
   m.vm.initialize()
-  initializeView(m.multiContainer)
+  initializeView(m.parentContainer)
   MVMM.initializeBindings(true)
+  m.rect.addFields({"isHero": true})
+  m.parentContainer.needsRecalulating = true
 end function
 
 function onGainedFocus(isSelfFocused)

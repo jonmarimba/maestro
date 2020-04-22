@@ -5,177 +5,57 @@
   <interface></interface>
 
   <children>
-    <LayoutGroup layoutDirection="horiz" translation="[100.0,50.0]">
+    <LayoutGroup
+        layoutDirection="horiz"
+        translation="[100.0,50.0]">
       <Button
           id="toggleButton"
           text="@{vm.buttonText}"
           buttonSelected="@(vm.onToggleIsAnimated,isSettingInitialValue=false)" />
+
       <Button
           id="groupButton"
           text="@{vm.childrenText}"
           buttonSelected="@(vm.onToggleGroup,isSettingInitialValue=false)" />
 
     </LayoutGroup>
-
-    <MultiContainer
-        id="multiContainer"
-        translation="[200,150.0]"
-        size="[1600, 800]"
-        children="@{vm.alternateChildren,isSettingInitialValue=false}"
-        index="@{vm.index}"
+    <Multicontainer
+        id="parentContainer"
+        yOffsets="[50,100]"
         numChildren="@(vm.numContainerChildren)"
-        isAnimated="@{vm.isAnimated}">
+        index="@{vm.index}"
+        isAnimated="@{vm.isAnimated}"
+        needsRecalulating="@{vm.needsRecalulating}">
       <Rectangle
-          id="rect1"
-          color="#0000ff"
-          height="400"
-          width="200" />
-      <Rectangle
-          id="rect2"
-          color="#ff0000"
-          height="200"
-          width="200" />
-      <Rectangle
-          id="rect3"
-          color="#00ff00"
-          height="350"
-          width="200" />
-
+          id="rect"
+          height="700"
+          width="1920"
+          color="#00ff00" />
       <RowList
           id="rowList1"
-          content="@{vm.rowListContent}"
-          itemComponentName="CustomItem"
-          itemSize="[1920,200]"
-          numRows="1"
-          rowItemSize="[[435,200]]"
-          rowHeights="[200]"
-          showRowLabel="[false]"
-          rowLabelColor="#FFFFFF"
-          showRowCounter="[false]"
-          rowFocusAnimationStyle="fixedFocusWrap"
-          drawFocusFeedback="true" />
+          itemSize="[1920,300]"
+          numrows="3"
+          itemComponentName="MultiContainerCell"
+          content="@{vm.content}"
+          rowHeights="@{vm.rowHeights}"
+          focusXOffset="@{vm.focusXOffset}"
+          rowItemSize="@{vm.rowItemSize}" />
       <Rectangle
-          id="rect4"
-          color="#ff00ff"
-          height="500"
-          width="200" />
+          id="rect2"
+          height="700"
+          width="1920"
+          color="#00ff00" />
       <RowList
           id="rowList2"
-          content="@{vm.rowListContent2}"
-          itemComponentName="CustomItem"
-          itemSize="[1920,200]"
-          numRows="3"
-          rowItemSize="[[435,200]]"
-          rowHeights="[200]"
-          showRowLabel="[false]"
-          rowLabelColor="#FFFFFF"
-          showRowCounter="[false]"
-          rowFocusAnimationStyle="fixedFocusWrap"
-          vertFocusAnimationStyle="floatingFocus"
-          drawFocusFeedback="true" />
-      <Rectangle
-          id="rect5"
-          color="#00ffff"
-          height="200"
-          width="200" />
-      <RowList
-          id="rowList3"
-          content="@{vm.rowListContent}"
-          itemComponentName="CustomItem"
-          itemSize="[1920,200]"
-          numRows="1"
-          rowItemSize="[[435,200]]"
-          rowHeights="[200]"
-          showRowLabel="[false]"
-          rowLabelColor="#FFFFFF"
-          showRowCounter="[false]"
-          rowFocusAnimationStyle="fixedFocusWrap"
-          drawFocusFeedback="true" />
-      <RowList
-          id="rowList4"
-          content="@{vm.rowListContent}"
-          itemComponentName="CustomItem"
-          itemSize="[1920,200]"
-          numRows="1"
-          rowItemSize="[[435,200]]"
-          rowHeights="[200]"
-          showRowLabel="[false]"
-          rowLabelColor="#FFFFFF"
-          showRowCounter="[false]"
-          rowFocusAnimationStyle="fixedFocusWrap"
-          drawFocusFeedback="true" />
-      <RowList
-          id="rowList5"
-          content="@{vm.rowListContent}"
-          itemComponentName="CustomItem"
-          itemSize="[1920,200]"
-          numRows="1"
-          rowItemSize="[[435,200]]"
-          rowHeights="[200]"
-          showRowLabel="[false]"
-          rowLabelColor="#FFFFFF"
-          showRowCounter="[false]"
-          rowFocusAnimationStyle="fixedFocusWrap"
-          drawFocusFeedback="true" />
-      <RowList
-          id="rowList6"
-          content="@{vm.rowListContent}"
-          itemComponentName="CustomItem"
-          itemSize="[1920,200]"
-          numRows="1"
-          rowItemSize="[[435,200]]"
-          rowHeights="[200]"
-          showRowLabel="[false]"
-          rowLabelColor="#FFFFFF"
-          showRowCounter="[false]"
-          rowFocusAnimationStyle="fixedFocusWrap"
-          drawFocusFeedback="true" />
-      <Rectangle
-          id="rect6"
-          color="#0000ff"
-          height="400"
-          width="200" />
-    </MultiContainer>
+          itemSize="[1920,300]"
+          numrows="3"
+          itemComponentName="MultiContainerCell"
+          content="@{vm.content}"
+          rowHeights="@{vm.rowHeights}"
+          focusXOffset="@{vm.focusXOffset}"
+          rowItemSize="@{vm.rowItemSize}" />
+    </Multicontainer>
 
-    <Group
-        id="alternateChildren1"
-        visible="false">
-      <Rectangle
-          id="rect1_1"
-          color="#ffffff"
-          height="400"
-          width="200" />
-      <Rectangle
-          id="rect1_2"
-          color="#ff0000"
-          height="200"
-          width="200" />
-      <Rectangle
-          id="rect1_3"
-          color="#00ff00"
-          height="350"
-          width="200" />
-    </Group>
-
-    <Group
-        id="alternateChildren2"
-        visible="false">
-      <Rectangle
-          id="rect2_1"
-          color="#000000"
-          height="400"
-          width="200" />
-      <Rectangle
-          id="rect2_2"
-          color="#ffffff"
-          height="200"
-          width="200" />
-      <Rectangle
-          id="rect2_3"
-          color="#000000"
-          height="350"
-          width="200" />
-    </Group>
   </children>
 
 </component>

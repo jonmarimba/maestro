@@ -22,6 +22,15 @@
         type="floatarray"
         value="[1920,1080]" />
 
+    <!-- array of offsets to use when laying out
+        this can be used with nonfocusable items to easily create heros
+        if more views are present than the amount of offsets, then the previous offset is used
+    -->
+    <field
+        id="yOffsets"
+        type="floatarray"
+        value="[0]" />
+
     <field
         id="numChildren"
         type="integer"

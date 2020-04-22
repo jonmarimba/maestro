@@ -11,6 +11,7 @@
     <field id="localizations" type="assocarray" value="{}"/>
     <field id="assets" type="assocarray" value="{}"/>
     <field id="deepLinkingData" type="assocarray" value="{}"/>
+    <field id="cellId" type="integer" value="0"/>
 	</interface>
 
 </component>
