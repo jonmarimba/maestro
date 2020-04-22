@@ -1,3 +1,29 @@
+#### 0.6.0 (2020-04-22)
+
+##### New Features
+
+* **Maestro-cli:** Includes a ton of new improvements to maestro-cli-roku's brighterscript compiler, and better aligns compilation with the official, soon to be released, compiler
+
+* **VScode support:** Improves support in vscode for nested namespaces, and other fixes
+
+* **MultiContainer:**  Improvements to multi container ([27553609](https://github.com/georgejecook/maestro/commit/27553609c5f7528834163b9309ff4fbd87f99851))
+
+##### Bug Fixes
+
+* **core:**  various logging optimizations and minor fixes ([37812faf](https://github.com/georgejecook/maestro/commit/37812faffa29f843e9625b013ca21e2eff08da86))
+* **build:**  forces travis to build with node 9.9.0, which doesn't blow up jsdoc ([f9cccd5a](https://github.com/georgejecook/maestro/commit/f9cccd5a98207cb7534e0e9025e9b4eddfdbad46))
+
+#### 0.5.0 (2020-04-22)
+
+##### New Features
+
+* **MultiContainer:**  Improvements to multi container ([27553609](https://github.com/georgejecook/maestro/commit/27553609c5f7528834163b9309ff4fbd87f99851))
+
+##### Bug Fixes
+
+* **core:**  various logging optimizations and minor fixes ([37812faf](https://github.com/georgejecook/maestro/commit/37812faffa29f843e9625b013ca21e2eff08da86))
+* **build:**  forces travis to build with node 9.9.0, which doesn't blow up jsdoc ([f9cccd5a](https://github.com/georgejecook/maestro/commit/f9cccd5a98207cb7534e0e9025e9b4eddfdbad46))
+
 #### 0.5.0 (2020-01-23)
 
 ##### Chores
