@@ -1,5 +1,4 @@
 import "pkg:/source/maestro/view/viewModel/ViewModelMixin.bs"
-import "pkg:/source/mixin/AppService.bs"
 
 ' /**
 '  * @module BaseScreen

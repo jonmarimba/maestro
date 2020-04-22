@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>source/maestro/view/viewModel/BaseViewModel.brs - Documentation</title>
+    <title>TabController - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,211 +29,196 @@
 
 <div id="main">
     
-    <h1 class="page-title">source/maestro/view/viewModel/BaseViewModel.brs</h1>
+    <h1 class="page-title">TabController</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'import "../../observable/BaseObservable.bs"
-'import "pkg:/source/rLog/rLogMixin.brs"
-
-
-
-' /**
-'  * @module BaseViewModel
-'  * @description Base class for all ViewModels
-'  */
-
-
-' /**
-'  * @member new
-'  * @memberof module:BaseViewModel
-'  * @instance
-'  * @function
-'  * @description contsructor for a view model.
-'  *              this class contains the common functions to assist in vm management
-'  *               - KeyMixin integration points
-'  *               - FocusMixin integration points
-'  *               - wrappers for key navigation methods
-'  * @param {string} name to use in logs, etc
-'  */
-
- function MBVM_new(name = "BaseViewModel")
- m.__BaseObservable()
-  m.name = name
-  registerLogger(name, true, m)
-end function
-
-
-
-
-
-
-
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'++ public API
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
- function MBVM_initialize()
-  m.logMethod("initialize")
-  if  MU_isFunction(m._initialize)
-    m._initialize()
-  end if
-  m.state = "initialized"
-end function
-
- function MBVM_destroy()
- m.destroy_BaseObservable()
-  m.state = "destroyed"
-end function
-
- function MBVM_onShow()
-end function
-
- function MBVM_onHide()
-end function
-
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'++ KEY HANDLING
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
- function MBVM_onKeyEvent(key as string, press as boolean) as boolean
-  result = false
-  if press
-    if  MU_isFunction(m.isAnyKeyPressLocked) and m.isAnyKeyPressLocked()
-      return true
-    end if
+        
+            
+        
     
-    if key = "down" and  MU_isFunction(m.onKeyPressDown)
-      result = m.onKeyPressDown()
-    else if key = "up" and  MU_isFunction(m.onKeyPressUp)
-      result = m.onKeyPressUp()
-    else if key = "left" and  MU_isFunction(m.onKeyPressLeft)
-      result = m.onKeyPressLeft()
-    else if key = "right" and  MU_isFunction(m.onKeyPressRight)
-      result = m.onKeyPressRight()
-    else if key = "OK" and  MU_isFunction(m.onKeyPressOK)
-      result = m.onKeyPressOK()
-    else if key = "back" and  MU_isFunction(m.onKeyPressBack)
-      result = m.onKeyPressBack()
-    else if key = "options" and  MU_isFunction(m.onKeyPressOption)
-      result = m.onKeyPressOption()
-    else if key = "play" and  MU_isFunction(m.onKeyPressPlay)
-      result = m.onKeyPressPlay()
-    end if
-  else
-    result = false
-  end if
-  
-  if (result = invalid)
-    result = false
-  end if
-  
-  if result = false and  MU_isFunction(m.isCapturingAnyKeyPress)
-    result = m.isCapturingAnyKeyPress(key, press)
-  end if
-  
-  return result
-end function
+</header>
 
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'++ nav support
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'Note the following methods are proxies to facilitate testing.
-'All of them will call out to the top level scope
-
-' /**
-'  * @member push
-'  * @memberof module:BaseViewModel
-'  * @instance
-'  * @function
-'  * @description wrapper for push
-'  * @param {view} the view to push, if this is a string, then it is looked up on m - so you can push views by their id, as well as actual views
-'  */
- function MBVM_push(view)
-  
-  if  MU_isString(view)
-    view =  MVMM_findViewWithId(view)
-  end if
-  
-  push(view)
-end function
-
- function MBVM_pop() as object
-  return(pop())
-end function
-
- function MBVM_getViewById(id)
-  view =  MVMM_findViewWithId(id)
-  
-  if view = invalid
-    m.logError("could not find view with name ", id)
-  end if
-  
-  return view
-end function
-
- function MBVM_resetNavControllerToRoot()
-  resetNavControllerToRoot()
-end function
-
- function MBVM_resetNavController(newFirstScreen = invalid, endIndex = -1)
-  resetNavController(newFirstScreen, endIndex)
-end function
-
-
-
-
-
-
-      function __BaseViewModel_builder()
-      instance = __BaseObservable_builder()
-      BaseViewModel_instance = {
-        __className: "BaseViewModel"
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>IOS style tab controller component for managing tabbed views</p></div>
         
 
-        initialize: MBVM_initialize
-        destroy_BaseObservable: MBO_destroy
-        destroy: MBVM_destroy
-        onShow: MBVM_onShow
-        onHide: MBVM_onHide
-        onKeyEvent: MBVM_onKeyEvent
-        push: MBVM_push
-        pop: MBVM_pop
-        getViewById: MBVM_getViewById
-        resetNavControllerToRoot: MBVM_resetNavControllerToRoot
-        resetNavController: MBVM_resetNavController
         
+            
+<div class="section-method">
 
-        state: "none"
-        focusId: invalid
-        name: ""
-        
 
-        __viewModel: true
-        
 
-         __BaseViewModel: MBVM_new
-      }
-      instance.append(BaseViewModel_instance)
-      return instance
-      end function
+
+
+
+
+<dl class="details">
+
     
 
+    
 
-      function BaseViewModel(name = "BaseViewModel")
-        instance = __BaseViewModel_builder()
-        instance.__BaseViewModel(name)
-        return instance
-      end function
-    </code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_maestro_view_navigation_TabController.brs.html">components/maestro/view/navigation/TabController.brs</a>, <a href="components_maestro_view_navigation_TabController.brs.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id="createView"><span class="type-signature"></span>createView<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>override point for providing your own view, based on a menuitem content</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_maestro_view_navigation_TabController.brs.html">components/maestro/view/navigation/TabController.brs</a>, <a href="components_maestro_view_navigation_TabController.brs.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+</div>
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
