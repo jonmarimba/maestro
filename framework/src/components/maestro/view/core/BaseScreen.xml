@@ -7,7 +7,7 @@
     <!-- public fields/functions -->
     
     <!-- the context for the screen, if required.
-    This may differ from the modelLocator's selectedContentItem -->
+    This may differ from the modelLocator's currentSelection -->
     <field id="content" type="node"/>
 
     <!-- selection object, associated with this view -->

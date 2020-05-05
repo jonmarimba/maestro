@@ -12,6 +12,11 @@
         id="isAnimated"
         type="boolean"
         value="false" />
+    <field
+        id="needsRecalulating"
+        type="boolean"
+        value="false"
+        alwaysNotify="true" />
 
     <!-- set this, when you want to change the children after creation -->
     <field
@@ -42,9 +47,9 @@
 
   </interface>
   <children>
-    <LayoutGroup
-        id="container_layoutGroup"
-        layoutDirection="vert" />
+    <Timer id="container_updateTimer" duration="0.2" repeat="false"/>
+    <Group id="container_layoutGroup" />
+    <!-- layoutDirection="vert" /> -->
     <Animation
         id="container_animation"
         duration="0.1"

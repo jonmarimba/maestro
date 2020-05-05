@@ -27,11 +27,22 @@ function pop() as object
   navController = getNavController()
   
   if (navController <> invalid)
-    return navController.callFunc("pop", invalid)
+    return navController@.pop()
   else
     logError("Pop failed - there is no navcontroller on ", m.top)
   end if
 end function
+
+function replaceNavControllerScreen(targetScreen)
+  navController = getNavController()
+  
+  if (navController <> invalid)
+    navController@.replace(targetScreen)
+  else
+    logError("Pop failed - there is no navcontroller on ", m.top)
+  end if
+end function
+
 
 function resetNavControllerToRoot()
   logMethod("resetNavControllerToRoot." + m.top.id)
@@ -43,14 +54,19 @@ function resetNavController(newFirstScreen = invalid, endIndex = -1)
   navController = getNavController()
   
   if (navController <> invalid)
-    navController.callFunc("reset", newFirstScreen, endIndex)
+    navController@.reset(newFirstScreen, endIndex)
   else
     logError("Pop failed - there is no navcontroller on ", m.top)
   end if
 end function
 
 function getNavController()
-  return m.top.navController
+  if m.top.navController <> invalid 
+    return m.top.navController
+  else
+    'might be nested in a screen; ultimately, there has to be a navcontroller somewhere
+    return ViewUtils.getFirstParentWithType(m.top, "NavController")
+  end if
 end function
 
 function onAddedToAggregateView(navController)

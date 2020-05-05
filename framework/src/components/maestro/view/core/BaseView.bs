@@ -20,7 +20,8 @@ end function
 
 function onDebugMChange()
   logInfo("dumping m for debugging purposes")
-  m.top._m = m
+  MU.setOrAddNodeField(m.top, "_m", m)
+  MU.setOrAddNodeField(m.top, "_vm", m.vm)
 end function
 
 
@@ -85,7 +86,7 @@ end function
 '  * @param {BaseView} the view to initialize
 '  */
 function initializeView(view, args = invalid) as void
-  view.callFunc("_initialize", args)
+  view@._initialize(args)
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -171,7 +172,7 @@ function _initialize(args = invalid)
 end function
 
 function callVMFunc(funcName, p1 = "#M_NONE#", p2 = "#M_NONE#", p3 = "#M_NONE#")
-  return MU.callAAFunc(m.vm, funcName, p1, p2, p3)  
+  return MU.callAAFunc(m.vm, funcName, p1, p2, p3) 
 end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ abstract lifecycle methods

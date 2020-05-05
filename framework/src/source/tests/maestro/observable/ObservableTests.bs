@@ -324,7 +324,7 @@ function bindObservableField_invalidFields()
   m.assertFalse(MOM_bindObservableField(o1, invalid, invalid, invalid))
 end function
 
-'@Test valid observable, one field
+'@Test valid observable, one field, one node
 function bindObservableField_oneField_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"
@@ -513,7 +513,7 @@ function bindFieldTwoWay_oneField_oneNode()
   m.assertEqual(n1.title, "changed4")
 end function
 
-'@Test valid observable, one field
+'@Test valid observable, multpliel fields one node
 function bindFieldTwoWay_multipleNodeFields_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"
@@ -605,7 +605,7 @@ function unbindFieldTwoWay_oneField_oneNode()
   m.assertEqual(n1.title, "changed5")
 end function
 
-'@Test valid observable, one field
+'@Test valid observable, multiple field, one node
 function unbindFieldTwoWay_multipleNodeFields_oneNode()
   o1 = BaseObservable()
   o1.id = "o1"

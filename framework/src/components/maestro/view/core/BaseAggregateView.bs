@@ -45,16 +45,22 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function onShow()
-  logVerbose("onShow")
+  logVerbose("onShow", m.top.subType(), ".", m.top.id)
   if m.top.currentView <> invalid
+    logInfo("setting view visible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
     m.top.currentView.visible = true
+  else
+    logWarn("this aggregrate view has no currentView")
   end if
 end function
 
 function onHide()
-  logVerbose("onHide")
+  logVerbose("onHide", m.top.subType(), ".", m.top.id)
   if m.top.currentView <> invalid
+    logInfo("setting view invisible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
     m.top.currentView.visible = false
+  else
+    logWarn("this aggregrate view has no currentView")
   end if
 end function
 
@@ -63,7 +69,7 @@ function onGainedFocus(isSelfFocused)
   
   if isSelfFocused
     if m.top.currentView <> invalid
-      logDebug("setting focus to view ", m.top.currentView.id)
+      ' logDebug("setting focus to view ", m.top.currentView.id)
       setFocus(m.top.currentView)
     else
       logDebug("no current view when gaining focus")

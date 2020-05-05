@@ -23,7 +23,7 @@ class BaseViewModel extends BaseObservable
 '  */
 
 public function new(name = "BaseViewModel")
-  m.super()
+  super()
   m.name = name
   registerLogger(name, true, m)
 end function
@@ -31,6 +31,7 @@ end function
 public state = "none"
 public focusId = invalid
 public name = ""
+public isFocused = false
 
 private __viewModel = true
 
@@ -47,7 +48,7 @@ public function initialize()
 end function
 
 override public function destroy()
-  m.super()
+  super.destroy()
   m.state = "destroyed"
 end function
 
@@ -55,6 +56,25 @@ public function onShow()
 end function
 
 public function onHide()
+end function
+
+public function onGainedFocus(isSelfFocused)
+  if isSelfFocused
+    m.isFocused = true
+    m.setFocusId(m.focusId)
+  end if
+end function
+
+public function onLostFocus()
+  m.isFocused = false
+end function
+
+public function setFocusId(id)
+  if m.isFocused
+    m.setField("focusId", id)
+  else
+    m.focusId = id
+  end if
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
