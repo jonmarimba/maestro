@@ -17,7 +17,7 @@ function push(view)
   navController = getNavController()
   
   if (navController <> invalid)
-    navController.callFunc("push", view)
+    navController@.push(view)
   else
     logError("Push failed - there is no navcontroller on ", m.top)
   end if

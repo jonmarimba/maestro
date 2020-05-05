@@ -11,11 +11,11 @@ namespace AppServices
 ' This will vary app to app - here's some examples
 
 function playSelection(selection)
-  m.global.appController.callFunc("playSelection", selection)
+  m.global.appController@.playSelection(selection)
 end function
 
 function exitFromDeepLinking()
-  m.global.appController.callFunc("exitFromDeepLinking", invalid)
+  m.global.appController@.exitFromDeepLinking()
 end function
 
 function createSelectionFromContent(currentItem, collection = invalid)

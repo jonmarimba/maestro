@@ -17,7 +17,7 @@ function isCapturingAnyKeyPress(key, press) as boolean
 end function
 
 function onKeyPressBack() as boolean
-  m.modelLocator.appController.callFunc("toggleVideoPlayerVisible", false)
+  m.modelLocator.appController@.toggleVideoPlayerVisible(false)
   return true
 end function
 
