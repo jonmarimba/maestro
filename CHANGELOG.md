@@ -1,3 +1,11 @@
+#### 0.7.0 (2020-05-05)
+
+##### New Features
+
+* **core:**
+  *  adds modern @. syntax ([fab33f5a](https://github.com/georgejecook/maestro/commit/fab33f5a07dd7f23107a2d4de151da8f7a11d485))
+  *  adds dynamic container, and various bug fixes ([a1521700](https://github.com/georgejecook/maestro/commit/a15217007cbbc7a602369f9dd6b7f2137f860aba))
+
 #### 0.6.0 (2020-04-22)
 
 ##### New Features
