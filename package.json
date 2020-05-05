@@ -1,6 +1,6 @@
 {
   "name": "maestro-roku",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A development platform for building roku channels in brighterscript",
   "main": "index.js",
   "directories": {
