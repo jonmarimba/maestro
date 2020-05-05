@@ -8,17 +8,17 @@ function Init()
   initializeFocusManager(m.global)
   
   'get nav items from our tab controller
-  m.tabController.callFunc("_initialize", {})
+  m.tabController@._initialize({})
   
   m.tabMenu.observeField("currentItem", "onTabMenuCurrentItemChange") 
   m.deeplinkingScreen = createObject("roSGNode", "DeepLinkingScreen")
   m.deeplinkingScreen.id = "deepLinking"
   m.deeplinkingNavItem = createNavItem(invalid, "deepLinking")
-  m.tabController.callFunc("addExistingView", m.deeplinkingScreen)
+  m.tabController@.addExistingView(m.deeplinkingScreen)
   
   items = createMenuItems()
   m.isHomeLoaded = false
-  m.tabMenu.callFunc("setItems", items)
+  m.tabMenu@.setItems(items)
 end function
 
 function initialize(args = invalid)
@@ -55,7 +55,7 @@ end function
 
 function onTabMenuCurrentItemChange(event)
   logInfo("tab menu item changed", m.tabMenu.currentItem)
-  m.tabController.callFunc("changeCurrentItem", m.tabMenu.currentItem)
+  m.tabController@.changeCurrentItem(m.tabMenu.currentItem)
 end function
 
 function onOptionsMenuIsFocusedChange(event)
@@ -135,7 +135,7 @@ function enterDeeplinking()
   logMethod("enterDeeplinking")
   m.isInDeeplinkMode = true
   m.preDeeplinkingItem = m.tabController.currentItem
-  m.tabController.callFunc("changeCurrentItem", m.deeplinkingNavItem)
+  m.tabController@.changeCurrentItem(m.deeplinkingNavItem)
   m.tabMenu.visible = false
   setFocus(m.tabController)
 end function
@@ -146,7 +146,7 @@ function exitFromDeeplinking(args = invalid)
   m.tabMenu.visible = true
   
   if m.preDeeplinkingItem <> invalid
-    m.tabController.callFunc("changeCurrentItem", m.preDeeplinkingItem)
+    m.tabController@.changeCurrentItem(m.preDeeplinkingItem)
   else
     navigateToHomeItem()
   end if
@@ -172,10 +172,10 @@ end function
 function toggleVideoPlayerVisible(isVisible)
   m.tabMenu.visible = not isVisible and not m.isInDeeplinkMode
   if isVisible
-    m.tabController.currentView.navController.callFunc("push", m.videoPlayer)
+    m.tabController.currentView.navController@.push(m.videoPlayer)
     setFocus(m.tabController.currentView.navController)
   else
-    m.tabController.currentView.navController.callFunc("pop", invalid)
+    m.tabController.currentView.navController@.pop()
     setFocus(m.tabController.currentView)
   end if
 end function
