@@ -534,7 +534,7 @@ function bindObservableField_unregistered()
   m.assertFalse(MOM.bindObservableField(invalid, "fieldName", invalid, invalid))
 end function
 
-'@Test unregistered observable
+'@Test vlalid observable
 function bindObservableField_validObservable()
   o1 = BaseObservable()
   o1.id = "o1"
@@ -554,7 +554,7 @@ function unbindObservableField_unregistered()
   m.assertFalse(MOM.unbindObservableField(invalid, "fieldName", invalid, invalid))
 end function
 
-'@Test unregistered observable
+'@Test valid observable
 function unbindObservableField_validObservable()
   o1 = BaseObservable()
   o1.id = "o1"

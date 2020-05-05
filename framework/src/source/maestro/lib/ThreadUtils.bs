@@ -25,7 +25,7 @@ namespace MTU
 '  * @returns {roMessage} message, once retrieved
 '  * @param {boolean} forceOriginalImpl - if true will use the standard implementation
 '  */
-function waitPort(delay = 0, port = invalid, forceOriginalImpl = false)
+function waitPort(delay = 0, port = invalid, forceOriginalImpl = true)
   if forceOriginalImpl
     '? "waitPort: forcing original implementation"
     return wait(delay, port)
@@ -58,7 +58,7 @@ end function
 '  * @param {delay} delay in ms
 '  * @param {boolean} forceOriginalImpl - if true will use the standard implementation
 '  */
-function waitForMilliseconds(delay, forceOriginalImpl = false) as void
+function waitForMilliseconds(delay, forceOriginalImpl = true) as void
   if forceOriginalImpl
     '? "waitForMilliseconds: forcing original implementation"
     port = CreateObject("roMessagePort")

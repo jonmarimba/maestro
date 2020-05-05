@@ -18,28 +18,30 @@ function push(view) as void
   'won't trigger show callbacks prematurely
   view.visible = false
   view.isShown = false
-
+  
   if not view.isInitialized
     initializeView(view)
   end if
-
+  
   logInfo("pushing ", view.subType())
   prev = m.viewStack.Peek()
   m.viewStack.Push(view)
-  updatePublicFields()
+  
+
   view.navController = m.top
   showView(view)
-  view.callFunc("onAddedToAggregateView", m.top)
+  view@.onAddedToAggregateView(m.top)
   if m.top.isAutoFocusEnabled and m.top.isInFocusChain()
     setFocus(view)
   end if
   logInfo(view.subType(), " #views in stack", m.top.numberOfViews)
-    
+  
   'weird bug is causing the visible state to get shot
   if m.top.isShown
     view.visible = true
   end if
-
+  
+  updatePublicFields()
 end function
 
 function reset(newFirstScreen = invalid, endIndex = -1)
@@ -55,22 +57,22 @@ function reset(newFirstScreen = invalid, endIndex = -1)
     if view <> invalid
       hideView(view)
       view.navController = invalid
-      view.callFunc("onRemovedFromAggregateView", m.top)
+      view@.onRemovedFromAggregateView(m.top)
     else
       logInfo(" reset found invalid child")
     end if
     index--
   end while
-
-  updatePublicFields()
-
+  
   if newFirstScreen <> invalid
-    logInfo("new first screen ",  newFirstScreen.subType())
+    logInfo("new first screen ", newFirstScreen.subType())
     push(newFirstScreen)
   else if m.top.numberOfViews > 0
     logInfo("there were views left on the stack after resetting ")
     showView(m.viewStack[m.top.numberOfViews - 1])
   end if
+  
+  updatePublicFields()
 
 end function
 
@@ -80,9 +82,9 @@ function pop(args) as object
   if (previousView <> invalid)
     m.viewStack.Pop()
     hideView(previousView)
-    previousView.callFunc("onRemovedFromAggregateView", m.top)
+    previousView@.onRemovedFromAggregateView(m.top)
     previousView.navController = invalid
-
+    
     previousView = m.viewStack.Peek()
     if previousView <> invalid
       showView(previousView)
@@ -91,11 +93,49 @@ function pop(args) as object
       end if
     end if
   end if
-
-  updatePublicFields()
+  
   if m.top.numberOfViews = 0
     m.top.isLastViewPopped = true
   end if
+
+  updatePublicFields()
+
+  return previousView
+end function
+
+function replace(newView = invalid) as object
+  logMethod("replace ", m.top.numberOfViews)
+  previousView = m.top.currentView
+  if (previousView <> invalid)
+    m.viewStack.Pop()
+    hideView(previousView)
+    previousView@.onRemovedFromAggregateView(m.top)
+    previousView.navController = invalid
+    
+  end if
+  
+  if newView <> invalid
+    showView(newView)
+    newView@.onAddedToAggregateView(m.top)
+    m.viewStack.push(newView)
+    
+    'weird bug is causing the visible state to get shot
+    if m.top.isShown
+      newView.visible = true
+    end if
+    
+    if m.top.isAutoFocusEnabled and m.top.isInFocusChain()
+      setFocus(newView)
+    end if
+    
+  end if
+  
+  if m.top.numberOfViews = 0
+    m.top.isLastViewPopped = true
+  end if
+
+  updatePublicFields()
+
   return previousView
 end function
 

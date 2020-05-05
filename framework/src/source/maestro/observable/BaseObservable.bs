@@ -24,11 +24,15 @@ class BaseObservable
 '  * @description creates a BaseObserver instance, which you can extend,
 '  *              note - that for correct function you must use the BaseObservableMixin methods to interact with this class for registering, observing and binding
 '  */
-public function new()
+public function new(name = "BaseObservable")
   m.checkValidInputs = MOM_checkValidInputs
+  m.name = name
+  registerLogger(name, true, m)
+  
 end function
 
 private __observableObject = true 'for framework tracking
+public name = ""
 public isContextValid = false
 public isBindingNotificationEnabled = true
 public observers = {}

@@ -19,7 +19,7 @@ function reset(args = invalid)
   resetNavControllerToRoot()
   
   if m.top.navController.currentView <> invalid
-    m.top.navController.currentView.callFunc("reset", invalid)
+    m.top.navController.currentView@.reset()
   end if
 
   if m.top.hasFocus()
@@ -51,11 +51,13 @@ end function
 
 function onKeyPressBack() as boolean
   logMethod("onKeyPressBack")
+  
   if m.top.navController.numberOfViews > 1
     pop()
     setFocus(m.top.navController)
     return true
   end if
+  
   return false
 end function
 
@@ -65,6 +67,7 @@ end function
 
 function onShow()
   logMethod("onShow")
+
   if m.isFirstScreenCreated
     reset()
   else

@@ -9,7 +9,6 @@ import "pkg:/source/maestro/lib/Utils.bs"
 function init() as void
   registerLogger("FocusManager")
   m.top.observeField("_debugM", "onDebugMChange")
-  m.top.observeField("_debugM", "onDebugMChange")
   
   m.wasShown = false
   m.isKeyPressLocked = false
@@ -58,6 +57,8 @@ function unsetFocusOn(node)
 end function
 
 function setFocusLocked(isLocked, reason = "")
+  logWarn("setFocusLocked is currently disabled pending further testing")
+  return invalid
   
   if isLocked
     logInfo("locking focus due to reason", reason)
@@ -107,6 +108,12 @@ function getParents(node)
   parents = []
   
   while (parent <> invalid)
+    
+    if parent.subType() = "ModelLocator"
+      logWarn("trying to focus on a view that is not yet on the view hierarchy")
+      return []
+    end if
+
     parents.push(parent)
     parent = parent.getParent()
   end while

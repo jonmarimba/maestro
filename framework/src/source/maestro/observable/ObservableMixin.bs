@@ -119,7 +119,7 @@ function bindNodeField(targetNode, nodeField, observable, observableField, prope
   if nodeBindings.doesExist(key)
     logWarn("NodeBinding already existed for key", key)
     binding = nodeBindings[key]
-
+    
     if binding.targetNode.isSameNode(targetNode)
       logWarn("is same node - ignoring")
       return true
@@ -135,6 +135,7 @@ function bindNodeField(targetNode, nodeField, observable, observableField, prope
     "targetField": observableField
     "transformFunction": properties[1]
     "unBindOnCall": properties[2] = true
+    "sendNode": properties[3] = true
   }
   
   m._observableNodeBindings[nodeKey] = nodeBindings
@@ -217,7 +218,7 @@ function registerObservable(observable) as boolean
     logError("the passed in object is not an Observable subclass")
     return false
   end if
-
+  
   if observable.doesExist("contextId") and m._observables <> invalid and m._observables.doesExist(observable.contextId)
     'we don't need to reregister this observable
     'TODO - check if it's the same observable; but that will require
@@ -228,7 +229,7 @@ function registerObservable(observable) as boolean
   if m._observableContextId = invalid
     m._observableContextId = -1
   end if
-
+  
   if m._observableContextId = 0
     logError("There is already an observable registered with this view! maestro _can_ support more than one observable; but for now that use case is disabled to avoid noobies getting themselves into trouble.")
     return false
@@ -431,7 +432,11 @@ function bindingCallback(event) as void
         bindingValue = value
       end if
       if MU.isFunction(observable[bindingData.targetField])
-        observable[bindingData.targetField](bindingValue)
+        if bindingData.sendNode = true
+          observable[bindingData.targetField](bindingValue, bindingData.targetNode)
+        else
+          observable[bindingData.targetField](bindingValue)
+        end if
       else
         if not observable.doesExist(bindingData.targetField)
           logWarn(bindingData.targetField, "was not present on observable when setting value for nodeKey", nodeKey)
@@ -562,13 +567,13 @@ end function
 '  * @param {boolean} unbindOnCall - if true, then the binding is removed as soon as as it is invoked
 '  * @returns {array} binding properties, set with relevant default values, in order as they appear here
 '  */
-function createBindingProperties(settingInitialValue = true, transformFunction = invalid, unBindOnCall = false)
-  if transformFunction <> invalid and not MU.isFunction(transformFunction)
+function createBindingProperties(settingInitialValue = true, transformFunction = invalid, unBindOnCall = false, sendNode = false)
+  if MU.isUndefined(transformFunction) or (transformFunction <> invalid and not MU.isFunction(transformFunction))
     logError("transformFunction was not a function! was it in scope?")
     transformFunction = invalid
   end if
   
-  return [settingInitialValue = true, transformFunction, unBindOnCall = true]
+  return [settingInitialValue = true, transformFunction, unBindOnCall = true, sendNode = true]
   
 end function
 

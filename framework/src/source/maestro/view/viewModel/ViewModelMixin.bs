@@ -34,6 +34,10 @@ function initializeBindings(isUsingViewModelFocusId)
     m_initBindings()
   end if
 
+  if MU.isFunction(M_initStaticBindings)
+    M_initStaticBindings()
+  end if
+
   if isUsingViewModelFocusId
     MOM.observeField(m.vm, "focusId", MVMM.onFocusIdChange)
   end if

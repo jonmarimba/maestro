@@ -562,7 +562,7 @@ function notify_twoObservers_twoFields_notificationsEnabled_context()
   m.assertArrayCount(m.observable.pendingObservers, 0)
 end function
 
-'@Test 2 fields, 2 observers, context, notifications
+'@Test 2 fields, 2 observers, context, notifications - other field
 function notify_twoObservers_twoFields_notificationsEnabled_context_otherField()
   m.observable["_fieldName"] = "#value"
   m.observable["_fieldName2"] = "#value2"

@@ -19,7 +19,7 @@
 '  * @param {global} - globalNode pointer to globalNode (i.e. m.global)
 '  */
 function initializeFocusManager(globalNode)
-  globalNode.addFields({"focusManager": createObject("roSGNode", "FocusManager")})
+  globalNode.addFields({ "focusManager": createObject("roSGNode", "FocusManager") })
 end function
 
 ' /**
@@ -44,7 +44,7 @@ end function
 '  * @param {boolean} forceSet - will set focus, even if the focus lock is on
 '  */
 function setFocus(node, forceSet = false)
-  m.global.focusManager.callFunc("setFocusOn", node, forceSet)
+  m.global.focusManager@.setFocusOn(node, forceSet)
 end function
 
 '*************************************************************
@@ -61,7 +61,7 @@ end function
 '  * @param {roSGNode} node - node to unsset focus on
 '  */
 function unsetFocus(node)
-  m.global.focusManager.callFunc("unsetFocusOn", node)
+  m.global.focusManager@.unsetFocusOn(node)
 end function
 
 ' /**
@@ -74,12 +74,12 @@ end function
 '  * @param {string} - focusLockReason - the reason for locking - this will appear in logging output
 '  */
 function setFocusLocked(isLocked, focusLockReason = "")
-  m.global.focusManager.callFunc("setFocusLocked", isLocked, focusLockReason)
+  m.global.focusManager@.setFocusLocked(isLocked, focusLockReason)
 end function
 
 function onIsFocusedChange()
-  ' logInfo("m.top.isFocused", m.top.isFocused, MU.dv(m.top))
-
+  logInfo("m.top.isFocused", m.top.isFocused, MU.dv(m.top))
+  
   if m.top.isFocused
     onGainedFocus(true)
   else
@@ -89,7 +89,7 @@ end function
 
 function onIsChildFocusedChange()
   ' logInfo("m.top.isChildFocused", m.top.isChildFocused, MU.dv(m.top))
-
+  
   if m.top.isChildFocused
     onGainedFocus(false)
   else
@@ -110,10 +110,16 @@ end function
 '  * @param {boolean} isSelfFocused - if true, then this is the control that is focused, if false, then it is one of the control's parents
 '  */
 function onGainedFocus(isSelfFocused)
-  ' logInfo("onGainedFocus", isSelfFocused)
+  logInfo("onGainedFocus", m.top.subType(), isSelfFocused)
   
-  if isSelfFocused and m.vm <> invalid and MVMM.onFocusIdChange <> invalid
-    MVMM.onFocusIdChange(m.vm.focusId) 
+  if isSelfFocused and m.vm <> invalid
+
+    if m.vm.onGainedFocus <> invalid
+      m.vm.onGainedFocus(isSelfFocused)
+    else if MVMM.onFocusIdChange <> invalid
+      MVMM.onFocusIdChange(m.vm.focusId) 
+    end if
+    
   end if
 end function
 
@@ -126,5 +132,8 @@ end function
 '  */
 function onLostFocus()
   logInfo("lost focus:", m.top.subType(), ".", m.top.id)
+  if m.vm <> invalid and m.vm.onLostFocus <> invalid
+    m.vm.onLostFocus()
+  end if
 end function
 

@@ -76,4 +76,158 @@ function callAAFunc(target, funcName, p1 = "#M_NONE#", p2 = "#M_NONE#", p3 = "#M
   return invalid
 end function
 
+function apply(func, args = [], target = invalid)
+  if not MU.isArray(args)
+    logError("apply expects an array of args")
+    return invalid
+  end if
+  
+  count = args.count()
+  if count > 4
+    logError("apply only supports up to 4 params")
+    return invalid
+  end if
+  
+  if target <> invalid
+    if not MU.isFunction(target[func])
+      logError("target did not have function ", func)
+      return invalid
+    end if
+    
+    if count = 0
+      return target[func]()
+    else if count = 1
+      return target[func](args[0])
+    else if count = 2
+      return target[func](args[0], args[1])
+    else if count = 3
+      return target[func](args[0], args[1], args[2])
+    else if count = 4
+      return target[func](args[0], args[1], args[2], args[3])
+    end if
+  else
+    if not MU.isFunction(func)
+      logError("tried to apply to out of scope function")
+      return invalid
+    end if
+    
+    if count = 0
+      return func()
+    else if count = 1
+      return func(args[0])
+    else if count = 2
+      return func(args[0], args[1])
+    else if count = 3
+      return func(args[0], args[1], args[2])
+    else if count = 4
+      return func(args[0], args[1], args[2], args[3])
+    end if
+  end if
+end function
+
+function removeDuplicateKeys(aa = invalid, otherAA = invalid)
+  if otherAA <> invalid and aa <> invalid
+    
+    for each key in otherAA
+      if aa.doesExist(key) and formatJson(aa[key]) = formatJson(otherAA[key])
+        aa.delete(key)
+      end if
+    end for
+    
+  end if
+  
+  return aa
+end function
+
+' /**
+'  * @member getcontentField
+'  * @memberof module:MaestroUtils
+'  * @instance
+'  * @function
+'  * @description get's content field from array. '  * @param {assocarray} content - node/aa to look up on
+'  * @param {string} field - path to field, with "items.path.syntax",
+'  * @returns {any} value if foud, or default value
+'  */
+function getContentField(content, field, default = invalid) 
+  part = content
+  if field <> invalid
+    
+    parts = field.split(".")
+    numParts = parts.count()
+    i = 0
+    
+    while i < numParts and part <> invalid
+      part = part[parts[i]]
+      i++ 
+    end while
+  end if
+  
+  if part <> invalid
+    return part
+  else 
+    return default
+  end if
+end function
+
+' /**
+'  * @member getContentFieldPlus
+'  * @memberof module:MaestroUtils
+'  * @instance
+'  * @function
+'  * @description get's content field from array. This variation has a slower implementation that supports array lookup
+'  * @param {assocarray} content - node/aa to look up on
+'  * @param {string} field - path to field, with "items.2.path.syntax",
+'  * @returns {any} value if foud, or default value
+'  */
+function getContentFieldPlus(content, field, default = invalid) 
+  part = content
+  if field <> invalid
+    
+    parts = field.split(".")
+    numParts = parts.count()
+    i = 0
+    
+    while i < numParts and part <> invalid
+      if parts[i] = "0" or parts[i].toInt() <> 0
+        if MU.isArray(part)
+          part = part[parts[i].toInt()]
+        else
+          part = invalid
+        end if
+      else
+        part = part[parts[i]]
+      end if
+      i++ 
+    end while
+  end if
+  
+  if part <> invalid
+    return part
+  else 
+    return default
+  end if
+end function
+
+
+function setOrAddNodeField(node, field, value = invalid)
+  if node.doesExist(field)
+    node[field] = value
+  else
+    info = {}
+    info[field] = value
+    node.addFields(info)
+  end if
+end function
+
+private function getChildAtDepth(node, depth)
+  currentDepth = 0
+  
+  while node <> invalid and currentDepth < depth
+    node = node.getChild(0)
+    currentDepth++
+  end while
+  
+  return node
+end function
+
 end namespace
