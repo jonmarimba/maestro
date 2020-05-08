@@ -473,7 +473,7 @@ a binding is as follows:
 
 Brighterscript is baked into the `maestro-cli-roku` package, and can be invoked from `maestro-cli`. Development on the official brighterscript project is underway, and once it has feature parity, we will use the official compiler inside of `maestro-cli`.
 
-To get the most out of brighterscript, use the [brighterscript enabled vscode plugin](brightscript-2.2.0-bs.vsix), which will give you language support.
+To get the most out of brighterscript, use the [brighterscript enabled vscode plugin](https://github.com/georgejecook/maestro/releases/download/0.7.0/brightscript-2.4.0-bs.vsix), which will give you language support.
 
 Maestro supports the following brighterscript features (with some limitations):
 
