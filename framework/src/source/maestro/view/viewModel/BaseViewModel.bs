@@ -47,7 +47,7 @@ public function initialize()
   m.state = "initialized"
 end function
 
-override public function destroy()
+public override function destroy()
   super.destroy()
   m.state = "destroyed"
 end function
