@@ -17,27 +17,27 @@
       <Button 
         id="addButton" 
         text="add"
-        buttonSelected="@(vm.addTodo())"
+        buttonSelected="{(vm.addTodo())}"
         />
       <Button 
         id="removeButton" 
-        buttonSelected="@(vm.removeTodo())"
+        buttonSelected="{(vm.removeTodo())}"
         text="remove"
         />
 			<Label 
         id="titleLabel"
-        text="@{vm.focusedItem, transform=getFocusTitle}"
+        text="{{vm.focusedItem, transform=getFocusTitle}}"
         />
 			<Label 
         id="noItemLabel" 
         text="there are no items"
-        visible="@{vm.hasItems, transform=MOM_transform_invertBoolean}"
+        visible="{{vm.hasItems, transform=MOM_transform_invertBoolean}}"
         />
       <LabelList 
         id="itemList"
-        content="@{vm.items}"
-        visible="@{vm.hasItems}"
-        itemFocused="@(vm.focusItemAtIndex())"
+        content="{{vm.items}}"
+        visible="{{vm.hasItems}}"
+        itemFocused="{(vm.focusItemAtIndex())}"
       />
 		</LayoutGroup>
 
