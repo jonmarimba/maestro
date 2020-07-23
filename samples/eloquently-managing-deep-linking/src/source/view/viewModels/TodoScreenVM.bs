@@ -13,7 +13,7 @@ public currentTitle = "none"
 public hasItems = false
 
 public function new()
-  m.super("TodoVM")
+  super("TodoVM")
   m.focusIds = [
     "addButton",
     "removeButton"

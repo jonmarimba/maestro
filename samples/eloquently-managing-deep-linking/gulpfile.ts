@@ -59,7 +59,7 @@ async function compile(cb) {
       "**/*.brs",
       "**/*.xml",
     ],
-    "sourcePath": "src",
+    "sourcePaths": ["src"],
     "outputPath": "build",
     "logLevel": 4,
     "nonCheckedImports": ['source/rLog/rLogMixin.brs',
