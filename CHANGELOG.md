@@ -1,3 +1,13 @@
+#### 0.7.1 (2020-07-23)
+
+##### Bug Fixes
+
+* **core:**
+  *  Fix bad syntax on override in BaseView ([fc8fdd80](https://github.com/georgejecook/maestro/commit/fc8fdd8067bd68cebdd12c895eeab79377a5c521))
+  *  Some minor tweaks and fixes ([fa1bbba9](https://github.com/georgejecook/maestro/commit/fa1bbba99685bc39e0c1009fd63de41010578eb8))
+* **sample:**  update binding sample to latest syntax ([87de700a](https://github.com/georgejecook/maestro/commit/87de700acb3b83456a0f5b723464b8adb84bf747))
+* **docs:**  fixes link to vsix ([eca0ee19](https://github.com/georgejecook/maestro/commit/eca0ee19c9bb2b21dfc4dede1caa3c047358dd4e))
+
 #### 0.7.0 (2020-05-05)
 
 ##### New Features
